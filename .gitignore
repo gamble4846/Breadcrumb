@@ -8,3 +8,5 @@
 /BreadcrumbAPI/Breadcrumb.Model/obj
 /BreadcrumbAPI/Breadcrumb.Utility/bin
 /BreadcrumbAPI/Breadcrumb.Utility/obj
+/BreadcrumbAPI/Breadcrumb.DataAccess.SQLServer/bin
+/BreadcrumbAPI/Breadcrumb.DataAccess.SQLServer/obj

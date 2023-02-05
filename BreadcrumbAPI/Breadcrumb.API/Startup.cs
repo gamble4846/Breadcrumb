@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Breadcrumb.DataAccess.Impl;
-using Breadcrumb.DataAccess.Interface;
 using Breadcrumb.Manager.Impl;
 using Breadcrumb.Manager.Interface;
 using Breadcrumb.Utility;
@@ -82,6 +80,7 @@ namespace Breadcrumb.API
             services.AddTransient<IUploadManager, UploadManager>();
 
             #region Dependency
+            services.AddTransient<IShowsManager, ShowsManager>();
             #endregion
 
         }

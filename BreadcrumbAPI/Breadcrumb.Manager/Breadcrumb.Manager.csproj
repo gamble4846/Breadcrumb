@@ -4,6 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Log4Net.AspNetCore" Version="6.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
@@ -14,13 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Breadcrumb.DataAccess.SQLServer\Breadcrumb.DataAccess.SQLServer.csproj" />
     <ProjectReference Include="..\Breadcrumb.DataAccess\Breadcrumb.DataAccess.csproj" />
     <ProjectReference Include="..\Breadcrumb.Model\Breadcrumb.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Impl\" />
-    <Folder Include="Interface\" />
   </ItemGroup>
 
 </Project>
