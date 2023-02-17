@@ -67,6 +67,28 @@ namespace Breadcrumb.API
                 };
             });
 
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API Title", Version = "v1" });
+
+            //    var securityScheme = new OpenApiSecurityScheme
+            //    {
+            //        Name = "Authorization",
+            //        BearerFormat = "JWT",
+            //        Scheme = "bearer",
+            //        Description = "Enter your Bearer token to access this API",
+            //        In = ParameterLocation.Header,
+            //        Type = SecuritySchemeType.Http,
+            //    };
+
+            //    c.AddSecurityDefinition("Bearer", securityScheme);
+            //    var securityRequirement = new OpenApiSecurityRequirement
+            //    {
+            //        { securityScheme, new[] { "Bearer" } }
+            //    };
+            //    c.AddSecurityRequirement(securityRequirement);
+            //});
+
             services.AddSingleton<IConfiguration>(Configuration);
             string connectionString = Configuration.GetConnectionString("MSSQLDatabase");
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
@@ -80,7 +102,7 @@ namespace Breadcrumb.API
             services.AddTransient<IUploadManager, UploadManager>();
 
             #region Dependency
-            services.AddTransient<IShowsManager, ShowsManager>();
+            services.AddTransient<ITvShowsManager, TvShowsManager>();
             #endregion
 
         }
