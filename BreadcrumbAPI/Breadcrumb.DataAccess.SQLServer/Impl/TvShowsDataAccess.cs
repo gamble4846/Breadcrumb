@@ -87,13 +87,33 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             cmd.CommandText = @"SPUpdateTvShow";
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.Add("@ShowId", SqlDbType.NVarChar).Value = ShowId;
+            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
             cmd.Parameters.Add("@PrimaryName", SqlDbType.NVarChar).Value = ViewModel.PrimaryName;
             cmd.Parameters.Add("@OtherNames", SqlDbType.NVarChar).Value = ViewModel.OtherNames;
             cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
             cmd.Parameters.Add("@IMDBID", SqlDbType.NVarChar).Value = ViewModel.IMDBID;
             cmd.Parameters.Add("@ReleaseYear", SqlDbType.NVarChar).Value = ViewModel.ReleaseYear;
             cmd.Parameters.Add("@Genres", SqlDbType.NVarChar).Value = ViewModel.Genres;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
+                    return t;
+                }
+            }
+
+            return null;
+        }
+
+        public vTvShowsModel Delete(Guid ShowId)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPDeleteTvShow";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
 
             using (var reader = cmd.ExecuteReader())
             {

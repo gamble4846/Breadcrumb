@@ -11,6 +11,7 @@ namespace Breadcrumb.Manager.Interface
         APIResponse GetTvShows(int page, int itemsPerPage, string orderBy, string FilterQuery);
         APIResponse Insert(vTvShowsViewModel ViewModel);
         APIResponse Update(vTvShowsViewModel ViewModel, Guid ShowId);
+        APIResponse Delete(Guid ShowId);
     }
 }
 

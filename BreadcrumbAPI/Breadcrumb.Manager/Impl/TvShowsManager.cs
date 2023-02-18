@@ -96,6 +96,29 @@ namespace Breadcrumb.Manager.Impl
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", TokenData.DatabaseType);
             }
         }
+
+        public APIResponse Delete(Guid ShowId)
+        {
+            var TokenData = CommonFunctions.GetTokenData();
+            switch (TokenData.DatabaseType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(TokenData.ConnectionString);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var result = SqlTvShowsDataAccess.Delete(ShowId);
+                    if (result != null)
+                    {
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Deleted", result);
+                    }
+                    else
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Deleted");
+                    }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", TokenData.DatabaseType);
+            }
+        }
     }
 }
 

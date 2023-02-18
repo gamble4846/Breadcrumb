@@ -34,7 +34,7 @@ namespace Breadcrumb.API.Controllers
             Configuration = configuration;
             HttpContextAccessor = httpContextAccessor;
             commonFunctions = new CommonFunctions(configuration, httpContextAccessor);
-            tvShowsManager = TvShowsManager;
+            TvShowsManager = tvShowsManager;
         }
 
         [HttpGet]
@@ -77,6 +77,20 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(TvShowsManager.Update(ViewModel, ShowId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpDelete]
+        [Route("/api/TvShows/Delete/{ShowId}")]
+        public ActionResult Delete(Guid ShowId)
+        {
+            try
+            {
+                return Ok(TvShowsManager.Delete(ShowId));
             }
             catch (Exception ex)
             {

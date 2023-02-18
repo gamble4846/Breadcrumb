@@ -8,6 +8,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
         dynamic GetTvShows(int page, int itemsPerPage, string orderBy, string FilterQuery);
         vTvShowsModel InsertTvShows(vTvShowsViewModel ViewModel);
         vTvShowsModel Update(vTvShowsViewModel ViewModel, Guid ShowId);
+        vTvShowsModel Delete(Guid ShowId);
     }
 }
 
