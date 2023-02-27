@@ -39,7 +39,7 @@ namespace Breadcrumb.API.Controllers
 
         [HttpGet]
         [Route("/api/TvShows/Get/")]
-        public ActionResult Get(int page = 1, int itemsPerPage = 100, string orderBy = null, string FilterQuery = null)
+        public ActionResult GetTvshow(int page = 1, int itemsPerPage = 100, string orderBy = null, string FilterQuery = null)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace Breadcrumb.API.Controllers
 
         [HttpPost]
         [Route("/api/TvShows/Insert/")]
-        public ActionResult Insert(vTvShowsViewModel ViewModel)
+        public ActionResult InsertTvshow(vTvShowsViewModel ViewModel)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Breadcrumb.API.Controllers
 
         [HttpPost]
         [Route("/api/TvShows/Update/{ShowId}")]
-        public ActionResult Update(vTvShowsViewModel ViewModel, Guid ShowId)
+        public ActionResult UpdateTvshow(vTvShowsViewModel ViewModel, Guid ShowId)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace Breadcrumb.API.Controllers
 
         [HttpDelete]
         [Route("/api/TvShows/Delete/{ShowId}")]
-        public ActionResult Delete(Guid ShowId)
+        public ActionResult DeleteTvshow(Guid ShowId)
         {
             try
             {
