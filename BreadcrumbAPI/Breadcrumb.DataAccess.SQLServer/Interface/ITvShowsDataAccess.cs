@@ -1,4 +1,5 @@
-using Breadcrumb.Model;
+using Breadcrumb.Model.tbSeasonsModel;
+using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Utility;
 
 namespace Breadcrumb.DataAccess.SQLServer.Interface
@@ -7,8 +8,9 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
     {
         dynamic GetTvShows(int page, int itemsPerPage, string orderBy, string FilterQuery);
         vTvShowsModel InsertTvShows(vTvShowsViewModel ViewModel);
-        vTvShowsModel Update(vTvShowsViewModel ViewModel, Guid ShowId);
-        vTvShowsModel Delete(Guid ShowId);
+        vTvShowsModel UpdateTvShow(vTvShowsViewModel ViewModel, Guid ShowId);
+        vTvShowsModel DeleteTvShow(Guid ShowId);
+        List<tbSeasonsModel> GetTvShowSeasons(Guid ShowId);
     }
 }
 

@@ -1,11 +1,12 @@
 using Breadcrumb.Utility;
 using Breadcrumb.DataAccess.SQLServer.Interface;
-using Breadcrumb.Model;
 using Breadcrumb.DataAccess.SqlClient;
 using System.Security.Cryptography;
 using System.Data.SqlClient;
 using System.Data;
 using System.Drawing;
+using Breadcrumb.Model.vTvShowsModels;
+using Breadcrumb.Model.tbSeasonsModel;
 
 namespace Breadcrumb.DataAccess.SQLServer.Impl
 {
@@ -81,7 +82,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return null;
         }
 
-        public vTvShowsModel Update(vTvShowsViewModel ViewModel, Guid ShowId)
+        public vTvShowsModel UpdateTvShow(vTvShowsViewModel ViewModel, Guid ShowId)
         {
             var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
             cmd.CommandText = @"SPUpdateTvShow";
@@ -107,7 +108,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return null;
         }
 
-        public vTvShowsModel Delete(Guid ShowId)
+        public vTvShowsModel DeleteTvShow(Guid ShowId)
         {
             var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
             cmd.CommandText = @"SPDeleteTvShow";
@@ -125,6 +126,27 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             }
 
             return null;
+        }
+
+        public List<tbSeasonsModel> GetTvShowSeasons(Guid ShowId)
+        {
+            var ret = new List<tbSeasonsModel>();
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPGetTvShowSeasons";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
+                    ret.Add(t);
+                }
+            }
+
+            return ret;
         }
     }
 }

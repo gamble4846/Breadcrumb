@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using Breadcrumb.Manager.Interface;
-using Breadcrumb.Model;
 using Breadcrumb.Utility;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using log4net;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Breadcrumb.DataAccess.SQLServer.Impl;
+using Breadcrumb.Model.vTvShowsModels;
 
 namespace Breadcrumb.Manager.Impl
 {
@@ -40,7 +40,7 @@ namespace Breadcrumb.Manager.Impl
                     if (result != null)
                     {
                         var response = new { records = result.Data, pageNumber = page, pageSize = itemsPerPage, totalRecords = result.TotalRecords };
-                        return new APIResponse(ResponseCode.SUCCESS, "Records Found", result);
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Found", response);
                     }
                     else
                     {
@@ -51,7 +51,7 @@ namespace Breadcrumb.Manager.Impl
             }
         }
 
-        public APIResponse Insert(vTvShowsViewModel ViewModel)
+        public APIResponse InsertTvShow(vTvShowsViewModel ViewModel)
         {
             var TokenData = CommonFunctions.GetTokenData();
             switch (TokenData.DatabaseType)
@@ -74,7 +74,7 @@ namespace Breadcrumb.Manager.Impl
             }
         }
 
-        public APIResponse Update(vTvShowsViewModel ViewModel, Guid ShowId)
+        public APIResponse UpdateTvShow(vTvShowsViewModel ViewModel, Guid ShowId)
         {
             var TokenData = CommonFunctions.GetTokenData();
             switch (TokenData.DatabaseType)
@@ -83,7 +83,7 @@ namespace Breadcrumb.Manager.Impl
                     MsSqlDatabase = new MSSqlDatabase(TokenData.ConnectionString);
                     SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
 
-                    var result = SqlTvShowsDataAccess.Update(ViewModel, ShowId);
+                    var result = SqlTvShowsDataAccess.UpdateTvShow(ViewModel, ShowId);
                     if (result != null)
                     {
                         return new APIResponse(ResponseCode.SUCCESS, "Records Updated", result);
@@ -97,7 +97,7 @@ namespace Breadcrumb.Manager.Impl
             }
         }
 
-        public APIResponse Delete(Guid ShowId)
+        public APIResponse DeleteTvShow(Guid ShowId)
         {
             var TokenData = CommonFunctions.GetTokenData();
             switch (TokenData.DatabaseType)
@@ -106,7 +106,7 @@ namespace Breadcrumb.Manager.Impl
                     MsSqlDatabase = new MSSqlDatabase(TokenData.ConnectionString);
                     SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
 
-                    var result = SqlTvShowsDataAccess.Delete(ShowId);
+                    var result = SqlTvShowsDataAccess.DeleteTvShow(ShowId);
                     if (result != null)
                     {
                         return new APIResponse(ResponseCode.SUCCESS, "Records Deleted", result);
@@ -114,6 +114,29 @@ namespace Breadcrumb.Manager.Impl
                     else
                     {
                         return new APIResponse(ResponseCode.ERROR, "No Records Deleted");
+                    }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", TokenData.DatabaseType);
+            }
+        }
+
+        public APIResponse GetTvShowSeasons(Guid ShowId)
+        {
+            var TokenData = CommonFunctions.GetTokenData();
+            switch (TokenData.DatabaseType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(TokenData.ConnectionString);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var result = SqlTvShowsDataAccess.GetTvShowSeasons(ShowId);
+                    if (result != null)
+                    {
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Found", result);
+                    }
+                    else
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Found");
                     }
                 default:
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", TokenData.DatabaseType);

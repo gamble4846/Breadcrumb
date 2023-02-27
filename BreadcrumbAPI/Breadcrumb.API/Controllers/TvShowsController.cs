@@ -8,13 +8,13 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
 using Breadcrumb.Manager.Interface;
-using Breadcrumb.Model;
 using Breadcrumb.Utility;
 
 using log4net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
+using Breadcrumb.Model.vTvShowsModels;
 
 namespace Breadcrumb.API.Controllers
 {
@@ -62,7 +62,7 @@ namespace Breadcrumb.API.Controllers
         {
             try
             {
-                return Ok(TvShowsManager.Insert(ViewModel));
+                return Ok(TvShowsManager.InsertTvShow(ViewModel));
             }
             catch (Exception ex)
             {
@@ -76,7 +76,7 @@ namespace Breadcrumb.API.Controllers
         {
             try
             {
-                return Ok(TvShowsManager.Update(ViewModel, ShowId));
+                return Ok(TvShowsManager.UpdateTvShow(ViewModel, ShowId));
             }
             catch (Exception ex)
             {
@@ -90,7 +90,21 @@ namespace Breadcrumb.API.Controllers
         {
             try
             {
-                return Ok(TvShowsManager.Delete(ShowId));
+                return Ok(TvShowsManager.DeleteTvShow(ShowId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpGet]
+        [Route("/api/TvShows/Seasons/Get/{ShowId}")]
+        public ActionResult GetTvShowSeasons(Guid ShowId)
+        {
+            try
+            {
+                return Ok(TvShowsManager.GetTvShowSeasons(ShowId));
             }
             catch (Exception ex)
             {
