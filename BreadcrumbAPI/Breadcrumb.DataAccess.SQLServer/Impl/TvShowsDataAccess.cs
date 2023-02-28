@@ -128,6 +128,8 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return null;
         }
 
+
+
         public List<tbSeasonsModel> GetTvShowSeasons(Guid ShowId)
         {
             var ret = new List<tbSeasonsModel>();
@@ -147,6 +149,71 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             }
 
             return ret;
+        }
+
+        public tbSeasonsModel InsertTvShowSeason(tbSeasonsViewModel ViewModel)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPInsertTvShowSeason";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ViewModel.ShowId;
+            cmd.Parameters.Add("@Number", SqlDbType.Int).Value = ViewModel.Number;
+            cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
+                    return t;
+                }
+            }
+
+            return null;
+        }
+
+        public tbSeasonsModel UpdateTvShowSeasons(tbSeasonsViewModel ViewModel, Guid SeasonId)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPUpdateTvShowSeason";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = SeasonId;
+            cmd.Parameters.Add("@Number", SqlDbType.NVarChar).Value = ViewModel.Number;
+            cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
+            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ViewModel.ShowId;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
+                    return t;
+                }
+            }
+
+            return null;
+        }
+
+        public tbSeasonsModel DeleteTvShowSeasons(Guid SeasonId)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPDeleteTvShowSeason";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = SeasonId;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
+                    return t;
+                }
+            }
+
+            return null;
         }
     }
 }

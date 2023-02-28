@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using Breadcrumb.Model.vTvShowsModels;
+using Breadcrumb.Model.tbSeasonsModel;
 
 namespace Breadcrumb.API.Controllers
 {
@@ -98,6 +99,8 @@ namespace Breadcrumb.API.Controllers
             }
         }
 
+
+
         [HttpGet]
         [Route("/api/TvShows/Seasons/Get/{ShowId}")]
         public ActionResult GetTvShowSeasons(Guid ShowId)
@@ -105,6 +108,48 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(TvShowsManager.GetTvShowSeasons(ShowId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/TvShows/Seasons/Insert/")]
+        public ActionResult InsertTvShowSeason(tbSeasonsViewModel ViewModel)
+        {
+            try
+            {
+                return Ok(TvShowsManager.InsertTvShowSeason(ViewModel));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/TvShows/Seasons/Update/{SeasonId}")]
+        public ActionResult UpdateTvShowSeasons(tbSeasonsViewModel ViewModel, Guid SeasonId)
+        {
+            try
+            {
+                return Ok(TvShowsManager.UpdateTvShowSeasons(ViewModel, SeasonId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpDelete]
+        [Route("/api/TvShows/Delete/{SeasonId}")]
+        public ActionResult DeleteTvShowSeasons(Guid SeasonId)
+        {
+            try
+            {
+                return Ok(TvShowsManager.DeleteTvShowSeasons(SeasonId));
             }
             catch (Exception ex)
             {

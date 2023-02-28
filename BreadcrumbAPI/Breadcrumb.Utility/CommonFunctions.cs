@@ -38,6 +38,12 @@ namespace Breadcrumb.Utility
             try
             {
                 string token = GetTokenFromHeader();
+
+                if(String.IsNullOrEmpty(token))
+                {
+                    return null;
+                }
+
                 token = token.Replace("Bearer ", "");
                 var jwtSection = Configuration.GetSection("Jwt");
                 var Secret = Encoding.ASCII.GetBytes(jwtSection.GetValue<String>("Secret"));

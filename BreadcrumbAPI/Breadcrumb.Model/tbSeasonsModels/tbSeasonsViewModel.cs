@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Breadcrumb.Model.tbSeasonsModel
 {
-    public class tbSeasonsModel
+    public class tbSeasonsViewModel
     {
-        public Guid? Id { get; set; }
         public Guid? ShowId { get; set; }
         public int Number { get; set; }
         public string Name { get; set; }

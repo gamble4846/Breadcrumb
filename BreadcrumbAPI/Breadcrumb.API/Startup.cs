@@ -36,8 +36,8 @@ namespace Breadcrumb.API
                    builder =>
                    {
                        builder.AllowAnyOrigin()
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
                    });
             });
             var appSettingsSection = Configuration.GetSection("AppSettings");

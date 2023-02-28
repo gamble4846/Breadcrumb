@@ -3,6 +3,7 @@ using Breadcrumb.Utility;
 using System.Collections.Generic;
 using System;
 using Breadcrumb.Model.vTvShowsModels;
+using Breadcrumb.Model.tbSeasonsModel;
 
 namespace Breadcrumb.Manager.Interface
 {
@@ -12,7 +13,11 @@ namespace Breadcrumb.Manager.Interface
         APIResponse InsertTvShow(vTvShowsViewModel ViewModel);
         APIResponse UpdateTvShow(vTvShowsViewModel ViewModel, Guid ShowId);
         APIResponse DeleteTvShow(Guid ShowId);
+
         APIResponse GetTvShowSeasons(Guid ShowId);
+        APIResponse InsertTvShowSeason(tbSeasonsViewModel ViewModel);
+        APIResponse UpdateTvShowSeasons(tbSeasonsViewModel ViewModel, Guid SeasonId);
+        APIResponse DeleteTvShowSeasons(Guid SeasonId);
     }
 }
 
