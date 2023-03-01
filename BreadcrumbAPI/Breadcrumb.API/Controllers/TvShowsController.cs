@@ -145,7 +145,7 @@ namespace Breadcrumb.API.Controllers
         }
 
         [HttpDelete]
-        [Route("/api/TvShows/Delete/{SeasonId}")]
+        [Route("/api/TvShows/Seasons/Delete/{SeasonId}")]
         public ActionResult DeleteTvShowSeasons(Guid SeasonId)
         {
             try
@@ -181,6 +181,34 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(TvShowsManager.InsertTvShowEpisodes(ViewModel));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/TvShows/Episodes/Update/{EpisodeId}")]
+        public ActionResult UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId)
+        {
+            try
+            {
+                return Ok(TvShowsManager.UpdateTvShowEpisodes(ViewModel, EpisodeId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpDelete]
+        [Route("/api/TvShows/Episodes/Delete/{EpisodeId}")]
+        public ActionResult DeleteTvShowEpisodes(Guid EpisodeId)
+        {
+            try
+            {
+                return Ok(TvShowsManager.DeleteTvShowEpisodes(EpisodeId));
             }
             catch (Exception ex)
             {

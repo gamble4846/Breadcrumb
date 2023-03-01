@@ -22,6 +22,8 @@ namespace Breadcrumb.Manager.Interface
 
         APIResponse GetTvShowEpisodes(Guid SeasonId);
         APIResponse InsertTvShowEpisodes(tbEpisodesViewModel ViewModel);
+        APIResponse UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId);
+        APIResponse DeleteTvShowEpisodes(Guid EpisodeId);
     }
 }
 

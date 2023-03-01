@@ -240,6 +240,7 @@ namespace Breadcrumb.Manager.Impl
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", TokenData.DatabaseType);
             }
         }
+
         public APIResponse InsertTvShowEpisodes(tbEpisodesViewModel ViewModel)
         {
             var TokenData = CommonFunctions.GetTokenData();
@@ -257,6 +258,52 @@ namespace Breadcrumb.Manager.Impl
                     else
                     {
                         return new APIResponse(ResponseCode.ERROR, "No Records Inserted");
+                    }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", TokenData.DatabaseType);
+            }
+        }
+
+        public APIResponse UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId)
+        {
+            var TokenData = CommonFunctions.GetTokenData();
+            switch (TokenData.DatabaseType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(TokenData.ConnectionString);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var result = SqlTvShowsDataAccess.UpdateTvShowEpisodes(ViewModel, EpisodeId);
+                    if (result != null)
+                    {
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Updated", result);
+                    }
+                    else
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Updated");
+                    }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", TokenData.DatabaseType);
+            }
+        }
+
+        public APIResponse DeleteTvShowEpisodes(Guid EpisodeId)
+        {
+            var TokenData = CommonFunctions.GetTokenData();
+            switch (TokenData.DatabaseType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(TokenData.ConnectionString);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var result = SqlTvShowsDataAccess.DeleteTvShowEpisodes(EpisodeId);
+                    if (result != null)
+                    {
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Deleted", result);
+                    }
+                    else
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Deleted");
                     }
                 default:
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", TokenData.DatabaseType);

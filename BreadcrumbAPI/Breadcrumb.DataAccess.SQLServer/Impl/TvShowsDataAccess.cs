@@ -262,6 +262,50 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
 
             return null;
         }
+
+        public tbEpisodesModel UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPUpdateTvShowEpisode";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EpisodeId", SqlDbType.UniqueIdentifier).Value = EpisodeId;
+            cmd.Parameters.Add("@Number", SqlDbType.NVarChar).Value = ViewModel.Number;
+            cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
+            cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date).Value = ViewModel.RelaseDate;
+            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = ViewModel.SeasonId;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
+                    return t;
+                }
+            }
+
+            return null;
+        }
+
+        public tbEpisodesModel DeleteTvShowEpisodes(Guid EpisodeId)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPDeleteTvShowEpisode";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@EpisodeId", SqlDbType.UniqueIdentifier).Value = EpisodeId;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
+                    return t;
+                }
+            }
+
+            return null;
+        }
     }
 }
 

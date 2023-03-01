@@ -19,6 +19,8 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
 
         List<tbEpisodesModel> GetTvShowEpisodes(Guid SeasonId);
         tbEpisodesModel InsertTvShowEpisodes(tbEpisodesViewModel ViewModel);
+        tbEpisodesModel UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId);
+        tbEpisodesModel DeleteTvShowEpisodes(Guid EpisodeId);
     }
 }
 
