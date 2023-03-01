@@ -1,3 +1,4 @@
+using Breadcrumb.Model.tbEpisodesModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Utility;
@@ -15,6 +16,9 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
         tbSeasonsModel InsertTvShowSeason(tbSeasonsViewModel ViewModel);
         tbSeasonsModel UpdateTvShowSeasons(tbSeasonsViewModel ViewModel, Guid SeasonId);
         tbSeasonsModel DeleteTvShowSeasons(Guid SeasonId);
+
+        List<tbEpisodesModel> GetTvShowEpisodes(Guid SeasonId);
+        tbEpisodesModel InsertTvShowEpisodes(tbEpisodesViewModel ViewModel);
     }
 }
 

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
+using Breadcrumb.Model.tbEpisodesModels;
 
 namespace Breadcrumb.API.Controllers
 {
@@ -150,6 +151,36 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(TvShowsManager.DeleteTvShowSeasons(SeasonId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+
+
+        [HttpGet]
+        [Route("/api/TvShows/Episodes/Get/{SeasonId}")]
+        public ActionResult GetTvShowEpisodes(Guid SeasonId)
+        {
+            try
+            {
+                return Ok(TvShowsManager.GetTvShowEpisodes(SeasonId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/TvShows/Episodes/Insert/")]
+        public ActionResult InsertTvShowEpisodes(tbEpisodesViewModel ViewModel)
+        {
+            try
+            {
+                return Ok(TvShowsManager.InsertTvShowEpisodes(ViewModel));
             }
             catch (Exception ex)
             {

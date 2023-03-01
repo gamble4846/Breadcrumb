@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
+using Breadcrumb.Model.tbEpisodesModels;
 
 namespace Breadcrumb.DataAccess.SQLServer.Impl
 {
@@ -209,6 +210,52 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
                 while (reader.Read())
                 {
                     var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
+                    return t;
+                }
+            }
+
+            return null;
+        }
+
+
+
+        public List<tbEpisodesModel> GetTvShowEpisodes(Guid SeasonId)
+        {
+            var ret = new List<tbEpisodesModel>();
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPGetTvShowEpisodes";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = SeasonId;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
+                    ret.Add(t);
+                }
+            }
+
+            return ret;
+        }
+
+        public tbEpisodesModel InsertTvShowEpisodes(tbEpisodesViewModel ViewModel)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPInsertTvShowEpisode";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = ViewModel.SeasonId;
+            cmd.Parameters.Add("@Number", SqlDbType.Int).Value = ViewModel.Number;
+            cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
+            cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date).Value = ViewModel.RelaseDate;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
                     return t;
                 }
             }
