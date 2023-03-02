@@ -12,6 +12,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Breadcrumb.Utility
 {
@@ -71,9 +73,22 @@ namespace Breadcrumb.Utility
 
         public static async Task<dynamic> RestCall(string ApiLink)
         {
-            var data = await _httpClient.GetStringAsync(ApiLink);
+            dynamic data = await _httpClient.GetStringAsync(ApiLink);
 
-            return data;
+            JObject json = JObject.Parse(data);
+            var emptyArrays = json.Properties()
+                .Where(p => p.Value.Type == JTokenType.Array && !p.Value.HasValues)
+                .ToList();
+
+            foreach (var property in emptyArrays)
+            {
+                property.Remove();
+            }
+
+            var CleanedJSON = json.ToString();
+
+            dynamic ToReturn = JsonConvert.DeserializeObject<dynamic>(CleanedJSON);
+            return ToReturn;
         }
     }
 }

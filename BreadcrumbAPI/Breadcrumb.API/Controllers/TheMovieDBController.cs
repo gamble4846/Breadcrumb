@@ -22,6 +22,7 @@ using log4net;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using Breadcrumb.Manager.Impl;
+using System.Threading.Tasks;
 
 namespace Breadcrumb.API.Controllers
 {
@@ -51,11 +52,11 @@ namespace Breadcrumb.API.Controllers
 
         [HttpGet]
         [Route("/api/TheMovieDB/TvShow/Get/{IMDBId}")]
-        public ActionResult GetTvshowByIMDBId(string IMDBId)
+        public async Task<ActionResult> GetTvshowByIMDBId(string IMDBId)
         {
             try
             {
-                return Ok(TheMovieDBManager.GetTvshowByIMDBId(IMDBId));
+                return Ok(await TheMovieDBManager.GetTvshowByIMDBId(IMDBId));
             }
             catch (Exception ex)
             {
