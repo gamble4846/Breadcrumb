@@ -13,6 +13,7 @@ using IniParser.Model;
 using System.Data;
 using System.Reflection;
 using Breadcrumb.Model;
+using Newtonsoft.Json;
 
 namespace Breadcrumb.Utility
 {
@@ -61,10 +62,7 @@ namespace Breadcrumb.Utility
                 var otherClaims = claims.Identities.ToList()[0].Claims.ToList(); 
 
                 TokenModel TokenData = new TokenModel();
-                TokenData.DatabaseType = otherClaims.Find(x => x.Type == "DatabaseType").Value;
-                TokenData.ConnectionString = otherClaims.Find(x => x.Type == "ConnectionString").Value;
-                TokenData.SheetId = otherClaims.Find(x => x.Type == "SheetId").Value;
-
+                TokenData = JsonConvert.DeserializeObject<TokenModel>(otherClaims.Find(x => x.Type == "TokenData").Value);
                 return TokenData;
             }
             catch (Exception)

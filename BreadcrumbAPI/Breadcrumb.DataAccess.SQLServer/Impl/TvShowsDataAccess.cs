@@ -174,6 +174,29 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return null;
         }
 
+        public List<tbSeasonsModel> InsertUpdateTvShowSeasonMultiple(List<tbSeasonsViewModel> ViewModelList)
+        {
+            var SeasonsMultipleInsertUpdateSP = UtilityCustom.ToDataTable<tbSeasonsViewModel>(ViewModelList);
+            var ret = new List<tbSeasonsModel>();
+
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPInsertUpdateTvShowSeasonsMultiple";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = SeasonsMultipleInsertUpdateSP;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
+                    ret.Add(t);
+                }
+            }
+
+            return ret;
+        }
+
         public tbSeasonsModel UpdateTvShowSeasons(tbSeasonsViewModel ViewModel, Guid SeasonId)
         {
             var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
@@ -261,6 +284,29 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             }
 
             return null;
+        }
+
+        public List<tbEpisodesModel> InsertUpdateTvShowEpisodesMultiple(List<tbEpisodesViewModel> ViewModelList)
+        {
+            var EpisodesMultipleInsertUpdateSP = UtilityCustom.ToDataTable<tbEpisodesViewModel>(ViewModelList);
+            var ret = new List<tbEpisodesModel>();
+
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPInsertUpdateTvShowEpisodesMultiple";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = EpisodesMultipleInsertUpdateSP;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
+                    ret.Add(t);
+                }
+            }
+
+            return ret;
         }
 
         public tbEpisodesModel UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId)

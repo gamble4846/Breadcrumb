@@ -131,6 +131,20 @@ namespace Breadcrumb.API.Controllers
         }
 
         [HttpPost]
+        [Route("/api/TvShows/Seasons/InsertMultiple/")]
+        public ActionResult InsertUpdateTvShowSeasonMultiple(List<tbSeasonsViewModel> ViewModelList)
+        {
+            try
+            {
+                return Ok(TvShowsManager.InsertUpdateTvShowSeasonMultiple(ViewModelList));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpPost]
         [Route("/api/TvShows/Seasons/Update/{SeasonId}")]
         public ActionResult UpdateTvShowSeasons(tbSeasonsViewModel ViewModel, Guid SeasonId)
         {
@@ -181,6 +195,20 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(TvShowsManager.InsertTvShowEpisodes(ViewModel));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/TvShows/Episodes/InsertMultiple/")]
+        public ActionResult InsertUpdateTvShowEpisodesMultiple(List<tbEpisodesViewModel> ViewModelList)
+        {
+            try
+            {
+                return Ok(TvShowsManager.InsertUpdateTvShowEpisodesMultiple(ViewModelList));
             }
             catch (Exception ex)
             {

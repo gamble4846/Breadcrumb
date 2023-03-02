@@ -17,11 +17,13 @@ namespace Breadcrumb.Manager.Interface
 
         APIResponse GetTvShowSeasons(Guid ShowId);
         APIResponse InsertTvShowSeason(tbSeasonsViewModel ViewModel);
+        APIResponse InsertUpdateTvShowSeasonMultiple(List<tbSeasonsViewModel> ViewModelList);
         APIResponse UpdateTvShowSeasons(tbSeasonsViewModel ViewModel, Guid SeasonId);
         APIResponse DeleteTvShowSeasons(Guid SeasonId);
 
         APIResponse GetTvShowEpisodes(Guid SeasonId);
         APIResponse InsertTvShowEpisodes(tbEpisodesViewModel ViewModel);
+        APIResponse InsertUpdateTvShowEpisodesMultiple(List<tbEpisodesViewModel> ViewModelList);
         APIResponse UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId);
         APIResponse DeleteTvShowEpisodes(Guid EpisodeId);
     }

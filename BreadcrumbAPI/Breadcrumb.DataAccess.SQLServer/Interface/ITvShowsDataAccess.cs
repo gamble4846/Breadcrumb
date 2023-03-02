@@ -14,11 +14,13 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
 
         List<tbSeasonsModel> GetTvShowSeasons(Guid ShowId);
         tbSeasonsModel InsertTvShowSeason(tbSeasonsViewModel ViewModel);
+        List<tbSeasonsModel> InsertUpdateTvShowSeasonMultiple(List<tbSeasonsViewModel> ViewModelList);
         tbSeasonsModel UpdateTvShowSeasons(tbSeasonsViewModel ViewModel, Guid SeasonId);
         tbSeasonsModel DeleteTvShowSeasons(Guid SeasonId);
 
         List<tbEpisodesModel> GetTvShowEpisodes(Guid SeasonId);
         tbEpisodesModel InsertTvShowEpisodes(tbEpisodesViewModel ViewModel);
+        List<tbEpisodesModel> InsertUpdateTvShowEpisodesMultiple(List<tbEpisodesViewModel> ViewModelList);
         tbEpisodesModel UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId);
         tbEpisodesModel DeleteTvShowEpisodes(Guid EpisodeId);
     }

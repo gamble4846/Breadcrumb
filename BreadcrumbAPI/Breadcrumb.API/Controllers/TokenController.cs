@@ -33,6 +33,7 @@ namespace Breadcrumb.API.Controllers
         IWebHostEnvironment Env { get; }
         public string ContentRootPath { get; set; }
         IHttpContextAccessor HttpContextAccessor { get; set; }
+        public CommonFunctions CommonFunctions { get; set; }
 
         public TokenController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
         {
@@ -41,6 +42,7 @@ namespace Breadcrumb.API.Controllers
             Configuration = configuration;
             Env = env;
             HttpContextAccessor = httpContextAccessor;
+            CommonFunctions = new CommonFunctions(configuration, httpContextAccessor);
         }
 
         [HttpPost]
@@ -55,9 +57,7 @@ namespace Breadcrumb.API.Controllers
 
             var claims = new[]
             {
-                new Claim("DatabaseType", model.DatabaseType),
-                new Claim("ConnectionString", model.ConnectionString),
-                new Claim("SheetId", model.SheetId)
+                new Claim("TokenData", JsonConvert.SerializeObject( model )),
             };
 
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Secret));
@@ -66,6 +66,29 @@ namespace Breadcrumb.API.Controllers
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
 
             return Ok(new APIResponse(ResponseCode.SUCCESS,"Token Generated", tokenString));
+        }
+
+        [HttpGet]
+        [Route("/api/GetToken")]
+        public ActionResult GetToken()
+        {
+            try
+            {
+                var tokenData = CommonFunctions.GetTokenData();
+                if(tokenData == null)
+                {
+                    return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Token Not Found", null));
+                }
+                else
+                {
+                    return Ok(new APIResponse(ResponseCode.SUCCESS, "Token Recieved", CommonFunctions.GetTokenData()));
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, ex.Message, ex));
+            }
+
         }
     }
 }

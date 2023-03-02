@@ -8,8 +8,14 @@ namespace Breadcrumb.Model
 {
     public class TokenModel
     {
+        public List<Server> Servers { get; set; }
+        public string OMDBAPIKey { get; set; }
+    }
+
+    public class Server
+    {
         public string DatabaseType { get; set; }
         public string ConnectionString { get; set; }
-        public string SheetId { get; set; }
+        public bool IsSelected { get; set; }
     }
 }
