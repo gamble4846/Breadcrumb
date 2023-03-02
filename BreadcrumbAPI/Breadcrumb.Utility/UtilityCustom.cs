@@ -9,11 +9,16 @@ using System.Data;
 using System.Data.SqlClient;
 using FastMember;
 using System.Reflection;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace Breadcrumb.Utility
 {
     public static class UtilityCustom
     {
+        private static readonly HttpClient _httpClient = new HttpClient();
+
         public static T ConvertReaderToObject<T>(this SqlDataReader rd) where T : class, new()
         {
             Type type = typeof(T);
@@ -64,6 +69,12 @@ namespace Breadcrumb.Utility
             return dataTable;
         }
 
+        public static async Task<dynamic> RestCall(string ApiLink)
+        {
+            var data = await _httpClient.GetStringAsync(ApiLink);
+
+            return data;
+        }
     }
 }
 

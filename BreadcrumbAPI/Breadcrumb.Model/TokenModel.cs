@@ -9,7 +9,7 @@ namespace Breadcrumb.Model
     public class TokenModel
     {
         public List<Server> Servers { get; set; }
-        public string OMDBAPIKey { get; set; }
+        public string TheMovieDBAPIKey { get; set; }
     }
 
     public class Server
