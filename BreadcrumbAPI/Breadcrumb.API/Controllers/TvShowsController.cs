@@ -17,6 +17,7 @@ using System.Data.SqlClient;
 using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
+using System.Threading.Tasks;
 
 namespace Breadcrumb.API.Controllers
 {
@@ -237,6 +238,22 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(TvShowsManager.DeleteTvShowEpisodes(EpisodeId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("/api/TvShows/Full/InsertUpdate/{ImdbId}")]
+        public async Task<ActionResult> InsertUpdateFullTvShow(string IMDBId)
+        {
+            try
+            {
+                return Ok(await TvShowsManager.InsertUpdateFullTvShow(IMDBId));
             }
             catch (Exception ex)
             {

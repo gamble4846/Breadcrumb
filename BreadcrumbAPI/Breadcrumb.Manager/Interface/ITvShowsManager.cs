@@ -5,6 +5,7 @@ using System;
 using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
+using System.Threading.Tasks;
 
 namespace Breadcrumb.Manager.Interface
 {
@@ -26,6 +27,8 @@ namespace Breadcrumb.Manager.Interface
         APIResponse InsertUpdateTvShowEpisodesMultiple(List<tbEpisodesViewModel> ViewModelList);
         APIResponse UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId);
         APIResponse DeleteTvShowEpisodes(Guid EpisodeId);
+
+        Task<APIResponse> InsertUpdateFullTvShow(string IMDBId);
     }
 }
 

@@ -12,6 +12,9 @@ using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
 using Breadcrumb.Model;
+using System.Threading.Tasks;
+using Breadcrumb.Model.TheMovieDBModels;
+using FastMember;
 
 namespace Breadcrumb.Manager.Impl
 {
@@ -25,8 +28,9 @@ namespace Breadcrumb.Manager.Impl
         public TokenModel TokenData { get; set; }
         public string ConnectionString { get; set; }
         public string ServerType { get; set; }
+        public ITheMovieDBManager TheMovieDBManager { get; set; }
 
-        public TvShowsManager(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public TvShowsManager(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ITheMovieDBManager theMovieDBManager)
         {
             Configuration = configuration;
             HttpContextAccessor = httpContextAccessor;
@@ -34,6 +38,7 @@ namespace Breadcrumb.Manager.Impl
             TokenData = CommonFunctions.GetTokenData();
             ConnectionString = TokenData.Servers.Find(x => x.IsSelected).ConnectionString;
             ServerType = TokenData.Servers.Find(x => x.IsSelected).DatabaseType;
+            TheMovieDBManager = theMovieDBManager;
         }
 
         public APIResponse GetTvShows(int page, int itemsPerPage, string orderBy, string FilterQuery)
@@ -356,6 +361,83 @@ namespace Breadcrumb.Manager.Impl
                     {
                         return new APIResponse(ResponseCode.ERROR, "No Records Deleted");
                     }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
+            }
+        }
+
+
+
+        public async Task<APIResponse> InsertUpdateFullTvShow(string IMDBId)
+        {
+            var tvShowFullData = await TheMovieDBManager.GetTvshowByIMDBId(IMDBId);
+            var FullTVShowTMDBData = (FullTVShowTMDBModel)tvShowFullData.Document;
+            var TokenData = CommonFunctions.GetTokenData();
+            switch (ServerType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var InsertedUpdatedTvShow = new vTvShowsModel();
+                    var InsertedUpdatedTvShowSeasons = new List<tbSeasonsModel>();
+                    var InsertedUpdatedTvShowEpisodes = new List<tbEpisodesModel>();
+
+                    var VTvShowData = new vTvShowsViewModel()
+                    {
+                        PrimaryName = FullTVShowTMDBData.PrimaryName,
+                        OtherNames = FullTVShowTMDBData.OtherNames,
+                        Description = FullTVShowTMDBData.Description,
+                        IMDBID = FullTVShowTMDBData.IMDBID,
+                        ReleaseYear = FullTVShowTMDBData.ReleaseYear,
+                        Genres = FullTVShowTMDBData.Genres
+                    };
+                    var VTvShowSeasonsData = new List<tbSeasonsViewModel>();
+                    var VTvShowEpisodesData = new List<tbEpisodesViewModel>();
+
+                    var TvShowExists = SqlTvShowsDataAccess.GetIfTvShowExistsByImdbID(IMDBId);
+                    if (TvShowExists == null)
+                    { InsertedUpdatedTvShow = SqlTvShowsDataAccess.InsertTvShows(VTvShowData); }
+                    else
+                    { InsertedUpdatedTvShow = SqlTvShowsDataAccess.UpdateTvShow(VTvShowData, TvShowExists.ShowId ?? new Guid()); }
+
+                    foreach(var XSeason in FullTVShowTMDBData.Seasons)
+                    {
+                        var vSea = new tbSeasonsViewModel()
+                        {
+                            Name = XSeason.Name,
+                            Number = XSeason.Number,
+                            ShowId = InsertedUpdatedTvShow.ShowId
+                        };
+                        VTvShowSeasonsData.Add(vSea);
+                    }
+
+                    InsertedUpdatedTvShowSeasons = SqlTvShowsDataAccess.InsertUpdateTvShowSeasonMultiple(VTvShowSeasonsData);
+
+                    foreach(var XSeason in InsertedUpdatedTvShowSeasons)
+                    {
+                        var curSeas = FullTVShowTMDBData.Seasons.Find(x => x.Number == XSeason.Number && x.Name == XSeason.Name);
+                        foreach (var XEpisode in curSeas.Episodes)
+                        {
+                            var vEp = new tbEpisodesViewModel()
+                            {
+                                SeasonId = XSeason.Id,
+                                Number = XEpisode.Number,
+                                Name = XEpisode.Name,
+                                RelaseDate = XEpisode.RelaseDate ?? new DateTime()
+                            };
+                            VTvShowEpisodesData.Add(vEp);
+                        }
+                    }
+
+                    InsertedUpdatedTvShowEpisodes = SqlTvShowsDataAccess.InsertUpdateTvShowEpisodesMultiple(VTvShowEpisodesData);
+
+                    dynamic FinalResult = new System.Dynamic.ExpandoObject();
+                    FinalResult.InsertedUpdatedTvShow = InsertedUpdatedTvShow;
+                    FinalResult.InsertedUpdatedTvShowSeasons = InsertedUpdatedTvShowSeasons;
+                    FinalResult.InsertedUpdatedTvShowEpisodes = InsertedUpdatedTvShowEpisodes;
+
+                    return new APIResponse(ResponseCode.SUCCESS, "TvShow Updated", FinalResult);
                 default:
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
             }

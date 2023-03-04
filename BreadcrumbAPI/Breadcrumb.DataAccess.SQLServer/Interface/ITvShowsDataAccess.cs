@@ -11,6 +11,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
         vTvShowsModel InsertTvShows(vTvShowsViewModel ViewModel);
         vTvShowsModel UpdateTvShow(vTvShowsViewModel ViewModel, Guid ShowId);
         vTvShowsModel DeleteTvShow(Guid ShowId);
+        vTvShowsModel GetIfTvShowExistsByImdbID(string IMDBId);
 
         List<tbSeasonsModel> GetTvShowSeasons(Guid ShowId);
         tbSeasonsModel InsertTvShowSeason(tbSeasonsViewModel ViewModel);

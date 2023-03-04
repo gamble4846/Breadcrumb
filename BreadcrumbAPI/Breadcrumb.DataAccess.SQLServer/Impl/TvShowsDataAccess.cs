@@ -129,6 +129,22 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return null;
         }
 
+        public vTvShowsModel GetIfTvShowExistsByImdbID(string IMDBId)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SELECT * FROM vTvShows WHERE IMDBID = @IMDBId ";
+            cmd.Parameters.AddWithValue("@IMDBId", IMDBId);
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
+                    return t;
+                }
+            }
+            return null;
+        }
+
 
 
         public List<tbSeasonsModel> GetTvShowSeasons(Guid ShowId)
