@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,7 +10,6 @@ import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ConfigService } from './Core/Services/ConfigService/config.service';
 
 registerLocaleData(en);
 
@@ -26,8 +25,7 @@ registerLocaleData(en);
     BrowserAnimationsModule
   ],
   providers: [
-    { provide: NZ_I18N, useValue: en_US },
-    { provide: APP_INITIALIZER,  multi: true, deps: [ConfigService], useFactory: (ConfigService: ConfigService) => { return () => { return ConfigService.loadConfigFile(); }; }, },
+    { provide: NZ_I18N, useValue: en_US }
   ],
   bootstrap: [AppComponent]
 })
