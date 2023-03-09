@@ -63,6 +63,5 @@ namespace Breadcrumb.API.Controllers
                 return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
             }
         }
-
     }
 }
