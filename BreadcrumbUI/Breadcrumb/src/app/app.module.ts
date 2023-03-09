@@ -11,14 +11,18 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfigService } from './Services/Other Services/ConfigService/config.service';
-import { TokenInterceptorService } from './Services/Other Services/TokenInterceptor/token-interceptor.service';
+import { TokenInterceptorService } from './Services/Interceptors/TokenInterceptor/token-interceptor.service';
 import { NavigationModule } from './Modules/NavigationModule/navigation.module';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { LoaderComponent } from './Components/Loader/loader.component';
+import { LoaderInterceptorService } from './Services/Interceptors/LoaderInterceptor/loader-interceptor.service';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -26,11 +30,13 @@ registerLocaleData(en);
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NavigationModule
+    NavigationModule,
+    NzSpinModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptorService, multi: true },
     { provide: APP_INITIALIZER, multi: true, deps: [ConfigService], useFactory: (ConfigService: ConfigService) => { return () => { return ConfigService.loadEverything(); }; }, },
   ],
   bootstrap: [AppComponent]

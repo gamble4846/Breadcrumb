@@ -15,8 +15,21 @@ export class CoreService {
     return localStorage.setItem(token, "token")
   }
 
+  IsTokenPresent(){
+    if(localStorage.getItem("token")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   getMenus(){
     let links = [
+      {
+        "text": "HOME",
+        "routerLink": "/",
+      },
       {
         "text": "SHOWS",
         "routerLink": "/",
@@ -36,5 +49,38 @@ export class CoreService {
     ]
 
     return links;
+  }
+
+  showLoader(){
+    let openAPI:any = 0;
+    let localOpenAPI = sessionStorage.getItem("openAPINumber");
+    try{
+      openAPI = parseInt(localOpenAPI || "0");
+    }
+    catch(ex){
+      openAPI = 0;
+    }
+
+    openAPI++;
+    sessionStorage.setItem("openAPINumber", openAPI);
+    document.getElementById("FullPageCrystalLoader")?.classList.add("show");
+  }
+
+  hideLoader(){
+    let openAPI:any = 0;
+    let localOpenAPI = sessionStorage.getItem("openAPINumber");
+    try{
+      openAPI = parseInt(localOpenAPI || "0");
+    }
+    catch(ex){
+      openAPI = 0;
+    }
+
+    openAPI--;
+    sessionStorage.setItem("openAPINumber", openAPI + "");
+    if(openAPI <= 0){
+      sessionStorage.setItem("openAPINumber", "0");
+      document.getElementById("FullPageCrystalLoader")?.classList.remove("show");
+    }
   }
 }

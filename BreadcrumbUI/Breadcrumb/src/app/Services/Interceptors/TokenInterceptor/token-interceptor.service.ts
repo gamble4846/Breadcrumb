@@ -2,7 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as CONSTANTS from '../../../CONSTANTS/CONSTANTS';
-import { CoreService } from '../CoreService/core.service';
+import { CoreService } from '../../Other Services/CoreService/core.service';
 
 @Injectable({
   providedIn: 'root'

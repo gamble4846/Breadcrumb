@@ -68,6 +68,7 @@ namespace Breadcrumb.API.Controllers
             return Ok(new APIResponse(ResponseCode.SUCCESS,"Token Generated", tokenString));
         }
 
+        [Authorize]
         [HttpGet]
         [Route("/api/GetToken")]
         public ActionResult GetToken()

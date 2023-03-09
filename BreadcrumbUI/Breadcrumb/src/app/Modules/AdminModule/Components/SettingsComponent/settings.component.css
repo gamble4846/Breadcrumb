@@ -1,0 +1,39 @@
+.SettingsContainer{
+    max-width: var(--main-max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.FormGroupCard{
+    border: 1px solid #151414;
+}
+
+.FormGroupCardHeader{
+    padding: 10px 5px;
+    border-bottom: 1px solid #151414;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+}
+
+.FormGroupCardContent{
+    padding: 10px 5px;
+}
+
+.serverGroupSelect{
+    width: 100%;
+}
+
+.serverGroupContainer{
+    margin: 5px 0px;
+}
+
+.serverGroupContainer div{
+    padding: 0px 5px;
+}
+
+.FormGroupCard{
+    margin: 5px 0px;
+}

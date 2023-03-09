@@ -42,7 +42,7 @@ video {
 }
 
 .container {
-  max-width: 83rem;
+  max-width: var(--main-max-width);
   width: 100%;
   height: auto;
   margin: 0 auto;
@@ -59,6 +59,18 @@ video {
   color: var(--color-indigo);
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
+  display: flex;
+  justify-content: space-between;
+}
+
+.brand img{
+  width: 1.75rem;
+  height: 1.75rem;
+  align-self: center;
+}
+
+.brand span{
+  margin-left: 10px;
 }
 
 .navbar {
