@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CoreService } from 'src/app/Services/Other Services/CoreService/core.service';
 
 @Component({
   selector: 'app-menu',
@@ -6,6 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent {
+  links:any = [];
+  
+  constructor(private Core:CoreService) { }
+
+  ngOnInit(): void {
+    this.links = this.Core.getMenus();
+  }
+
   ToggleMenu() {
     const burgerMenu = document.getElementById("burger");
     const navbarMenu = document.getElementById("menu");

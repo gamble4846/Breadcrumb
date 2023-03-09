@@ -1,0 +1,11 @@
+.routerContainer {
+  background-color: #383838;
+  min-height: calc(100vh - 500px);
+}
+
+.headerContainer {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}

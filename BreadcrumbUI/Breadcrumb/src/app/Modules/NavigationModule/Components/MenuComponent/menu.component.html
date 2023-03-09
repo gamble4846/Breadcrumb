@@ -10,10 +10,7 @@
       </button>
       <div class="menu" id="menu">
         <ul class="menu-inner">
-          <li class="menu-item"><a href="#" class="menu-link">Shows</a></li>
-          <li class="menu-item"><a href="#" class="menu-link">Books</a></li>
-          <li class="menu-item"><a href="#" class="menu-link">Folders & Files</a></li>
-          <li class="menu-item"><a href="#" class="menu-link">Settings</a></li>
+          <li class="menu-item" *ngFor="let link of links"><a [routerLink]="link.routerLink" class="menu-link">{{link.text}}</a></li>
         </ul>
       </div>
     </section>

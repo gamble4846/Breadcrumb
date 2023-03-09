@@ -14,4 +14,27 @@ export class CoreService {
   setToken(token:string){
     return localStorage.setItem(token, "token")
   }
+
+  getMenus(){
+    let links = [
+      {
+        "text": "SHOWS",
+        "routerLink": "/",
+      },
+      {
+        "text": "BOOKS",
+        "routerLink": "/",
+      },
+      {
+        "text": "FOLDERS & FILES",
+        "routerLink": "/",
+      },
+      {
+        "text": "SETTINGS",
+        "routerLink": "/",
+      },
+    ]
+
+    return links;
+  }
 }
