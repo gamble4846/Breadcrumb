@@ -39,3 +39,30 @@
 .textAlignCenterGlobal{
   text-align: center;
 }
+
+.FormGroupCardContent .ant-input-group-addon{
+  padding: 0;
+}
+
+.MyInputGroup{
+  display: flex;
+}
+
+.MyInputLabel{
+  width: max-content;
+  display: flex;
+  align-items: center;
+  text-align: right;
+  padding: 0px 10px;
+  background-color: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+}
+
+.MyInputTag{
+  flex-grow: 2;
+}
+
+.MyInputTag input{
+  height: 100%;
+}

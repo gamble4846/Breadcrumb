@@ -10,16 +10,20 @@
             <nz-option nzValue="SQLServer" nzLabel="SQLServer"></nz-option>
           </nz-select>
         </div>
-        <div nz-col nzXs="20" nzSm="20" nzMd="16" nzLg="16" nzXl="16">
+        <div nz-col nzXs="24" nzSm="18" nzMd="14" nzLg="14" nzXl="14">
           <input nz-input placeholder="Connection String" [(ngModel)]="server.connectionString" />
         </div>
-        <div nz-col nzXs="4" nzSm="4" nzMd="2" nzLg="2" nzXl="2" class="alignSelfCenterGlobal textAlignCenterGlobal">
+        <div nz-col nzXs="12" nzSm="3" nzMd="2" nzLg="2" nzXl="2" class="alignSelfCenterGlobal textAlignCenterGlobal">
           <nz-switch [(ngModel)]="server.isSelected" (ngModelChange)="SwitchChanged(i)"></nz-switch>
+        </div>
+        <div nz-col nzXs="12" nzSm="3" nzMd="2" nzLg="2" nzXl="2" class="alignSelfCenterGlobal textAlignCenterGlobal">
+          <button nz-button nzType="primary" nzDanger (click)="DeleteServer(i)"><span nz-icon nzType="delete" nzTheme="outline"></span></button>
         </div>
       </div>
 
       <div style="padding: 0px 5px; width: calc(100%);">
-        <button nz-button nzType="primary" nzBlock (click)="addNewServer()"><span nz-icon nzType="plus-circle" nzTheme="outline"></span>Add New Server</button>
+        <button nz-button nzType="primary" nzBlock (click)="addNewServer()"><span nz-icon nzType="plus-circle"
+            nzTheme="outline"></span>Add New Server</button>
       </div>
     </div>
   </div>
@@ -29,11 +33,39 @@
       Others
     </div>
     <div class="FormGroupCardContent">
-        <nz-input-group nzAddOnBefore="The Movie DB API Key">
-            <input type="text" nz-input [(ngModel)]="tokenData.theMovieDBAPIKey" />
-        </nz-input-group>
+      <div class="MyInputGroup">
+        <div class="MyInputLabel">
+          <span>The Movie DB API Key</span>
+        </div>
+        <div class="MyInputTag">
+          <input type="text" nz-input [(ngModel)]="tokenData.theMovieDBAPIKey" />
+        </div>
+      </div>
     </div>
   </div>
 
-  <button nz-button nzType="primary" nzBlock (click)="SaveToken()" style="margin-top: 10px;"><span nz-icon nzType="save" nzTheme="outline"></span>Save</button>
+  <button nz-button nzType="primary" nzBlock (click)="SaveToken()" style="margin: 10px 0px 50px 0px;"><span nz-icon nzType="save"
+      nzTheme="outline"></span>Save</button>
+
+
+  <div class="FormGroupCard">
+    <div class="FormGroupCardHeader">
+      Your Token
+    </div>
+    <div class="FormGroupCardContent">
+      <div style="padding: 5px;">
+        <nz-input-group>
+          <input type="text" nz-input [(ngModel)]="tokenValue" />
+        </nz-input-group>
+      </div>
+      <div nz-row>
+        <div nz-col nzXs="12" nzSm="12" nzMd="12" nzLg="12" nzXl="12" style="padding: 5px;">
+          <button nz-button nzType="primary" class="AfterTemplateButtonToken" nzBlock (click)="CopyToken()"><span nz-icon nzType="copy" nzTheme="outline"></span> Copy</button>
+        </div>
+        <div nz-col nzXs="12" nzSm="12" nzMd="12" nzLg="12" nzXl="12" style="padding: 5px;">
+          <button nz-button nzType="primary" class="AfterTemplateButtonToken" nzBlock (click)="TokenFromStringSave()"><span nz-icon nzType="save" nzTheme="outline"></span> Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

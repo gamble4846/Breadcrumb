@@ -15,13 +15,16 @@ export class SettingsComponent {
     theMovieDBAPIKey: ''
   };
 
+  tokenValue:string = "";
+
   constructor(
     private Core:CoreService,
     private Token:TokenService
   ) { }
 
   ngOnInit(): void {
-
+    this.SetDefaultTokenData();
+    this.GetTokenFromLocal();
   }
 
   addNewServer(){
@@ -45,8 +48,37 @@ export class SettingsComponent {
   SaveToken(){
     this.Token.CreateToken(this.tokenData).subscribe((response:any) => {
       if(response.code == 1){
-        console.log(response);
+        this.Core.setToken(response.document);
+        this.GetTokenFromLocal();
       }
     })
+  }
+
+  SetDefaultTokenData(){
+    if(this.Core.IsTokenPresent()){
+      this.Token.GetToken().subscribe((response:any) => {
+        if(response.code == 1){
+          this.tokenData = response.document;
+        }
+      })
+    }
+  }
+
+  GetTokenFromLocal(){
+    this.tokenValue = this.Core.getToken() || "";
+  }
+
+  DeleteServer(ServerIndex:number){
+    this.tokenData.servers.splice(ServerIndex, 1);
+  }
+
+  CopyToken(){
+    this.Core.copyString(this.tokenValue);
+    this.Core.showMessage("success","Token Copied");
+  }
+
+  TokenFromStringSave(){
+    this.Core.setToken(this.tokenValue);
+    this.SetDefaultTokenData();
   }
 }

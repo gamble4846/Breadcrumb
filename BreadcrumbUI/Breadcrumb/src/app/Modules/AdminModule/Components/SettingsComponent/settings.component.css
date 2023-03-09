@@ -37,3 +37,7 @@
 .FormGroupCard{
     margin: 5px 0px;
 }
+
+.AfterTemplateButtonToken{
+    max-height: 30px;
+}

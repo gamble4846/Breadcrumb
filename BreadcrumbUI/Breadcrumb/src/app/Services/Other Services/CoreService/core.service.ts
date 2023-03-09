@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoreService {
 
-  constructor() { }
+  constructor(
+    private message: NzMessageService,
+  ) { }
 
   getToken(){
     return localStorage.getItem("token");
   }
 
   setToken(token:string){
-    return localStorage.setItem(token, "token")
+    return localStorage.setItem("token", token)
   }
 
   IsTokenPresent(){
@@ -44,7 +47,7 @@ export class CoreService {
       },
       {
         "text": "SETTINGS",
-        "routerLink": "/",
+        "routerLink": ["/Admin/Settings"],
       },
     ]
 
@@ -82,5 +85,13 @@ export class CoreService {
       sessionStorage.setItem("openAPINumber", "0");
       document.getElementById("FullPageCrystalLoader")?.classList.remove("show");
     }
+  }
+
+  showMessage(type: string, message:string): void {
+    this.message.create(type, message);
+  }
+
+  copyString(str:string){
+    navigator.clipboard.writeText(str);
   }
 }

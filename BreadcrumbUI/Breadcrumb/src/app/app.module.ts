@@ -16,6 +16,7 @@ import { NavigationModule } from './Modules/NavigationModule/navigation.module';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { LoaderComponent } from './Components/Loader/loader.component';
 import { LoaderInterceptorService } from './Services/Interceptors/LoaderInterceptor/loader-interceptor.service';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 registerLocaleData(en);
 
@@ -31,7 +32,8 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     NavigationModule,
-    NzSpinModule
+    NzSpinModule,
+    NzMessageModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
