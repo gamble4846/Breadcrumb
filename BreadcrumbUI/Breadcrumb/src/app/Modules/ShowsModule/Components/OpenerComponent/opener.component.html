@@ -2,7 +2,7 @@
   <div nz-row [nzGutter]="16">
     <ng-container *ngFor="let tvshow of TvShowsData">
       <div nz-col nzXs="12" nzSm="8" nzMd="6" nzLg="4" nzXl="4" class="ShowCardsCol">
-        <app-bread-card [name]="tvshow.primaryName"></app-bread-card>
+        <app-bread-card [name]="tvshow.primaryName" [imageSRC]="GetRandomURLForBread(tvshow.breadId || '')"></app-bread-card>
       </div>
     </ng-container>
   </div>
