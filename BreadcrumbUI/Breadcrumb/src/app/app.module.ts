@@ -14,16 +14,16 @@ import { ConfigService } from './Services/Other Services/ConfigService/config.se
 import { TokenInterceptorService } from './Services/Interceptors/TokenInterceptor/token-interceptor.service';
 import { NavigationModule } from './Modules/NavigationModule/navigation.module';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { LoaderComponent } from './Components/Loader/loader.component';
 import { LoaderInterceptorService } from './Services/Interceptors/LoaderInterceptor/loader-interceptor.service';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { ErrorInterceptorService } from './Services/Interceptors/ErrorInterceptor/error-interceptor.service';
+import { OtherComponentsModule } from './Components/other-components.module';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoaderComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -33,12 +33,14 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     NavigationModule,
     NzSpinModule,
-    NzMessageModule
+    NzMessageModule,
+    OtherComponentsModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptorService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
     { provide: APP_INITIALIZER, multi: true, deps: [ConfigService], useFactory: (ConfigService: ConfigService) => { return () => { return ConfigService.loadEverything(); }; }, },
   ],
   bootstrap: [AppComponent]

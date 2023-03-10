@@ -1,0 +1,10 @@
+.ShowsOpenerContainer{
+    max-width: var(--main-max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.ShowCardsCol{
+    padding: 10px 0px;
+}

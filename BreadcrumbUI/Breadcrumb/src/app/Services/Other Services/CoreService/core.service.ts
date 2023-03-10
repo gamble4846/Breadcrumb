@@ -35,7 +35,7 @@ export class CoreService {
       },
       {
         "text": "SHOWS",
-        "routerLink": "/",
+        "routerLink": ["/Shows"],
       },
       {
         "text": "BOOKS",
@@ -43,6 +43,10 @@ export class CoreService {
       },
       {
         "text": "FOLDERS & FILES",
+        "routerLink": "/",
+      },
+      {
+        "text": "BROWSE",
         "routerLink": "/",
       },
       {
