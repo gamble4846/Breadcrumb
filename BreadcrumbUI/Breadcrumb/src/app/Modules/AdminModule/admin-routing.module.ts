@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SettingsComponent } from './Components/SettingsComponent/settings.component';
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'Settings' },
   { path: 'Settings', component:SettingsComponent },
 ];
 

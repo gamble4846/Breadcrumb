@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { Observable } from 'rxjs';
+import { TokenModel } from 'src/app/Models/AdminModels';
+import { tbCoversModel } from 'src/app/Models/CoversModels';
+import { RandomCovers } from 'src/app/Modules/ShowsModule/OpenerModels';
+import { CoversService } from '../../API Services/CoversService/covers.service';
+import { TokenService } from '../../API Services/TokenService/token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +14,8 @@ export class CoreService {
 
   constructor(
     private message: NzMessageService,
+    private Covers:CoversService,
+    private Token:TokenService
   ) { }
 
   getToken(){
@@ -47,6 +55,10 @@ export class CoreService {
       },
       {
         "text": "BROWSE",
+        "routerLink": "/",
+      },
+      {
+        "text": "ADMIN",
         "routerLink": "/",
       },
       {
@@ -97,5 +109,73 @@ export class CoreService {
 
   copyString(str:string){
     navigator.clipboard.writeText(str);
+  }
+
+  getTokenData(){
+    let Response = new Observable((observer:any) => {
+      let realTokenDataSTR:string | null = localStorage.getItem("realTokenData");
+      let realTokenData:TokenModel;
+  
+      if(!realTokenDataSTR){
+        this.Token.GetToken().subscribe((response:any) => {
+          if(response.code == 1){
+            realTokenData = response.document;
+          }
+          else{
+            realTokenData = JSON.parse(realTokenDataSTR || "{}");
+          }
+          observer.next(realTokenData);
+          observer.complete();
+        })
+      }
+      else{
+        realTokenData = JSON.parse(realTokenDataSTR || "{}");
+        observer.next(realTokenData);
+        observer.complete();
+      }
+    });
+
+    return Response;
+  }
+
+  getRandomCoversByBreadIdsAndOthers(BreadIds:Array<string>, Dimensions:string){
+    let Response = new Observable((observer:any) => {
+      let CoversData:Array<tbCoversModel> = [];
+      let RandomCoversURLS:Array<RandomCovers> = [];
+
+      this.Covers.GetCoverByBreadIds(BreadIds).subscribe((response:any) => {
+        if(response.code == 1){
+          CoversData = response.document;
+          this.getTokenData().subscribe((token:any) => {
+            let TokenData:TokenModel = token;
+            BreadIds.forEach((breadId:string) => {
+              var currentCovers = CoversData.filter((x:tbCoversModel) => x.breadId == breadId && x.dimensions == Dimensions);
+
+              if(!TokenData.showNSFWCovers){
+                currentCovers = currentCovers.filter((x:tbCoversModel) => !x.isNSFW);
+              }
+
+              if(currentCovers.length > 0){
+                var randomCover = currentCovers[Math.floor(Math.random()*currentCovers.length)];
+                RandomCoversURLS.push({
+                  breadId: breadId,
+                  link: randomCover.link
+                });
+              }
+            });
+  
+            RandomCoversURLS.forEach((random:RandomCovers) => {
+              if(!random.link){
+                random.link = "https://i.imgur.com/KDUg5q8.png";
+              }
+            });
+          })
+        }
+          
+        observer.next(RandomCoversURLS);
+        observer.complete();
+      })
+    });
+    return Response;
   }
 }

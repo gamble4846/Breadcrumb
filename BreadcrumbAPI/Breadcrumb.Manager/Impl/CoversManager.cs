@@ -15,6 +15,7 @@ using Breadcrumb.Model;
 using System.Threading.Tasks;
 using Breadcrumb.Model.TheMovieDBModels;
 using FastMember;
+using System.Collections;
 
 namespace Breadcrumb.Manager.Impl
 {
@@ -48,6 +49,30 @@ namespace Breadcrumb.Manager.Impl
                     SqlCoversDataAccess = new CoversDataAccess(MsSqlDatabase, CommonFunctions);
 
                     var result = SqlCoversDataAccess.GetCoverByBreadId(BreadId);
+                    if (result != null && result.Count > 0)
+                    {
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Found", result);
+                    }
+                    else
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Found");
+                    }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
+            }
+        }
+
+        public APIResponse GetCoverByBreadIds(List<Guid> BreadIds)
+        {
+            switch (ServerType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
+                    SqlCoversDataAccess = new CoversDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var BreadIdsSTR = "'" + String.Join("','", BreadIds.ToArray()) + "'";
+
+                    var result = SqlCoversDataAccess.GetCoverByBreadIds(BreadIdsSTR);
                     if (result != null && result.Count > 0)
                     {
                         return new APIResponse(ResponseCode.SUCCESS, "Records Found", result);

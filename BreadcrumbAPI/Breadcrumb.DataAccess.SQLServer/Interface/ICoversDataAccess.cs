@@ -9,6 +9,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
     public interface ICoversDataAccess
     {
         List<tbCoversModel> GetCoverByBreadId(Guid BreadId);
+        List<tbCoversModel> GetCoverByBreadIds(string BreadIds);
     }
 }
 

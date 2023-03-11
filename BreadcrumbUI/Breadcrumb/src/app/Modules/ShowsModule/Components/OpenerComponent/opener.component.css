@@ -2,9 +2,21 @@
     max-width: var(--main-max-width);
     width: 100%;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 0.5rem;
 }
 
 .ShowCardsCol{
+    padding: 10px 0px;
+}
+
+.radioGroupContainer{
+    padding: 10px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paginationConatiner{
+    text-align: right;
     padding: 10px 0px;
 }

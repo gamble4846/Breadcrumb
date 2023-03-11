@@ -8,6 +8,7 @@ using System.Drawing;
 using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
+using Breadcrumb.Model.tbCoversModels;
 
 namespace Breadcrumb.DataAccess.SQLServer.Impl
 {
@@ -56,6 +57,22 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             Result.TotalRecords = totalRecords;
 
             return Result;
+        }
+
+        public vTvShowsModel GetTvshowById(Guid ShowId)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SELECT  t.* FROM vTvShows t WHERE ShowId = @ShowId";
+            cmd.Parameters.AddWithValue("@ShowId", ShowId);
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
+                    return t;
+                }
+            }
+            return null;
         }
 
         public vTvShowsModel InsertTvShows(vTvShowsViewModel ViewModel)

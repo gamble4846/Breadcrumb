@@ -59,6 +59,20 @@ namespace Breadcrumb.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/api/TvShows/Get/{ShowId}")]
+        public ActionResult GetTvshowById(Guid ShowId)
+        {
+            try
+            {
+                return Ok(TvShowsManager.GetTvshowById(ShowId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
         [HttpPost]
         [Route("/api/TvShows/Insert/")]
         public ActionResult InsertTvshow(vTvShowsViewModel ViewModel)

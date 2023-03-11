@@ -7,4 +7,5 @@ export interface Server {
 export interface TokenModel {
     servers: Server[];
     theMovieDBAPIKey: string;
+    showNSFWCovers: boolean;
 }

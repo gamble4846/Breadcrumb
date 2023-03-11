@@ -12,6 +12,7 @@ namespace Breadcrumb.Manager.Interface
     public interface ICoversManager
     {
         APIResponse GetCoverByBreadId(Guid BreadId);
+        APIResponse GetCoverByBreadIds(List<Guid> BreadIds);
     }
 }
 

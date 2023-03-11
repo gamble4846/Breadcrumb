@@ -71,12 +71,12 @@
                             <div class="links bodyContainer">
                                 <div style="width: 50%;">
                                     <ul class="linksList">
-                                        <li *ngFor="let link of linksPart1; let i = index"><a [routerLink]="[link.routerLink]"> {{link.text}} </a></li>
+                                        <li *ngFor="let link of linksPart1; let i = index"><a [routerLink]="link.routerLink"> {{link.text}} </a></li>
                                     </ul>
                                 </div>
                                 <div style="width: 50%;">
                                     <ul class="linksList">
-                                        <li *ngFor="let link of linksPart2; let i = index"><a [routerLink]="[link.routerLink]"> {{link.text}} </a></li>
+                                        <li *ngFor="let link of linksPart2; let i = index"><a [routerLink]="link.routerLink"> {{link.text}} </a></li>
                                     </ul>
                                 </div>
                             </div>

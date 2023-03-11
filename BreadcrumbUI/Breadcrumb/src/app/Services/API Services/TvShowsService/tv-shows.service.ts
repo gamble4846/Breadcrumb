@@ -20,6 +20,11 @@ export class TvShowsService {
     return this.http.get(apiLink);
   }
 
+  GetTvshowById(ShowId:string){
+    let apiLink = this.ApiConfigFile['MainAPI']+`api/TvShows/Get/${ShowId}`;
+    return this.http.get(apiLink);
+  }
+
   InsertTvshow(ViewModel:vTvShowsViewModel){
     let apiLink = this.ApiConfigFile['MainAPI']+`api/TvShows/Insert`;
     return this.http.post(apiLink,ViewModel);

@@ -19,4 +19,9 @@ export class CoversService {
     let apiLink = this.ApiConfigFile['MainAPI'] + `api/Cover/${BreadId}`;
     return this.http.get(apiLink, { headers });
   }
+
+  GetCoverByBreadIds(BreadId: Array<string>){
+    let apiLink = this.ApiConfigFile['MainAPI'] + `api/Cover/Get`;
+    return this.http.post(apiLink,BreadId);
+  }
 }

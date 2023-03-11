@@ -41,3 +41,18 @@
 .AfterTemplateButtonToken{
     max-height: 30px;
 }
+
+.OthersTableInputs{
+    width: 100%;
+    table-layout: fixed;
+}
+
+.OthersTableInputs tr{
+    border: 1px solid rgb(240, 240, 240);
+}
+
+.OthersTableInputs tr td:first-child{
+    padding: 0px 5px;
+    color: white;
+    width: 150px;
+}

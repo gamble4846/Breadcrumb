@@ -12,7 +12,8 @@ import { CoreService } from 'src/app/Services/Other Services/CoreService/core.se
 export class SettingsComponent {
   tokenData:TokenModel = {
     servers: [],
-    theMovieDBAPIKey: ''
+    theMovieDBAPIKey: '',
+    showNSFWCovers: false
   };
 
   tokenValue:string = "";
@@ -59,6 +60,7 @@ export class SettingsComponent {
       this.Token.GetToken().subscribe((response:any) => {
         if(response.code == 1){
           this.tokenData = response.document;
+          console.log(this.tokenData);
         }
       })
     }

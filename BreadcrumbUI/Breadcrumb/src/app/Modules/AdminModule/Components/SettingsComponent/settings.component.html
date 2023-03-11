@@ -22,8 +22,7 @@
       </div>
 
       <div style="padding: 0px 5px; width: calc(100%);">
-        <button nz-button nzType="primary" nzBlock (click)="addNewServer()"><span nz-icon nzType="plus-circle"
-            nzTheme="outline"></span>Add New Server</button>
+        <button nz-button nzType="primary" nzBlock (click)="addNewServer()"><span nz-icon nzType="plus-circle" nzTheme="outline"></span>Add New Server</button>
       </div>
     </div>
   </div>
@@ -33,14 +32,18 @@
       Others
     </div>
     <div class="FormGroupCardContent">
-      <div class="MyInputGroup">
-        <div class="MyInputLabel">
-          <span>The Movie DB API Key</span>
-        </div>
-        <div class="MyInputTag">
-          <input type="text" nz-input [(ngModel)]="tokenData.theMovieDBAPIKey" />
-        </div>
-      </div>
+      <table class="OthersTableInputs">
+        <tbody>
+          <tr>
+            <td><span>The Movie DB API Key</span></td>
+            <td><input type="text" nz-input [(ngModel)]="tokenData.theMovieDBAPIKey" /></td>
+          </tr>
+          <tr>
+            <td><span>Show NSFW Covers</span></td>
+            <td><nz-switch [(ngModel)]="tokenData.showNSFWCovers"></nz-switch></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 

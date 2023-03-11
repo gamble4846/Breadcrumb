@@ -1,9 +1,26 @@
 <div class="ShowsOpenerContainer">
-  <div nz-row [nzGutter]="16">
-    <ng-container *ngFor="let tvshow of TvShowsData">
-      <div nz-col nzXs="12" nzSm="8" nzMd="6" nzLg="4" nzXl="4" class="ShowCardsCol">
-        <app-bread-card [name]="tvshow.primaryName" [imageSRC]="GetRandomURLForBread(tvshow.breadId || '')"></app-bread-card>
-      </div>
-    </ng-container>
+  <div class="radioGroupContainer">
+    <nz-radio-group [(ngModel)]="radioValue" nzButtonStyle="solid" (ngModelChange)="UpdateAccordingToRadio()">
+      <label nz-radio-button nzValue="TvShows">TvShows</label>
+      <label nz-radio-button nzValue="Movies">Movies</label>
+    </nz-radio-group>
   </div>
+  <ng-container *ngIf="radioValue == 'TvShows'">
+    <div nz-row [nzGutter]="16">
+      <ng-container *ngFor="let tvshow of TvShowsData">
+        <div nz-col nzXs="12" nzSm="8" nzMd="6" nzLg="4" nzXl="4" class="ShowCardsCol">
+          <a [routerLink]="['TvShow/'+tvshow.showId]">
+            <app-bread-card [name]="tvshow.primaryName" [imageSRC]="GetRandomURLForBread(tvshow.breadId || '')"></app-bread-card>
+          </a>
+        </div>
+      </ng-container>
+    </div>
+    <div class="paginationConatiner">
+      <nz-pagination [nzPageIndex]="TvShowCurrentPage" [nzTotal]="TvShowTotalRecords" [nzPageSize]="TvShowPageSize" (nzPageIndexChange)="PageChangedTvShow($event)"></nz-pagination>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="radioValue == 'Movies'">
+    Movies
+  </ng-container>
+  
 </div>

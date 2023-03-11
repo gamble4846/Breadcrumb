@@ -12,6 +12,8 @@ import { RandomCovers } from '../../OpenerModels';
   styleUrls: ['./opener.component.css']
 })
 export class OpenerComponent {
+  radioValue:string = "TvShows";
+
   constructor(
     private Core:CoreService,
     private TvShow:TvShowsService,
@@ -19,7 +21,17 @@ export class OpenerComponent {
   ) { }
 
   ngOnInit(): void {
-    this.UpdateTvShows();
+    this.UpdateAccordingToRadio();
+  }
+
+  UpdateAccordingToRadio(){
+    switch(this.radioValue){
+      case "TvShows":
+        this.UpdateTvShows();
+        break;
+      case "Movies":
+        break;
+    }
   }
 
   TvShowCurrentPage:number = 1;
@@ -29,6 +41,11 @@ export class OpenerComponent {
   TvShowTotalRecords:number = 0;
   TvShowsData:Array<vTvShowsModel> = [];
 
+  PageChangedTvShow(data:any){
+    this.TvShowCurrentPage = data;
+    this.UpdateTvShows();
+  }
+
   UpdateTvShows(){
     this.TvShow.GetTvshow(this.TvShowCurrentPage,this.TvShowPageSize,this.TvShowOrderBy,this.TvShowFilterQuery).subscribe((response:any) => {
       if(response.code == 1){
@@ -36,48 +53,27 @@ export class OpenerComponent {
         this.TvShowCurrentPage = response.document.pageNumber;
         this.TvShowPageSize = response.document.pageSize;
         this.TvShowTotalRecords = response.document.totalRecords;
-
         this.UpdateCoversForAll();
       }
     })
   }
 
-
-  CoversData:Array<tbCoversModel> = [];
   RandomCoversURLS:Array<RandomCovers> = [];
 
   UpdateCoversForAll(){
-    this.TvShowsData.forEach((tvShow:vTvShowsModel) => {
-      this.Covers.GetCoverByBreadId(tvShow.breadId || "").subscribe((response:any) => {
-        if(response.code == 1){
-          this.CoversData = this.CoversData.concat(response.document);
-          this.UpdateRandomCoverURL();
-        }
-      })
-    });
-  }
-
-  UpdateRandomCoverURL(){
-    this.TvShowsData.forEach((tvShow:vTvShowsModel) => {
-      var currentCovers = this.CoversData.filter((x:tbCoversModel) => x.breadId == tvShow.breadId);
-      if(currentCovers.length > 0){
-        var randomCover = currentCovers[Math.floor(Math.random()*currentCovers.length)];
-        console.log(currentCovers,randomCover);
-        this.RandomCoversURLS.push({
-          breadId: tvShow.breadId || "",
-          link: randomCover.link
-        });
-      }
+    var ids = this.TvShowsData.map(({breadId}) => breadId || "");
+    this.Core.getRandomCoversByBreadIdsAndOthers(ids,"1000X1500").subscribe((response:any) => {
+      this.RandomCoversURLS = response;
     });
   }
 
   GetRandomURLForBread(breadId:string){
     let random:any = this.RandomCoversURLS.find((x:RandomCovers) => x.breadId == breadId) || null;
-    if(random != null){
+    if(random){
       return random.link;
     }
     else{
-      return "";
+      return "https://i.imgur.com/KDUg5q8.png";
     }
   }
 }

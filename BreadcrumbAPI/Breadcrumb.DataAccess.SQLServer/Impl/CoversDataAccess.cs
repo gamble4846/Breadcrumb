@@ -39,6 +39,22 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             }
             return ret;
         }
+
+        public List<tbCoversModel> GetCoverByBreadIds(string BreadIds)
+        {
+            var ret = new List<tbCoversModel>();
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SELECT  t.* FROM tbCovers t WHERE BreadId IN (" + BreadIds + ")";
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbCoversModel>(reader);
+                    ret.Add(t);
+                }
+            }
+            return ret;
+        }
     }
 }
 

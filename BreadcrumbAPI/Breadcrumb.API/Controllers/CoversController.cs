@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Breadcrumb.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class CoversController : ControllerBase
     {
@@ -34,7 +36,6 @@ namespace Breadcrumb.API.Controllers
             CoversManager = coversManager;
         }
 
-
         [HttpGet]
         [Route("/api/Cover/{BreadId}")]
         public ActionResult GetCoverByBreadId(Guid BreadId)
@@ -42,6 +43,20 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(CoversManager.GetCoverByBreadId(BreadId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/Cover/Get")]
+        public ActionResult GetCoverByBreadIds(List<Guid> BreadIds)
+        {
+            try
+            {
+                return Ok(CoversManager.GetCoverByBreadIds(BreadIds));
             }
             catch (Exception ex)
             {

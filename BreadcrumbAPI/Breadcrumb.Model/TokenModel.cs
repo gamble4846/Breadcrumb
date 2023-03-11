@@ -10,6 +10,7 @@ namespace Breadcrumb.Model
     {
         public List<Server> Servers { get; set; }
         public string TheMovieDBAPIKey { get; set; }
+        public bool ShowNSFWCovers { get; set; }
     }
 
     public class Server

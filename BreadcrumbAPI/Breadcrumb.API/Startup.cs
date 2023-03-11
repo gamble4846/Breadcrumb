@@ -72,7 +72,7 @@ namespace Breadcrumb.API
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddTransient(_ => new MSSqlDatabase(connectionString));
             services.AddDbContext<Context>(option => option.UseSqlServer(connectionString: connectionString));
-            services.AddSwaggerDocument(c => c.Title = "Transfers");
+            services.AddSwaggerDocument(c => c.Title = "Breadcrumb");
 
             services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -105,7 +105,7 @@ namespace Breadcrumb.API
             app.UseAuthentication();
 
             app.UseOpenApi();
-            app.UseSwaggerUi3(c => c.DocumentTitle = "Transfers");
+            app.UseSwaggerUi3(c => c.DocumentTitle = "Breadcrumb");
             app.UseHttpsRedirection();
             app.UseMvc();
         }
