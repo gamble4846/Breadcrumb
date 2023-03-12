@@ -448,6 +448,7 @@ namespace Breadcrumb.Manager.Impl
                                 Name = XEpisode.Name,
                                 RelaseDate = XEpisode.RelaseDate ?? new DateTime(),
                                 Description= XEpisode.Description,
+                                ThumbnailLink= XEpisode.ThumbnailLink,
                             };
                             VTvShowEpisodesData.Add(vEp);
                         }

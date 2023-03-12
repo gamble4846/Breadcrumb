@@ -27,7 +27,7 @@
         </nz-select>
       </div>
       <div class="episodesContainer">
-        <div nz-row>
+        <div nz-row [nzGutter]="16">
           <ng-container *ngFor="let episode of TvShowEpisodesData">
             <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6">
               <app-episode-card [Name]="episode.name" [Number]="episode.number" [Description]="episode.description" [ThumbnailLink]="GetThumbnailForEpisode(episode)"></app-episode-card>

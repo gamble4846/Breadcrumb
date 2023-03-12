@@ -82,6 +82,12 @@ namespace Breadcrumb.Manager.Impl
                     EpisodeTMDB.Number = epi.episode_number;
                     EpisodeTMDB.Name = epi.name;
                     EpisodeTMDB.Description = epi.overview;
+
+                    if(epi.still_path != null)
+                    {
+                        EpisodeTMDB.ThumbnailLink = "[||REPLACEWITHTMDBIMAGEHOST||]" + epi.still_path;
+                    }
+
                     try
                     {
                         EpisodeTMDB.RelaseDate = DateTime.Parse((epi.air_date).ToString());

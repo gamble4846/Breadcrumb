@@ -1,7 +1,3 @@
-.episodeContainer{
-    padding: 6px;
-}
-
 .episodeInnerContainer{
     cursor: pointer;
 }
@@ -12,7 +8,7 @@
 }
 
 .episodeThumbnail{
-    object-fit: cover;
+    object-fit: contain;
     width: 100%;
 }
 

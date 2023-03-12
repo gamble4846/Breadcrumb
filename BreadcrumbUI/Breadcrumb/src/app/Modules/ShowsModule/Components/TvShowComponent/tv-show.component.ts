@@ -5,6 +5,7 @@ import { tbSeasonsModel } from 'src/app/Models/tbSeasonsModels';
 import { vTvShowsModel } from 'src/app/Models/vTvShowsModels';
 import { CoversService } from 'src/app/Services/API Services/CoversService/covers.service';
 import { TvShowsService } from 'src/app/Services/API Services/TvShowsService/tv-shows.service';
+import { ConfigService } from 'src/app/Services/Other Services/ConfigService/config.service';
 import { CoreService } from 'src/app/Services/Other Services/CoreService/core.service';
 import { RandomCovers } from '../../OpenerModels';
 
@@ -46,6 +47,7 @@ export class TvShowComponent {
     private Core:CoreService,
     private TvShow:TvShowsService,
     private Covers:CoversService,
+    private Config:ConfigService,
     private router: Router,
     private route: ActivatedRoute,
   ) { }
@@ -112,11 +114,19 @@ export class TvShowComponent {
   }
 
   GetThumbnailForEpisode(episode:tbEpisodesModel){
+    let finalThumbnailLink:string = "";
+
     if(!episode.thumbnailLink){
-      return "https://i.imgur.com/5lq108M.png";
+      finalThumbnailLink = "https://i.imgur.com/5lq108M.png";
+      return finalThumbnailLink;
     }
-    else{
-      return episode.thumbnailLink;
+
+    finalThumbnailLink = episode.thumbnailLink;
+    if(finalThumbnailLink.includes("[||REPLACEWITHTMDBIMAGEHOST||]")){
+      finalThumbnailLink = finalThumbnailLink.replaceAll("[||REPLACEWITHTMDBIMAGEHOST||]", this.Config.GetOthersConfigFile()["TMDBImageHost"]);
+      return finalThumbnailLink;
     }
+
+    return episode.thumbnailLink;
   }
 }
