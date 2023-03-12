@@ -81,7 +81,7 @@ namespace Breadcrumb.Manager.Impl
                     var EpisodeTMDB = new EpisodeTMDBModel();
                     EpisodeTMDB.Number = epi.episode_number;
                     EpisodeTMDB.Name = epi.name;
-
+                    EpisodeTMDB.Description = epi.overview;
                     try
                     {
                         EpisodeTMDB.RelaseDate = DateTime.Parse((epi.air_date).ToString());

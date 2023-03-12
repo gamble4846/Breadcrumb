@@ -4,6 +4,8 @@ export interface tbEpisodesModel {
     number: number;
     name: string;
     relaseDate: Date;
+    description: string;
+    thumbnailLink: string;
 }
 
 export interface tbEpisodesViewModel {
@@ -11,4 +13,6 @@ export interface tbEpisodesViewModel {
     number: number;
     name: string;
     relaseDate: Date;
+    description: string;
+    thumbnailLink: string;
 }

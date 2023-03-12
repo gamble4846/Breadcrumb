@@ -1,1 +1,40 @@
-<p>tv-show works!</p>
+<div class="movieOpenerContainer">
+  <div style="position: relative;">
+    <div class="movieImageContainer">
+      <img [src]="CoverLink" class="movieImage" loading="lazy">
+    </div>
+    <div class="movieDataContainer">
+      <div class="movieName">{{TvShowData.primaryName}}</div>
+      <div class="secondaryData">
+        <div>
+          {{TvShowData.releaseYear}} | {{TvShowData.otherNames}}
+        </div>
+        <div>
+          {{TvShowData.genres}}
+        </div>
+      </div>
+      <div class="descriptionData">
+        {{TvShowData.description}}
+      </div>
+    </div>
+  </div>
+  
+  <div class="movieLinksContainer">
+    <div class="cardsContainer">
+      <div style="font-size: 18px; margin-bottom: 20px;">
+        <nz-select style="width: 100%; max-width: 400px;" [(ngModel)]="SelectedSeasonID" (ngModelChange)="TvShowSeasonUpdated()">
+          <nz-option *ngFor="let season of TvShowSeasonsData" [nzValue]="season.id" [nzLabel]="season.name"></nz-option>
+        </nz-select>
+      </div>
+      <div class="episodesContainer">
+        <div nz-row>
+          <ng-container *ngFor="let episode of TvShowEpisodesData">
+            <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6">
+              <app-episode-card [Name]="episode.name" [Number]="episode.number" [Description]="episode.description" [ThumbnailLink]="GetThumbnailForEpisode(episode)"></app-episode-card>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

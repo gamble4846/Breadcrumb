@@ -171,9 +171,11 @@ export class CoreService {
             });
           })
         }
-          
-        observer.next(RandomCoversURLS);
-        observer.complete();
+        setTimeout(function() {
+          observer.next(RandomCoversURLS);
+          observer.complete();
+        }, 500);
+        
       })
     });
     return Response;

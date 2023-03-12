@@ -23,6 +23,7 @@ namespace Breadcrumb.Model.TheMovieDBModels
         public string Name { get; set; }
         public string TMDBId { get; set; }
         public List<EpisodeTMDBModel> Episodes { get; set; }
+        public string Description { get; set; }
     }
 
     public class EpisodeTMDBModel
@@ -30,5 +31,7 @@ namespace Breadcrumb.Model.TheMovieDBModels
         public int Number { get; set; }
         public string Name { get; set; }
         public DateTime? RelaseDate { get; set; }
+        public string Description { get; set; }
+        public string ThumbnailLink { get; set; }
     }
 }

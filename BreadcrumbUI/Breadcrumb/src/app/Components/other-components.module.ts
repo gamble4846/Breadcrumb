@@ -4,13 +4,15 @@ import { LoaderComponent } from './Loader/loader.component';
 import { BreadCardComponent } from './BreadCardComponent/bread-card.component';
 
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { EpisodeCardComponent } from './EpisodeCardComponent/episode-card.component';
 
 
 
 @NgModule({
   declarations: [
     LoaderComponent,
-    BreadCardComponent
+    BreadCardComponent,
+    EpisodeCardComponent
   ],
   imports: [
     CommonModule,
@@ -18,7 +20,8 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
   ],
   exports: [
     LoaderComponent,
-    BreadCardComponent
+    BreadCardComponent,
+    EpisodeCardComponent
   ]
 })
 export class OtherComponentsModule { }

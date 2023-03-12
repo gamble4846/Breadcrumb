@@ -194,6 +194,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ViewModel.ShowId;
             cmd.Parameters.Add("@Number", SqlDbType.Int).Value = ViewModel.Number;
             cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
 
             using (var reader = cmd.ExecuteReader())
             {
@@ -240,6 +241,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             cmd.Parameters.Add("@Number", SqlDbType.NVarChar).Value = ViewModel.Number;
             cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
             cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ViewModel.ShowId;
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
 
             using (var reader = cmd.ExecuteReader())
             {
@@ -306,6 +308,9 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             cmd.Parameters.Add("@Number", SqlDbType.Int).Value = ViewModel.Number;
             cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
             cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date).Value = ViewModel.RelaseDate;
+            cmd.Parameters.Add("@ThumbnailLink", SqlDbType.NVarChar).Value = ViewModel.ThumbnailLink;
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
+
 
             using (var reader = cmd.ExecuteReader())
             {
@@ -353,6 +358,8 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
             cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date).Value = ViewModel.RelaseDate;
             cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = ViewModel.SeasonId;
+            cmd.Parameters.Add("@ThumbnailLink", SqlDbType.NVarChar).Value = ViewModel.ThumbnailLink;
+            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
 
             using (var reader = cmd.ExecuteReader())
             {

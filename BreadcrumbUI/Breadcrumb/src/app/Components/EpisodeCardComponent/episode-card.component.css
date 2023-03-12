@@ -1,0 +1,42 @@
+.episodeContainer{
+    padding: 6px;
+}
+
+.episodeInnerContainer{
+    cursor: pointer;
+}
+
+.episodeThumbnailContainer{
+    width: 100%;
+    height: max-content;
+}
+
+.episodeThumbnail{
+    object-fit: cover;
+    width: 100%;
+}
+
+.TitleTimeContainer{
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    margin: 2px 0px;
+}
+
+.titleContainer{
+    color: #fff;
+    font-weight: 500;
+}
+
+.timeContainer{
+    color: #a3a3a3;
+    font-weight: 400;
+}
+
+.episodeDescriptionContainer{
+    color: #a3a3a3;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+    margin: 12px 0px;
+}

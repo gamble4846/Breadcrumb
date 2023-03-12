@@ -446,7 +446,8 @@ namespace Breadcrumb.Manager.Impl
                                 SeasonId = XSeason.Id,
                                 Number = XEpisode.Number,
                                 Name = XEpisode.Name,
-                                RelaseDate = XEpisode.RelaseDate ?? new DateTime()
+                                RelaseDate = XEpisode.RelaseDate ?? new DateTime(),
+                                Description= XEpisode.Description,
                             };
                             VTvShowEpisodesData.Add(vEp);
                         }

@@ -3,10 +3,12 @@ export interface tbSeasonsModel {
     showId: string | null;
     number: number;
     name: string;
+    description: string;
 }
 
 export interface tbSeasonsViewModel {
     showId: string | null;
     number: number;
     name: string;
+    description: string;
 }
