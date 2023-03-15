@@ -14,12 +14,16 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { AddFileGoogleDriveComponent } from './Components/AddFileGoogleDriveComponent/add-file-google-drive.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 
 
 @NgModule({
   declarations: [
     SettingsComponent,
-    AdminComponent
+    AdminComponent,
+    AddFileGoogleDriveComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +37,9 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     NzGridModule,
     NzSwitchModule,
     NzIconModule,
-    NzCardModule
+    NzCardModule,
+    DragDropModule,
+    NzModalModule
   ]
 })
 export class AdminModule { }

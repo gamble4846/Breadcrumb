@@ -23,4 +23,12 @@ namespace Breadcrumb.Model.GoogleApiModels
         public string Email { get; set; }
         public string Id { get; set; }
     }
+
+    public class FinalFile
+    {
+        public List<FilesApi> FileChunks { get; set; }
+        public string Name { get; set; }
+        public string ThumbnailLink { get; set; }
+        public string Type { get; set; }
+    }
 }

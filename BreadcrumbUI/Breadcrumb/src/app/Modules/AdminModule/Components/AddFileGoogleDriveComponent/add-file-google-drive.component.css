@@ -1,0 +1,42 @@
+.addFilesFromGoogleDriveContainer {
+  padding: 30px;
+  max-width: var(--main-max-width);
+  margin: auto;
+}
+
+.inputContainers {
+  width: 100%;
+}
+
+.inputContainers input {
+  width: 100%;
+}
+
+/* Animate items as they're being sorted. */
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Animate an item that has been dropped. */
+.cdk-drag-animating {
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.filesLinksContainer{
+  color: white;
+}
+
+.FinalFileContainer{
+  padding: 10px;
+  border: 1px solid white;
+  font-size: 15px;
+  margin: 5px 0px;
+  height: max-content;
+}
+
+.FileChunksContainer{
+  padding: 10px;
+  border: 1px dashed white;
+  font-size: 15px;
+  margin: 5px 0px;
+}

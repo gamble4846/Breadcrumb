@@ -1,0 +1,40 @@
+<div class="addFilesFromGoogleDriveContainer">
+  <div class="inputContainers">
+    <input nz-input placeholder="Enter Folder Id" [(ngModel)]="InputFolderId" />
+    <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="GetFilesFromGoogleDrive()">Get Files</button>
+  </div>
+
+  <div class="filesLinksContainer" cdkDropListGroup>
+    <div cdkDropList [cdkDropListData]="finalFile.FileChunks" *ngFor="let finalFile of FinalFiles; let i = index"
+      (cdkDropListDropped)="drop($event)">
+      <div class="FinalFileContainer">
+        <div class="FinalFileDataContainer">
+          {{finalFile.name}} 
+          <button nz-button style="margin-left: 5px;" nzType="primary" (click)="ShowEditFileModle(finalFile, i)"><span nz-icon nzType="edit"></span></button>
+          <button nz-button style="margin-left: 5px;"  nzType="primary" nzDanger (click)="DeleteFile(i)"><span nz-icon nzType="delete"></span></button>
+        </div>
+        <div class="FileChunksContainer" cdkDrag [cdkDragData]="chunk" *ngFor="let chunk of finalFile.FileChunks">
+          {{chunk.name}}</div>
+      </div>
+    </div>
+  </div>
+
+  <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="SaveFiles()">Save Files</button>
+</div>
+
+<nz-modal [(nzVisible)]="EditFileModleVisible" nzTitle="Edit File" (nzOnCancel)="handleEditFileModleCancel()" (nzOnOk)="handleEditFileModleOk()">
+  <ng-container *nzModalContent>
+    <div>
+        <div>Name:</div>
+        <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.name" />
+    </div>
+    <div>
+        <div>Thumbnail Link:</div>
+        <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.thumbnailLink" />
+    </div>
+    <div>
+        <div>Type:</div>
+        <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.type" />
+    </div>
+  </ng-container>
+</nz-modal>
