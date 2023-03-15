@@ -20,7 +20,18 @@
     </div>
   </ng-container>
   <ng-container *ngIf="radioValue == 'Movies'">
-    Movies
+    <div nz-row [nzGutter]="16">
+      <ng-container *ngFor="let moive of MoviesData">
+        <div nz-col nzXs="12" nzSm="8" nzMd="6" nzLg="4" nzXl="4" class="ShowCardsCol">
+          <a [routerLink]="['Movie/'+moive.showId]">
+            <app-bread-card [name]="moive.primaryName" [imageSRC]="GetRandomURLForBread(moive.breadId || '')"></app-bread-card>
+          </a>
+        </div>
+      </ng-container>
+    </div>
+    <div class="paginationConatiner">
+      <nz-pagination [nzPageIndex]="MovieCurrentPage" [nzTotal]="MovieTotalRecords" [nzPageSize]="MoviePageSize" (nzPageIndexChange)="PageChangedMovie($event)"></nz-pagination>
+    </div>
   </ng-container>
   
 </div>

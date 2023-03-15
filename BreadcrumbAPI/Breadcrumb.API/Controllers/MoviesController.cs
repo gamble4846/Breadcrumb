@@ -19,6 +19,7 @@ using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
 using System.Threading.Tasks;
 using Breadcrumb.Model.vMoviesModels;
+using Breadcrumb.Manager.Impl;
 
 namespace Breadcrumb.API.Controllers
 {
@@ -109,6 +110,20 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(await MoviesManager.InsertUpdateFullMovie(IMDBId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpDelete]
+        [Route("/api/Movies/Delete/{ShowId}")]
+        public ActionResult DeleteMovie(Guid ShowId)
+        {
+            try
+            {
+                return Ok(MoviesManager.DeleteMovie(ShowId));
             }
             catch (Exception ex)
             {

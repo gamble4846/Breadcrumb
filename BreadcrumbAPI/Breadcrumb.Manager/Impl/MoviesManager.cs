@@ -156,6 +156,29 @@ namespace Breadcrumb.Manager.Impl
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
             }
         }
+
+        public APIResponse DeleteMovie(Guid ShowId)
+        {
+            var TokenData = CommonFunctions.GetTokenData();
+            switch (ServerType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
+                    SqlMoviesDataAccess = new MoviesDataAccesscs(MsSqlDatabase, CommonFunctions);
+
+                    var result = SqlMoviesDataAccess.DeleteMovie(ShowId);
+                    if (result != null)
+                    {
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Deleted", result);
+                    }
+                    else
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Deleted");
+                    }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
+            }
+        }
     }
 }
 

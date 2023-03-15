@@ -17,6 +17,7 @@ namespace Breadcrumb.Manager.Interface
         APIResponse InsertMovie(vMoviesViewModel ViewModel);
         APIResponse UpdateMovie(vMoviesViewModel ViewModel, Guid ShowId);
         Task<APIResponse> InsertUpdateFullMovie(string IMDBId);
+        APIResponse DeleteMovie(Guid ShowId);
     }
 }
 

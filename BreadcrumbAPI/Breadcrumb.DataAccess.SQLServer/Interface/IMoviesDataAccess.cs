@@ -13,6 +13,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
         vMoviesModel InsertMovie(vMoviesViewModel ViewModel);
         vMoviesModel UpdateMovie(vMoviesViewModel ViewModel, Guid ShowId);
         vMoviesModel GetIfMovieExistsByImdbID(string IMDBId);
+        vMoviesModel DeleteMovie(Guid ShowId);
     }
 }
 

@@ -143,6 +143,26 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             }
             return null;
         }
+
+        public vMoviesModel DeleteMovie(Guid ShowId)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPDeleteMovie";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<vMoviesModel>(reader);
+                    return t;
+                }
+            }
+
+            return null;
+        }
     }
 }
 

@@ -1,0 +1,29 @@
+<div class="movieOpenerContainer">
+  <div style="position: relative;">
+    <div class="movieImageContainer">
+      <img [src]="CoverLink" class="movieImage" loading="lazy">
+    </div>
+    <div class="movieDataContainer">
+      <div class="movieName">{{MovieData.primaryName}}</div>
+      <div class="secondaryData">
+        <div>
+          {{MovieData.releaseYear}} | {{MovieData.otherNames}}
+        </div>
+        <div>
+          {{MovieData.genres}}
+        </div>
+      </div>
+      <div class="descriptionData">
+        {{MovieData.description}}
+      </div>
+      <div class="playButtonContainer">
+        <button nz-button nzType="default">
+          <div class="playButtonTextAndIconContainer">
+            <span nz-icon nzType="play-circle" nzTheme="outline"></span>
+            <span>Play</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

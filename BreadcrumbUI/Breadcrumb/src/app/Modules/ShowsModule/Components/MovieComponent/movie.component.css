@@ -1,0 +1,284 @@
+.movieOpenerContainer {
+  height: 100%;
+  position: relative;
+}
+
+.movieImageContainer {
+  height: calc(100vh - var(--MenuHeight));
+  overflow: hidden;
+  position: relative;
+}
+
+.movieImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movieImageContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 1) 19%, rgba(255, 255, 255, 0) 100%);
+}
+
+.movieDataContainer {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  max-width: 700px;
+  padding: 0px 30px;
+  margin-bottom: 15vh;
+}
+
+.movieDataContainer .movieName {
+  color: #fff;
+  font-size: 35px;
+  font-weight: 700;
+  line-height: 30px;
+  padding: 10px 0px;
+}
+
+.movieDataContainer .secondaryData {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  color: #a3a3a3;
+  padding: 7px 0px;
+}
+
+.movieDataContainer .descriptionData {
+  font-size: 16px;
+  padding: 7px 0px;
+  color: #fff;
+}
+
+.movieDataContainer .actorsAndDirectorsData {
+  font-size: 16px;
+  padding: 7px 0px;
+}
+
+.movieDataContainer .actorsAndDirectorsData .label {
+  color: #a3a3a3;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 22px;
+  padding-right: 7px;
+}
+
+.movieLinksTable {
+  width: 90%;
+  margin: 0 auto;
+  border: 1px solid red;
+}
+
+.movieLinksContainer {
+  width: 100%;
+  overflow-x: auto;
+  height: max-content;
+  padding: 10px 0px;
+}
+
+.movieLinksTable th {
+  padding: 15px 5px;
+}
+
+.movieLinksTable td {
+  padding: 10px 5px;
+  text-align: center;
+}
+
+.movieLinksTable td,
+.movieLinksTable th {
+  border: 1px solid red;
+}
+
+.movieLinksTable tbody tr:hover {
+  background-color: rgb(52, 0, 0);
+  cursor: pointer;
+}
+
+.eclipsisText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 1px;
+}
+
+.linkModalContentContainer {
+  display: flex;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.linkModalContentContainer .linkInfo {
+  width: 50%;
+  height: 100%;
+  overflow: auto;
+  padding: 10px;
+}
+
+.LinkDataTable {
+  border: 1px solid red;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.LinkDataTable td {
+  border: 1px solid red;
+  padding: 10px 5px;
+}
+
+.LinkDataTable .buttonsContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.LinkDataTable .buttonContainer {
+  padding: 10px 10px;
+}
+
+.LinkDataTable .linkButton {
+  background-color: rgb(45, 0, 0);
+  color: white;
+}
+
+.viewIFrame {
+  height: 95%;
+  width: 95%;
+}
+
+.cardsContainer {
+  margin: 15px;
+  max-width: 100%;
+}
+
+.card {
+  background-color: black;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.3s ease-in-out;
+  -webkit-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 6px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.card:hover {
+  transform: scale(101%);
+}
+
+.card-row {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-head {
+  border-bottom: 1px solid rgb(40, 40, 43);
+  ;
+  padding: 10px;
+  padding-bottom: 5px;
+}
+
+.card-foot {
+  padding: 10px;
+  padding-top: 5px;
+}
+
+@media only screen and (max-width: 800px) {
+  .movieDataContainer {
+    position: static !important;
+    display: block;
+    margin-bottom: 0px;
+  }
+
+  .movieImageContainer {
+    height: 70%;
+  }
+
+  .movieImageContainer::before {
+    display: none;
+  }
+
+  .hideBefore800 {
+    display: none;
+  }
+
+  .movieLinksTable {
+    width: 97%;
+  }
+
+  .movieDataContainer {
+    padding: 0px 10px;
+  }
+
+  .LinkDataTable .linkButton {
+    width: 100%;
+  }
+
+  .buttonContainer {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .movieImageContainer {
+    height: 60%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .movieImageContainer {
+    height: 50%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .movieImageContainer {
+    height: 40%;
+  }
+
+  .hideBefore500 {
+    display: none;
+  }
+}
+
+.episodesContainer {
+  margin: 10px 0px;
+}
+
+.movieLinksContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.cardsContainer {
+  max-width: var(--main-max-width);
+}
+
+.playButtonContainer{
+  margin-top: 20px;
+}
+
+.playButtonContainer button{
+  width: max-content;
+  height: max-content;
+  border-radius: 20px;
+}
+
+.playButtonTextAndIconContainer {
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.playButtonTextAndIconContainer span{
+  padding: 2px 5px;
+}

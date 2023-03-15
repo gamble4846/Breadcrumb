@@ -53,7 +53,7 @@ export class TvShowComponent {
   ) { }
 
   ngOnInit(): void {
-    this.ParamShowID = this.route.snapshot.paramMap.get('RegNumber') || "";
+    this.ParamShowID = this.route.snapshot.paramMap.get('ShowId') || "";
 
     if(!this.ParamShowID){
       this.router.navigate(['/Shows'])

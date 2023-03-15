@@ -5,6 +5,7 @@ import { ShowsRoutingModule } from './shows-routing.module';
 import { OpenerComponent } from './Components/OpenerComponent/opener.component';
 import { OtherComponentsModule } from '../../Components/other-components.module';
 import { TvShowComponent } from './Components/TvShowComponent/tv-show.component';
+import { MovieComponent } from './Components/MovieComponent/movie.component';
 
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
@@ -12,12 +13,15 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { FormsModule } from '@angular/forms';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 
 @NgModule({
   declarations: [
     OpenerComponent,
-    TvShowComponent
+    TvShowComponent,
+    MovieComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +32,9 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     NzRadioModule,
     FormsModule,
     NzPaginationModule,
-    NzSelectModule
+    NzSelectModule,
+    NzIconModule,
+    NzButtonModule
   ]
 })
 export class ShowsModule { }
