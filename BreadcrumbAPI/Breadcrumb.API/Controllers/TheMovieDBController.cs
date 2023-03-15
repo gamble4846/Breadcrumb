@@ -63,5 +63,19 @@ namespace Breadcrumb.API.Controllers
                 return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("/api/TheMovieDB/Movie/Get/{IMDBId}")]
+        public async Task<ActionResult> GetMovieByIMDBId(string IMDBId)
+        {
+            try
+            {
+                return Ok(await TheMovieDBManager.GetMovieByIMDBId(IMDBId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
     }
 }

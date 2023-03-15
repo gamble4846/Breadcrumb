@@ -81,6 +81,7 @@ namespace Breadcrumb.API
 
             #region Dependency
             services.AddTransient<ITvShowsManager, TvShowsManager>();
+            services.AddTransient<IMoviesManager, MoviesManager>();
             services.AddTransient<ITheMovieDBManager, TheMovieDBManager>();
             services.AddTransient<ICoversManager, CoversManager>();
             #endregion

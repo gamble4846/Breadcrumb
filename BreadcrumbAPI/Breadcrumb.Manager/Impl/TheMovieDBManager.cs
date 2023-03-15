@@ -15,6 +15,7 @@ using Breadcrumb.Model;
 using System.Threading.Tasks;
 using System.Linq;
 using Breadcrumb.Model.TheMovieDBModels;
+using Breadcrumb.Model.vMoviesModels;
 
 namespace Breadcrumb.Manager.Impl
 {
@@ -60,7 +61,7 @@ namespace Breadcrumb.Manager.Impl
             TvShow.ReleaseYear = ((DateTime.Parse(tvShowFromTMDB.first_air_date.ToString())).Year).ToString();
             TvShow.Genres = String.Join(',', generes);
 
-            foreach(var season in tvShowFromTMDB.seasons)
+            foreach (var season in tvShowFromTMDB.seasons)
             {
                 var seasonModel = new SeasonTMDBModel()
                 {
@@ -72,18 +73,18 @@ namespace Breadcrumb.Manager.Impl
                 TvShow.Seasons.Add(seasonModel);
             }
 
-            foreach(var season in TvShow.Seasons)
+            foreach (var season in TvShow.Seasons)
             {
                 season.Episodes = new List<EpisodeTMDBModel>();
                 var Episodes = (await UtilityCustom.RestCall("https://api.themoviedb.org/3/tv/" + TMDBId + "/season/" + season.Number + "?api_key=" + TheMovieDBAPIKey)).episodes;
-                foreach(var epi in Episodes)
+                foreach (var epi in Episodes)
                 {
                     var EpisodeTMDB = new EpisodeTMDBModel();
                     EpisodeTMDB.Number = epi.episode_number;
                     EpisodeTMDB.Name = epi.name;
                     EpisodeTMDB.Description = epi.overview;
 
-                    if(epi.still_path != null)
+                    if (epi.still_path != null)
                     {
                         EpisodeTMDB.ThumbnailLink = "[||REPLACEWITHTMDBIMAGEHOST||]" + epi.still_path;
                     }
@@ -102,6 +103,32 @@ namespace Breadcrumb.Manager.Impl
             }
 
             return new APIResponse(ResponseCode.SUCCESS, "Records Found", TvShow);
+        }
+
+
+        public async Task<APIResponse> GetMovieByIMDBId(string IMDBId)
+        {
+            vMoviesViewModel fullMovie = new vMoviesViewModel();
+            
+            var moivieFromIMDB = await UtilityCustom.RestCall("https://api.themoviedb.org/3/find/" + IMDBId + "?api_key=" + TheMovieDBAPIKey + "&external_source=imdb_id");
+            var TMDBId = moivieFromIMDB.movie_results[0].id;
+            var movieFromTMDB = await UtilityCustom.RestCall("https://api.themoviedb.org/3/movie/" + TMDBId + "?api_key=" + TheMovieDBAPIKey);
+
+            List<string> generes = new List<string>();
+
+            foreach (var genre in movieFromTMDB.genres)
+            {
+                generes.Add(genre.name.ToString());
+            }
+
+            fullMovie.PrimaryName = movieFromTMDB.title;
+            fullMovie.OtherNames = movieFromTMDB.original_title;
+            fullMovie.Description = movieFromTMDB.overview;
+            fullMovie.IMDBID = IMDBId;
+            fullMovie.ReleaseYear = ((DateTime.Parse(movieFromTMDB.release_date.ToString())).Year).ToString();
+            fullMovie.Genres = String.Join(',', generes);
+
+            return new APIResponse(ResponseCode.SUCCESS, "Records Found", fullMovie);
         }
     }
 }

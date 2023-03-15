@@ -19,15 +19,15 @@ export class CoreService {
   ) { }
 
   getToken(){
-    return localStorage.getItem("token");
+    return localStorage.getItem("BreadcrumbToken");
   }
 
   setToken(token:string){
-    return localStorage.setItem("token", token)
+    return localStorage.setItem("BreadcrumbToken", token)
   }
 
   IsTokenPresent(){
-    if(localStorage.getItem("token")){
+    if(localStorage.getItem("BreadcrumbToken")){
       return true;
     }
     else{
