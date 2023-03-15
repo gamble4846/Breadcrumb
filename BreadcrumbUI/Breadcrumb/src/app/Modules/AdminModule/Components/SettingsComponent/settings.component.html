@@ -14,7 +14,7 @@
           <input nz-input placeholder="Connection String" [(ngModel)]="server.connectionString" />
         </div>
         <div nz-col nzXs="12" nzSm="3" nzMd="2" nzLg="2" nzXl="2" class="alignSelfCenterGlobal textAlignCenterGlobal">
-          <nz-switch [(ngModel)]="server.isSelected" (ngModelChange)="SwitchChanged(i)"></nz-switch>
+          <nz-switch [(ngModel)]="server.isSelected" (ngModelChange)="SwitchServerChanged(i)"></nz-switch>
         </div>
         <div nz-col nzXs="12" nzSm="3" nzMd="2" nzLg="2" nzXl="2" class="alignSelfCenterGlobal textAlignCenterGlobal">
           <button nz-button nzType="primary" nzDanger (click)="DeleteServer(i)"><span nz-icon nzType="delete" nzTheme="outline"></span></button>
@@ -23,6 +23,29 @@
 
       <div style="padding: 0px 5px; width: calc(100%);">
         <button nz-button nzType="primary" nzBlock (click)="addNewServer()"><span nz-icon nzType="plus-circle" nzTheme="outline"></span>Add New Server</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="FormGroupCard">
+    <div class="FormGroupCardHeader">
+      GOOGLE APIs
+    </div>
+    <div class="FormGroupCardContent">
+      <div *ngFor="let googleAPI of tokenData.googleAPIs; let i = index" nz-row class="serverGroupContainer">
+        <div nz-col nzXs="24" nzSm="20" nzMd="20" nzLg="20" nzXl="20">
+          <input nz-input placeholder="Api Key" [(ngModel)]="googleAPI.apiKey" />
+        </div>
+        <div nz-col nzXs="12" nzSm="2" nzMd="2" nzLg="2" nzXl="2" class="alignSelfCenterGlobal textAlignCenterGlobal">
+          <nz-switch [(ngModel)]="googleAPI.isPrimary" (ngModelChange)="SwitchGoogleAPIChanged(i)"></nz-switch>
+        </div>
+        <div nz-col nzXs="12" nzSm="2" nzMd="2" nzLg="2" nzXl="2" class="alignSelfCenterGlobal textAlignCenterGlobal">
+          <button nz-button nzType="primary" nzDanger (click)="DeleteGoogleApi(i)"><span nz-icon nzType="delete" nzTheme="outline"></span></button>
+        </div>
+      </div>
+
+      <div style="padding: 0px 5px; width: calc(100%);">
+        <button nz-button nzType="primary" nzBlock (click)="addNewGoogleAPi()"><span nz-icon nzType="plus-circle" nzTheme="outline"></span>Add New Google API</button>
       </div>
     </div>
   </div>

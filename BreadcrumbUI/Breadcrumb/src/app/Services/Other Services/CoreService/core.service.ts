@@ -59,7 +59,7 @@ export class CoreService {
       },
       {
         "text": "ADMIN",
-        "routerLink": "/",
+        "routerLink": ["/Admin"],
       },
       {
         "text": "SETTINGS",

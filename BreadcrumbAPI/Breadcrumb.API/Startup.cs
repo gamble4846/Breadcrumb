@@ -83,6 +83,7 @@ namespace Breadcrumb.API
             services.AddTransient<ITvShowsManager, TvShowsManager>();
             services.AddTransient<IMoviesManager, MoviesManager>();
             services.AddTransient<ITheMovieDBManager, TheMovieDBManager>();
+            services.AddTransient<IGoogleApiManager, GoogleApiManager>();
             services.AddTransient<ICoversManager, CoversManager>();
             #endregion
 

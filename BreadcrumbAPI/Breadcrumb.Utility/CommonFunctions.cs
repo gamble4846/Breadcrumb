@@ -14,6 +14,10 @@ using System.Data;
 using System.Reflection;
 using Breadcrumb.Model;
 using Newtonsoft.Json;
+using Breadcrumb.Model.GoogleApiModels;
+using static System.Net.WebRequestMethods;
+using System.Xml.Linq;
+using System.Threading.Tasks;
 
 namespace Breadcrumb.Utility
 {
@@ -81,6 +85,65 @@ namespace Breadcrumb.Utility
             {
                 return null;
             }
+        }
+
+        public async Task<FolderAPI> GetFilesByFolderID(FolderAPI CurrentFolder, string GoogleApiKey)
+        {
+            var CurrentApiLink = "https://www.googleapis.com/drive/v2/files?q=%27" + CurrentFolder.Id + "%27+in+parents&key=" + GoogleApiKey + "#";
+
+
+            while (!String.IsNullOrEmpty(CurrentApiLink))
+            {
+
+                var MainFolderFiles = await UtilityCustom.RestCall(CurrentApiLink);
+                foreach (var item in MainFolderFiles.items)
+                {
+                    if (item.mimeType == "application/vnd.google-apps.folder")
+                    {
+                        var Folder = new FolderAPI()
+                        {
+                            Name = item.title,
+                            Id = item.id,
+                            Files = new List<FilesApi>(),
+                            Folders = new List<FolderAPI>()
+                        };
+                        CurrentFolder.Folders.Add(Folder);
+                    }
+                    else
+                    {
+                        var File = new FilesApi()
+                        {
+                            Name = item.title,
+                            ThumbnailLink = item.thumbnailLink,
+                            Type = item.mimeType,
+                            Size = item.fileSize,
+                            Email = item.owners[0].emailAddress,
+                            Id = item.id
+                        };
+                        CurrentFolder.Files.Add(File);
+                    }
+                }
+
+                try
+                {
+                    string NextLink = MainFolderFiles.nextLink + "";
+                    if (!String.IsNullOrEmpty(NextLink))
+                    {
+                        CurrentApiLink = MainFolderFiles.nextLink + "&key=" + GoogleApiKey;
+                    }
+                    else
+                    {
+                        CurrentApiLink = null;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    CurrentApiLink = null;
+                }
+            }
+
+            return CurrentFolder;
         }
     }
 }

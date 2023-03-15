@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { Server, TokenModel } from 'src/app/Models/AdminModels';
+import { GoogleAPI, Server, TokenModel } from 'src/app/Models/AdminModels';
 import { TokenService } from 'src/app/Services/API Services/TokenService/token.service';
 import { CoreService } from 'src/app/Services/Other Services/CoreService/core.service';
 
@@ -13,7 +13,8 @@ export class SettingsComponent {
   tokenData:TokenModel = {
     servers: [],
     theMovieDBAPIKey: '',
-    showNSFWCovers: false
+    showNSFWCovers: false,
+    googleAPIs: []
   };
 
   tokenValue:string = "";
@@ -29,15 +30,46 @@ export class SettingsComponent {
   }
 
   addNewServer(){
+    if(!this.tokenData.servers){
+      this.tokenData.servers = [];
+    }
+
     let newServer:Server = {
       databaseType: 'SQLServer',
       connectionString: '',
       isSelected: false
     }
+
     this.tokenData.servers.push(newServer);
   }
 
-  SwitchChanged(ServerIndex:number){
+  addNewGoogleAPi(){
+    if(!this.tokenData.googleAPIs){
+      this.tokenData.googleAPIs = [];
+    }
+
+    let newGoogleAPi:GoogleAPI = {
+      apiKey: '',
+      isPrimary: false
+    }
+    
+    this.tokenData.googleAPIs.push(newGoogleAPi);
+  }
+
+  SwitchGoogleAPIChanged(GoogleApiIndex:number){
+    if(this.tokenData.googleAPIs[GoogleApiIndex].isPrimary){
+      this.tokenData.googleAPIs.forEach((api:GoogleAPI) => {
+        api.isPrimary = false;
+      });
+      this.tokenData.googleAPIs[GoogleApiIndex].isPrimary = true;
+    }
+  }
+
+  DeleteGoogleApi(GoogleApiIndex:number){
+    this.tokenData.googleAPIs.splice(GoogleApiIndex, 1);
+  }
+
+  SwitchServerChanged(ServerIndex:number){
     if(this.tokenData.servers[ServerIndex].isSelected){
       this.tokenData.servers.forEach((server:Server) => {
         server.isSelected = false;

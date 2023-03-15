@@ -8,4 +8,10 @@ export interface TokenModel {
     servers: Server[];
     theMovieDBAPIKey: string;
     showNSFWCovers: boolean;
+    googleAPIs: Array<GoogleAPI>;
+}
+
+export interface GoogleAPI{
+    apiKey: string;
+    isPrimary: boolean;
 }

@@ -11,6 +11,7 @@ namespace Breadcrumb.Model
         public List<Server> Servers { get; set; }
         public string TheMovieDBAPIKey { get; set; }
         public bool ShowNSFWCovers { get; set; }
+        public List<GoogleAPI> GoogleAPIs { get; set;}
     }
 
     public class Server
@@ -18,5 +19,11 @@ namespace Breadcrumb.Model
         public string DatabaseType { get; set; }
         public string ConnectionString { get; set; }
         public bool IsSelected { get; set; }
+    }
+
+    public class GoogleAPI
+    {
+        public string ApiKey { get; set; }
+        public bool IsPrimary { get; set; }
     }
 }
