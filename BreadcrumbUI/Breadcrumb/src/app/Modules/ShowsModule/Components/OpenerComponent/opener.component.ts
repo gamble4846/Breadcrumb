@@ -28,7 +28,6 @@ export class OpenerComponent {
   }
 
   UpdateAccordingToRadio() {
-    debugger
     switch (this.radioValue) {
       case "TvShows":
         this.UpdateTvShows();
