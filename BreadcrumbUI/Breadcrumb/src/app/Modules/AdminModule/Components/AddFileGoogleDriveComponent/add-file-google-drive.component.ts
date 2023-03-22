@@ -21,6 +21,7 @@ export class AddFileGoogleDriveComponent {
   };
 
   FinalFiles:Array<FinalFile> = [];
+  FileModalTitle:string = "";
 
   constructor(
     private Core:CoreService,
@@ -52,6 +53,8 @@ export class AddFileGoogleDriveComponent {
       }
       this.FinalFiles.push(finalFile);
     });
+
+    console.log(this.FinalFiles[0].FileChunks[0]);
   }
 
   drop(event: CdkDragDrop<FilesApi[]>) {
@@ -67,7 +70,7 @@ export class AddFileGoogleDriveComponent {
     }
   }
 
-  EditFileModleVisible:boolean = false;
+  EditAddFileModleVisible:boolean = false;
   FinalFileEditIndex:number = -1;
   EditFileModelData:FinalFile = {
     FileChunks: [],
@@ -77,22 +80,33 @@ export class AddFileGoogleDriveComponent {
   };
 
   handleEditFileModleCancel(){
-    this.EditFileModleVisible = false;
+    this.EditAddFileModleVisible = false;
   }
 
   handleEditFileModleOk(){
-    this.FinalFiles[this.FinalFileEditIndex] = this.EditFileModelData;
-    this.EditFileModleVisible = false;
+    if(this.FinalFileEditIndex != null){
+      this.FinalFiles[this.FinalFileEditIndex] = this.EditFileModelData;
+      this.EditAddFileModleVisible = false;
+    }
   }
 
-  ShowEditFileModle(data:FinalFile, index:number){
-    this.FinalFileEditIndex = index;
-    this.EditFileModelData = structuredClone(data);
-    this.EditFileModleVisible = true;
+  ShowEditFileModle(data:FinalFile | null = null, index:number | null = null){
+    console.log(data != null, index != null);
+    if(data != null && index != null){
+      this.FinalFileEditIndex = index;
+      this.EditFileModelData = structuredClone(data);
+      this.EditAddFileModleVisible = true;
+      this.FileModalTitle = "Edit File";
+    }
+    else{
+      this.FileModalTitle = "Add File";
+      this.EditAddFileModleVisible = true;
+    }
   }
 
   DeleteFile(index:number){
     this.FinalFiles.splice(index,1);
+    this.EditAddFileModleVisible = false;
   }
 
   SaveFiles(){

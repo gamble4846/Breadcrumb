@@ -1,7 +1,8 @@
 <div class="addFilesFromGoogleDriveContainer">
   <div class="inputContainers">
     <input nz-input placeholder="Enter Folder Id" [(ngModel)]="InputFolderId" />
-    <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="GetFilesFromGoogleDrive()">Get Files</button>
+    <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="GetFilesFromGoogleDrive()">Get
+      Files</button>
   </div>
 
   <div class="filesLinksHeader">
@@ -9,18 +10,63 @@
   </div>
   <div class="filesLinksBody">
     <div class="filesLinksContainer" cdkDropListGroup>
+      <header class="FileNameHeader" (click)="ShowEditFileModle()" style="display: flex; padding-bottom: 2.5em;">
+        <div class="svgContainer">
+          <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="25" height="25" viewBox="0 0 91 91">
+            <circle cx="45.342" cy="44.968" r="33.526" fill="#D9ECF5"></circle>
+            <path fill="#5B7C92"
+              d="M45.644,90.57c-24.817,0-45.008-20.188-45.008-45.003c0-24.815,20.191-45.004,45.008-45.004 c24.815,0,45.005,20.189,45.005,45.004C90.648,70.382,70.459,90.57,45.644,90.57z M45.644,5.607 c-22.037,0-39.964,17.926-39.964,39.96c0,22.033,17.928,39.959,39.964,39.959c22.034,0,39.961-17.926,39.961-39.959 C85.604,23.533,67.678,5.607,45.644,5.607z">
+            </path>
+            <path fill="#5B7C92"
+              d="M65.239,48.089H26.046c-1.393,0-2.522-1.129-2.522-2.521s1.129-2.522,2.522-2.522h39.193 c1.393,0,2.522,1.129,2.522,2.522S66.632,48.089,65.239,48.089z">
+            </path>
+            <path fill="#5B7C92"
+              d="M45.642,67.687c-1.393,0-2.522-1.13-2.522-2.522V25.971c0-1.393,1.129-2.522,2.522-2.522 s2.521,1.129,2.521,2.522v39.193C48.163,66.557,47.034,67.687,45.642,67.687z">
+            </path>
+          </svg>
+        </div>
+        <div style="padding-left: 10px;">
+          Add File
+        </div>
+      </header>
       <div *ngFor="let finalFile of FinalFiles; let i = index">
         <div class="FinalFileContainer">
           <header class="fileChunksCount">{{finalFile.FileChunks.length}} Chunks</header>
           <header class="FileNameHeader" (click)="ShowEditFileModle(finalFile, i)">{{finalFile.name}}</header>
-          <div class="FileChunksContainer" cdkDropList [cdkDropListData]="finalFile.FileChunks" (cdkDropListDropped)="drop($event)" nz-row [nzGutter]="16">
-            <div cdkDrag [cdkDragData]="chunk" *ngFor="let chunk of finalFile.FileChunks" class="chunkContainer" nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6">
-              <nz-card nzHoverable style="width:100%" [nzCover]="coverTemplate">
-                <nz-card-meta [nzTitle]="chunk.name"></nz-card-meta>
-              </nz-card>
-              <ng-template #coverTemplate>
-                <img alt="example" src="https://i.imgur.com/SCm1VCU.png" />
-              </ng-template>
+          <div class="FileChunksContainer" cdkDropList [cdkDropListData]="finalFile.FileChunks"
+            (cdkDropListDropped)="drop($event)">
+            <div cdkDrag [cdkDragData]="chunk" *ngFor="let chunk of finalFile.FileChunks" class="chunkContainer">
+              <div class="svgContainer">
+                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0 0 50 50"
+                  fill="white">
+                  <path
+                    d="M 15 3 C 11.691406 3 9 5.691406 9 9 C 9 12.308594 11.691406 15 15 15 C 18.308594 15 21 12.308594 21 9 C 21 5.691406 18.308594 3 15 3 Z M 35 3 C 31.691406 3 29 5.691406 29 9 C 29 12.308594 31.691406 15 35 15 C 38.308594 15 41 12.308594 41 9 C 41 5.691406 38.308594 3 35 3 Z M 15 19 C 11.691406 19 9 21.691406 9 25 C 9 28.308594 11.691406 31 15 31 C 18.308594 31 21 28.308594 21 25 C 21 21.691406 18.308594 19 15 19 Z M 35 19 C 31.691406 19 29 21.691406 29 25 C 29 28.308594 31.691406 31 35 31 C 38.308594 31 41 28.308594 41 25 C 41 21.691406 38.308594 19 35 19 Z M 15 35 C 11.691406 35 9 37.691406 9 41 C 9 44.308594 11.691406 47 15 47 C 18.308594 47 21 44.308594 21 41 C 21 37.691406 18.308594 35 15 35 Z M 35 35 C 31.691406 35 29 37.691406 29 41 C 29 44.308594 31.691406 47 35 47 C 38.308594 47 41 44.308594 41 41 C 41 37.691406 38.308594 35 35 35 Z">
+                  </path>
+                </svg>
+              </div>
+              <div style="padding-left: 5px;">
+                {{chunk.name}} <span class="editChunk">Edit</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chunkContainer" style="cursor: pointer; margin-top: 5px;">
+            <div class="svgContainer">
+              <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0 0 91 91">
+                <circle cx="45.342" cy="44.968" r="33.526" fill="#D9ECF5"></circle>
+                <path fill="#5B7C92"
+                  d="M45.644,90.57c-24.817,0-45.008-20.188-45.008-45.003c0-24.815,20.191-45.004,45.008-45.004 c24.815,0,45.005,20.189,45.005,45.004C90.648,70.382,70.459,90.57,45.644,90.57z M45.644,5.607 c-22.037,0-39.964,17.926-39.964,39.96c0,22.033,17.928,39.959,39.964,39.959c22.034,0,39.961-17.926,39.961-39.959 C85.604,23.533,67.678,5.607,45.644,5.607z">
+                </path>
+                <path fill="#5B7C92"
+                  d="M65.239,48.089H26.046c-1.393,0-2.522-1.129-2.522-2.521s1.129-2.522,2.522-2.522h39.193 c1.393,0,2.522,1.129,2.522,2.522S66.632,48.089,65.239,48.089z">
+                </path>
+                <path fill="#5B7C92"
+                  d="M45.642,67.687c-1.393,0-2.522-1.13-2.522-2.522V25.971c0-1.393,1.129-2.522,2.522-2.522 s2.521,1.129,2.521,2.522v39.193C48.163,66.557,47.034,67.687,45.642,67.687z">
+                </path>
+              </svg>
+            </div>
+            <div style="padding-left: 5px;">
+              Add New File Chunk
             </div>
           </div>
         </div>
@@ -29,19 +75,24 @@
   </div>
 </div>
 
-<nz-modal [(nzVisible)]="EditFileModleVisible" nzTitle="Edit File" (nzOnCancel)="handleEditFileModleCancel()" (nzOnOk)="handleEditFileModleOk()">
+<nz-modal [(nzVisible)]="EditAddFileModleVisible" [nzTitle]="FileModalTitle" (nzOnCancel)="handleEditFileModleCancel()"
+  (nzOnOk)="handleEditFileModleOk()">
   <ng-container *nzModalContent>
     <div>
-        <div>Name:</div>
-        <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.name" />
+      <div>Name:</div>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.name" />
     </div>
     <div>
-        <div>Thumbnail Link:</div>
-        <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.thumbnailLink" />
+      <div>Thumbnail Link:</div>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.thumbnailLink" />
     </div>
     <div>
-        <div>Type:</div>
-        <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.type" />
+      <div>Type:</div>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.type" />
+    </div>
+
+    <div style="padding: 10px 0px;">
+      <button nz-button nzType="primary" nzDanger (click)="DeleteFile(FinalFileEditIndex)">Delete</button>
     </div>
   </ng-container>
 </nz-modal>

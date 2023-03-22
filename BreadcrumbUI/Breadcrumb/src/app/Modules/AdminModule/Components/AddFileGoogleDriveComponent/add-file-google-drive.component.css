@@ -43,7 +43,10 @@
 .chunkContainer{
   cursor: grab;
   width: max-content;
-  padding: 10px 0px;
+  padding: 0px 10px;
+  display: flex;
+  justify-content: space-between;
+  transition: 0.3s ease-in-out;
 }
 
 .filesLinksHeader{
@@ -60,4 +63,10 @@
   padding: 10px;
   border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+
+.editChunk{
+  color: #87a8b8;
+  cursor: pointer;
+  text-decoration: underline;
 }

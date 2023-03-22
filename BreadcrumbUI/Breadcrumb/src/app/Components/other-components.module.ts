@@ -5,7 +5,6 @@ import { BreadCardComponent } from './BreadCardComponent/bread-card.component';
 
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { EpisodeCardComponent } from './EpisodeCardComponent/episode-card.component';
-import { DragDropModule } from "@angular/cdk/drag-drop";
 
 
 
@@ -18,7 +17,6 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
   imports: [
     CommonModule,
     NzSpinModule,
-    DragDropModule
   ],
   exports: [
     LoaderComponent,
