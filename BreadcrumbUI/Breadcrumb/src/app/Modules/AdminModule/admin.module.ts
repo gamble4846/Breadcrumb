@@ -17,29 +17,31 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { AddFileGoogleDriveComponent } from './Components/AddFileGoogleDriveComponent/add-file-google-drive.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { OtherComponentsModule } from "../../Components/other-components.module";
 
 
 @NgModule({
-  declarations: [
-    SettingsComponent,
-    AdminComponent,
-    AddFileGoogleDriveComponent
-  ],
-  imports: [
-    CommonModule,
-    AdminRoutingModule,
-    NzFormModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NzInputModule,
-    NzSelectModule,
-    NzButtonModule,
-    NzGridModule,
-    NzSwitchModule,
-    NzIconModule,
-    NzCardModule,
-    DragDropModule,
-    NzModalModule
-  ]
+    declarations: [
+        SettingsComponent,
+        AdminComponent,
+        AddFileGoogleDriveComponent
+    ],
+    imports: [
+        CommonModule,
+        AdminRoutingModule,
+        NzFormModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NzInputModule,
+        NzSelectModule,
+        NzButtonModule,
+        NzGridModule,
+        NzSwitchModule,
+        NzIconModule,
+        NzCardModule,
+        DragDropModule,
+        NzModalModule,
+        OtherComponentsModule
+    ]
 })
 export class AdminModule { }
