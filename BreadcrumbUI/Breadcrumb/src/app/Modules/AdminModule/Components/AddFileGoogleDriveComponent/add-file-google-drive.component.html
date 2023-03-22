@@ -4,22 +4,29 @@
     <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="GetFilesFromGoogleDrive()">Get Files</button>
   </div>
 
-  <div class="filesLinksContainer" cdkDropListGroup>
-    <div cdkDropList [cdkDropListData]="finalFile.FileChunks" *ngFor="let finalFile of FinalFiles; let i = index"
-      (cdkDropListDropped)="drop($event)">
-      <div class="FinalFileContainer">
-        <div class="FinalFileDataContainer">
-          {{finalFile.name}} 
-          <button nz-button style="margin-left: 5px;" nzType="primary" (click)="ShowEditFileModle(finalFile, i)"><span nz-icon nzType="edit"></span></button>
-          <button nz-button style="margin-left: 5px;"  nzType="primary" nzDanger (click)="DeleteFile(i)"><span nz-icon nzType="delete"></span></button>
+  <div class="filesLinksHeader">
+    <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="SaveFiles()">Save Files</button>
+  </div>
+  <div class="filesLinksBody">
+    <div class="filesLinksContainer" cdkDropListGroup>
+      <div *ngFor="let finalFile of FinalFiles; let i = index">
+        <div class="FinalFileContainer">
+          <header class="fileChunksCount">{{finalFile.FileChunks.length}} Chunks</header>
+          <header class="FileNameHeader" (click)="ShowEditFileModle(finalFile, i)">{{finalFile.name}}</header>
+          <div class="FileChunksContainer" cdkDropList [cdkDropListData]="finalFile.FileChunks" (cdkDropListDropped)="drop($event)" nz-row [nzGutter]="16">
+            <div cdkDrag [cdkDragData]="chunk" *ngFor="let chunk of finalFile.FileChunks" class="chunkContainer" nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6">
+              <nz-card nzHoverable style="width:100%" [nzCover]="coverTemplate">
+                <nz-card-meta [nzTitle]="chunk.name"></nz-card-meta>
+              </nz-card>
+              <ng-template #coverTemplate>
+                <img alt="example" src="https://i.imgur.com/SCm1VCU.png" />
+              </ng-template>
+            </div>
+          </div>
         </div>
-        <div class="FileChunksContainer" cdkDrag [cdkDragData]="chunk" *ngFor="let chunk of finalFile.FileChunks">
-          {{chunk.name}}</div>
       </div>
     </div>
   </div>
-
-  <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="SaveFiles()">Save Files</button>
 </div>
 
 <nz-modal [(nzVisible)]="EditFileModleVisible" nzTitle="Edit File" (nzOnCancel)="handleEditFileModleCancel()" (nzOnOk)="handleEditFileModleOk()">
