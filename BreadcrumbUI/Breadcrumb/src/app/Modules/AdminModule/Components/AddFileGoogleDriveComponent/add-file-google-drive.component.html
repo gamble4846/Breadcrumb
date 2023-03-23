@@ -91,7 +91,29 @@
       <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.type" />
     </div>
 
-    <div style="padding: 10px 0px;">
+    <div style="padding: 10px 0px;" *ngIf="FinalFileEditIndex != null">
+      <button nz-button nzType="primary" nzDanger (click)="DeleteFile(FinalFileEditIndex)">Delete</button>
+    </div>
+  </ng-container>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="EditAddFileModleVisible" [nzTitle]="FileModalTitle" (nzOnCancel)="handleEditFileModleCancel()"
+  (nzOnOk)="handleEditFileModleOk()">
+  <ng-container *nzModalContent>
+    <div>
+      <div>Name:</div>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.name" />
+    </div>
+    <div>
+      <div>Thumbnail Link:</div>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.thumbnailLink" />
+    </div>
+    <div>
+      <div>Type:</div>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.type" />
+    </div>
+
+    <div style="padding: 10px 0px;" *ngIf="FinalFileEditIndex != null">
       <button nz-button nzType="primary" nzDanger (click)="DeleteFile(FinalFileEditIndex)">Delete</button>
     </div>
   </ng-container>

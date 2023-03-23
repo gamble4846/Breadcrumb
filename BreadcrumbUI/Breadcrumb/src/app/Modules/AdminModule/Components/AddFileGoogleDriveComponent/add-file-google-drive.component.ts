@@ -71,7 +71,7 @@ export class AddFileGoogleDriveComponent {
   }
 
   EditAddFileModleVisible:boolean = false;
-  FinalFileEditIndex:number = -1;
+  FinalFileEditIndex:number | null = -1;
   EditFileModelData:FinalFile = {
     FileChunks: [],
     name: '',
@@ -88,6 +88,10 @@ export class AddFileGoogleDriveComponent {
       this.FinalFiles[this.FinalFileEditIndex] = this.EditFileModelData;
       this.EditAddFileModleVisible = false;
     }
+    else{
+      this.FinalFiles.unshift(this.EditFileModelData);
+      this.EditAddFileModleVisible = false;
+    }
   }
 
   ShowEditFileModle(data:FinalFile | null = null, index:number | null = null){
@@ -99,6 +103,7 @@ export class AddFileGoogleDriveComponent {
       this.FileModalTitle = "Edit File";
     }
     else{
+      this.FinalFileEditIndex = null;
       this.FileModalTitle = "Add File";
       this.EditAddFileModleVisible = true;
     }
