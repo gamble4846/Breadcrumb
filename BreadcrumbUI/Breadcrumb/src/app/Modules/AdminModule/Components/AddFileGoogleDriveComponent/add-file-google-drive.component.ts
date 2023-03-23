@@ -3,6 +3,7 @@ import { FilesApi, FinalFile, FolderAPI } from 'src/app/Models/FoldersAndFileApi
 import { GoogleApiService } from 'src/app/Services/API Services/GoogleApiService/google-api.service';
 import { TokenService } from 'src/app/Services/API Services/TokenService/token.service';
 import { CoreService } from 'src/app/Services/Other Services/CoreService/core.service';
+import { FilesService } from 'src/app/Services/API Services/FilesService/files.service';
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
@@ -27,6 +28,7 @@ export class AddFileGoogleDriveComponent {
     private Core:CoreService,
     private Token:TokenService,
     private GoogleApi:GoogleApiService,
+    private FilesService:FilesService,
   ) { }
 
   ngOnInit(): void {
@@ -85,11 +87,11 @@ export class AddFileGoogleDriveComponent {
 
   handleEditFileModleOk(){
     if(this.FinalFileEditIndex != null){
-      this.FinalFiles[this.FinalFileEditIndex] = this.EditFileModelData;
+      this.FinalFiles[this.FinalFileEditIndex] = structuredClone(this.EditFileModelData);
       this.EditAddFileModleVisible = false;
     }
     else{
-      this.FinalFiles.unshift(this.EditFileModelData);
+      this.FinalFiles.unshift(structuredClone(this.EditFileModelData));
       this.EditAddFileModleVisible = false;
     }
   }
@@ -103,6 +105,12 @@ export class AddFileGoogleDriveComponent {
       this.FileModalTitle = "Edit File";
     }
     else{
+      this.EditFileModelData = {
+        FileChunks: [],
+        name: '',
+        thumbnailLink: '',
+        type: ''
+      };
       this.FinalFileEditIndex = null;
       this.FileModalTitle = "Add File";
       this.EditAddFileModleVisible = true;
@@ -114,9 +122,74 @@ export class AddFileGoogleDriveComponent {
     this.EditAddFileModleVisible = false;
   }
 
-  SaveFiles(){
-    let finalDileFiltered = this.FinalFiles.filter((x:FinalFile) => x.FileChunks.length > 0);
+  EditAddFileChunkModleVisible:boolean = false;
+  EditAddFileChunkModalTitle:string = "";
+  EditAddFileChunkModelData:FilesApi = {
+    name: '',
+    thumbnailLink: '',
+    type: '',
+    size: '',
+    email: '',
+    id: ''
+  };
 
-    console.log(finalDileFiltered);
+  EditAddFileChunkIndex_File:number = 0;
+  EditAddFileChunkIndex_FileChunk:number | null = null;
+
+  handleEditAddFileChunkModleCancel(){
+    this.EditAddFileChunkModleVisible = false;
+  }
+
+  handleEditAddFileChunkModleOk(){
+    if(this.EditAddFileChunkIndex_File != null &&  this.EditAddFileChunkIndex_FileChunk != null){
+      this.FinalFiles[this.EditAddFileChunkIndex_File].FileChunks[ this.EditAddFileChunkIndex_FileChunk] = structuredClone(this.EditAddFileChunkModelData);
+      this.EditAddFileChunkModleVisible = false;
+    }
+    else{
+      this.FinalFiles[this.EditAddFileChunkIndex_File].FileChunks.unshift(structuredClone(this.EditAddFileChunkModelData));
+      this.EditAddFileChunkModleVisible = false;
+    }
+  }
+
+  ShowEditAddFileChunkModle(editAddFileChunkIndex_File:number,editAddFileChunkIndex_FileChunk:number | null = null){
+    this.EditAddFileChunkIndex_File = editAddFileChunkIndex_File;
+    this.EditAddFileChunkIndex_FileChunk = editAddFileChunkIndex_FileChunk;
+    if(this.EditAddFileChunkIndex_File != null &&  this.EditAddFileChunkIndex_FileChunk != null){
+      this.EditAddFileChunkModelData = structuredClone(this.FinalFiles[this.EditAddFileChunkIndex_File].FileChunks[ this.EditAddFileChunkIndex_FileChunk]);
+      this.EditAddFileChunkModleVisible = true;
+      this.EditAddFileChunkModalTitle = "Edit File Chunk";
+    }
+    else{
+      this.EditAddFileChunkModelData = {
+        name: '',
+        thumbnailLink: '',
+        type: '',
+        size: '',
+        email: '',
+        id: ''
+      };
+      this.EditAddFileChunkModleVisible = true;
+      this.EditAddFileChunkModalTitle = "Add File Chunk";
+    }
+  }
+
+  SaveFiles(){
+    let finalFileFiltered = this.FinalFiles.filter((x:FinalFile) => x.FileChunks.length > 0);
+    console.log(finalFileFiltered);
+    this.FilesService.AddFinalFiles(finalFileFiltered).subscribe((response:any) => {
+      if(response.code == 1){
+        this.Core.showMessage("success", "Files Saved");
+        this.InputFolderId = "";
+        this.FolderData = {
+          name: '',
+          id: '',
+          files: [...[]],
+          folders: [...[]]
+        };
+
+        this.FinalFiles = [...[]];
+        this.FileModalTitle = "";
+      }
+    })
   }
 }

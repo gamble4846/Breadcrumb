@@ -29,13 +29,13 @@
           Add File
         </div>
       </header>
-      <div *ngFor="let finalFile of FinalFiles; let i = index">
+      <div *ngFor="let finalFile of FinalFiles; let FileIndex = index">
         <div class="FinalFileContainer">
           <header class="fileChunksCount">{{finalFile.FileChunks.length}} Chunks</header>
-          <header class="FileNameHeader" (click)="ShowEditFileModle(finalFile, i)">{{finalFile.name}}</header>
+          <header class="FileNameHeader" (click)="ShowEditFileModle(finalFile, FileIndex)">{{finalFile.name}}</header>
           <div class="FileChunksContainer" cdkDropList [cdkDropListData]="finalFile.FileChunks"
             (cdkDropListDropped)="drop($event)">
-            <div cdkDrag [cdkDragData]="chunk" *ngFor="let chunk of finalFile.FileChunks" class="chunkContainer">
+            <div cdkDrag [cdkDragData]="chunk" *ngFor="let chunk of finalFile.FileChunks; let FileChunkIndex = index" class="chunkContainer">
               <div class="svgContainer">
                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0 0 50 50"
                   fill="white">
@@ -45,12 +45,12 @@
                 </svg>
               </div>
               <div style="padding-left: 5px;">
-                {{chunk.name}} <span class="editChunk">Edit</span>
+                {{chunk.name}} <span class="editChunk" (click)="ShowEditAddFileChunkModle(FileIndex,FileChunkIndex)">Edit</span>
               </div>
             </div>
           </div>
 
-          <div class="chunkContainer" style="cursor: pointer; margin-top: 5px;">
+          <div class="chunkContainer" style="cursor: pointer; margin-top: 5px;" (click)="ShowEditAddFileChunkModle(FileIndex)">
             <div class="svgContainer">
               <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0 0 91 91">
                 <circle cx="45.342" cy="44.968" r="33.526" fill="#D9ECF5"></circle>
@@ -97,24 +97,36 @@
   </ng-container>
 </nz-modal>
 
-<nz-modal [(nzVisible)]="EditAddFileModleVisible" [nzTitle]="FileModalTitle" (nzOnCancel)="handleEditFileModleCancel()"
-  (nzOnOk)="handleEditFileModleOk()">
+<nz-modal [(nzVisible)]="EditAddFileChunkModleVisible" [nzTitle]="EditAddFileChunkModalTitle" (nzOnCancel)="handleEditAddFileChunkModleCancel()"
+  (nzOnOk)="handleEditAddFileChunkModleOk()">
   <ng-container *nzModalContent>
     <div>
       <div>Name:</div>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.name" />
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.name" />
     </div>
     <div>
       <div>Thumbnail Link:</div>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.thumbnailLink" />
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.thumbnailLink" />
     </div>
     <div>
       <div>Type:</div>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileModelData.type" />
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.type" />
+    </div>
+    <div>
+      <div>Size:</div>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.size" />
+    </div>
+    <div>
+      <div>Email:</div>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.email" />
+    </div>
+    <div>
+      <div>Id:</div>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.id" />
     </div>
 
-    <div style="padding: 10px 0px;" *ngIf="FinalFileEditIndex != null">
+    <!-- <div style="padding: 10px 0px;" *ngIf="FinalFileEditIndex != null">
       <button nz-button nzType="primary" nzDanger (click)="DeleteFile(FinalFileEditIndex)">Delete</button>
-    </div>
+    </div> -->
   </ng-container>
 </nz-modal>
