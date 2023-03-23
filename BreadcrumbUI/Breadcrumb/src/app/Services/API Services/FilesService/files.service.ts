@@ -14,7 +14,12 @@ export class FilesService {
   }
 
   AddFinalFiles(finalFile:Array<FinalFile>){
-    let apiLink = `https://localhost:44376/api/Files/AddFinalFile`;
+    let apiLink = this.ApiConfigFile['MainAPI']+`api/Files/AddFinalFile`;
     return this.http.post(apiLink, finalFile);
+  }
+
+  GetNotAssignedFiles(){
+    let apiLink = `https://localhost:44376/api/Files/NotAssignedFiles`;
+    return this.http.get(apiLink);
   }
 }

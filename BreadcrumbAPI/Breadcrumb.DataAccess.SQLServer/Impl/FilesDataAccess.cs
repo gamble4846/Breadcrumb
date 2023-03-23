@@ -71,6 +71,22 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return ret;
         }
 
+        public List<vNotAssignedFilesModel> GetNotAssignedFiles()
+        {
+            var ret = new List<vNotAssignedFilesModel>();
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SELECT  v.* FROM vNotAssignedFiles v";
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<vNotAssignedFilesModel>(reader);
+                    ret.Add(t);
+                }
+            }
+            return ret;
+        }
+
     }
 }
 

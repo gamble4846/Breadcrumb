@@ -13,6 +13,7 @@ namespace Breadcrumb.Manager.Interface
     public interface IFilesManager
     {
         APIResponse AddFinalFiles(List<FinalFile> FinalFiles);
+        APIResponse GetNotAssignedFiles();
     }
 }
 

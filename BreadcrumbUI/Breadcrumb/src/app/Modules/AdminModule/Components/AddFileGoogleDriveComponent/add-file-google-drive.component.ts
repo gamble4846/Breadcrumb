@@ -32,7 +32,9 @@ export class AddFileGoogleDriveComponent {
   ) { }
 
   ngOnInit(): void {
-    
+    this.FilesService.GetNotAssignedFiles().subscribe((response:any) => {
+      console.log(response);
+    })
   }
 
   GetFilesFromGoogleDrive(){
