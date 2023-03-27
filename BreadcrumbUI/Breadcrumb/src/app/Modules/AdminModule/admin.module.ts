@@ -18,13 +18,15 @@ import { AddFileGoogleDriveComponent } from './Components/AddFileGoogleDriveComp
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { OtherComponentsModule } from "../../Components/other-components.module";
+import { AssignFilesShowSeasonsComponent } from './Components/AssignFilesShowSeasonsComponent/assign-files-show-seasons.component';
 
 
 @NgModule({
     declarations: [
         SettingsComponent,
         AdminComponent,
-        AddFileGoogleDriveComponent
+        AddFileGoogleDriveComponent,
+        AssignFilesShowSeasonsComponent
     ],
     imports: [
         CommonModule,

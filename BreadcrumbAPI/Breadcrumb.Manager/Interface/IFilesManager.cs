@@ -14,6 +14,7 @@ namespace Breadcrumb.Manager.Interface
     {
         APIResponse AddFinalFiles(List<FinalFile> FinalFiles);
         APIResponse GetNotAssignedFiles();
+        APIResponse GetFiles();
     }
 }
 

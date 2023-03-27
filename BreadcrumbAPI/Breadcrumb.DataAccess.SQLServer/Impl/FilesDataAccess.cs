@@ -87,6 +87,22 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return ret;
         }
 
+        public List<tbFilesDataModel> GetFiles()
+        {
+            var ret = new List<tbFilesDataModel>();
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SELECT  t.* FROM tbFilesData t";
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbFilesDataModel>(reader);
+                    ret.Add(t);
+                }
+            }
+            return ret;
+        }
+
     }
 }
 

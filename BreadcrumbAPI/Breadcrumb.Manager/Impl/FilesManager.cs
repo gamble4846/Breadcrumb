@@ -127,6 +127,28 @@ namespace Breadcrumb.Manager.Impl
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
             }
         }
+
+        public APIResponse GetFiles()
+        {
+            switch (ServerType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
+                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var vNotAssignedFilesList = SqlFilesDataAccess.GetFiles();
+                    if (vNotAssignedFilesList != null && vNotAssignedFilesList.Count > 0)
+                    {
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Found", vNotAssignedFilesList);
+                    }
+                    else
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Found");
+                    }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
+            }
+        }
     }
 }
 

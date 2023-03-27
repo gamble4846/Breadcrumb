@@ -2,11 +2,21 @@
   <div nz-row [nzGutter]="16" class="ToolsContainer">
     <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6">
       <a [routerLink]="['AddFileGoogleDrive']">
-        <nz-card nzHoverable style="width:100%" [nzCover]="coverTemplate">
+        <nz-card nzHoverable style="width:100%" [nzCover]="AddFilesGoogleDriveTemplate">
           <nz-card-meta nzTitle="Add Files - Google Drive" nzDescription="Add Files to your database from google drive"></nz-card-meta>
         </nz-card>
-        <ng-template #coverTemplate>
+        <ng-template #AddFilesGoogleDriveTemplate>
           <img alt="example" src="https://i.imgur.com/SCm1VCU.png" />
+        </ng-template>
+      </a>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6">
+      <a [routerLink]="['AssignFilesShowSeasons']">
+        <nz-card nzHoverable style="width:100%" [nzCover]="AssignFilesShowSeasonsTemplate">
+          <nz-card-meta nzTitle="Assign Files - Show Seasons" nzDescription="Assign Files from your database to episodes"></nz-card-meta>
+        </nz-card>
+        <ng-template #AssignFilesShowSeasonsTemplate>
+          <img alt="example" src="https://i.imgur.com/WGIXSN5.png" />
         </ng-template>
       </a>
     </div>

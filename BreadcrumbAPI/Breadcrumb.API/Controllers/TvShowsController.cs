@@ -115,6 +115,20 @@ namespace Breadcrumb.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/api/TvShows/GetAll/")]
+        public ActionResult GetAllTvshows()
+        {
+            try
+            {
+                return Ok(TvShowsManager.GetAllTvshows());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
 
 
         [HttpGet]

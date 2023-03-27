@@ -53,6 +53,20 @@ namespace Breadcrumb.API.Controllers
         }
 
         [HttpGet]
+        [Route("/api/Files/All")]
+        public ActionResult GetFiles()
+        {
+            try
+            {
+                return Ok(FilesManager.GetFiles());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpGet]
         [Route("/api/Files/NotAssignedFiles")]
         public ActionResult GetNotAssignedFiles()
         {

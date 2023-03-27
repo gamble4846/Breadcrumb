@@ -94,4 +94,9 @@ export class TvShowsService {
     let apiLink = this.ApiConfigFile['MainAPI']+`api/TvShows/Full/InsertUpdate/${IMDBId}`;
     return this.http.post(apiLink, {});
   }
+
+  GetAllTvshows(){
+    let apiLink = `https://localhost:44376/api/TvShows/GetAll`;
+    return this.http.get(apiLink);
+  }
 }

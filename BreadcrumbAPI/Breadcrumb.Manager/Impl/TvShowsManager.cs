@@ -154,6 +154,28 @@ namespace Breadcrumb.Manager.Impl
             }
         }
 
+        public APIResponse GetAllTvshows()
+        {
+            switch (ServerType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var result = SqlTvShowsDataAccess.GetAllTvshows();
+                    if (result != null && result.Count > 0)
+                    {
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Found", result);
+                    }
+                    else
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Found");
+                    }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
+            }
+        }
+
 
 
         public APIResponse GetTvShowSeasons(Guid ShowId)

@@ -162,6 +162,22 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return null;
         }
 
+        public List<vTvShowsModel> GetAllTvshows()
+        {
+            var ret = new List<vTvShowsModel>();
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SELECT  t.* FROM vTvShows t order by t.PrimaryName";
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
+                    ret.Add(t);
+                }
+            }
+            return ret;
+        }
+
 
 
         public List<tbSeasonsModel> GetTvShowSeasons(Guid ShowId)

@@ -16,6 +16,7 @@ namespace Breadcrumb.Manager.Interface
         APIResponse InsertTvShow(vTvShowsViewModel ViewModel);
         APIResponse UpdateTvShow(vTvShowsViewModel ViewModel, Guid ShowId);
         APIResponse DeleteTvShow(Guid ShowId);
+        APIResponse GetAllTvshows();
 
         APIResponse GetTvShowSeasons(Guid ShowId);
         APIResponse InsertTvShowSeason(tbSeasonsViewModel ViewModel);

@@ -1,3 +1,5 @@
+import { FilesWithShowToInsertModel, tbFilesDataModel } from "./tbFilesDataModel";
+
 export interface tbEpisodesModel {
     id: string | null;
     seasonId: string | null;
@@ -15,4 +17,11 @@ export interface tbEpisodesViewModel {
     relaseDate: Date;
     description: string;
     thumbnailLink: string;
+}
+
+export interface EpsiodesDataWithFilesModel{
+    id: string;
+    number: number;
+    name: string;
+    files: Array<FilesWithShowToInsertModel>;
 }
