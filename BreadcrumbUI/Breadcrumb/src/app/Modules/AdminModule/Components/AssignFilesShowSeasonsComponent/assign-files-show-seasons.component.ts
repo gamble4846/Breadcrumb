@@ -9,6 +9,9 @@ import { CoreService } from 'src/app/Services/Other Services/CoreService/core.se
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FilesWithShowToInsertModel, tbFilesDataModel } from 'src/app/Models/tbFilesDataModel';
 import { FilesService } from 'src/app/Services/API Services/FilesService/files.service';
+import { EpisodesWithFilesModel } from 'src/app/Models/EpisodesWithFilesModel';
+import { vFullShowFilesModel } from 'src/app/Models/vFullShowFilesModel';
+import { tbShowsFile } from 'src/app/Models/tbShowsFile';
 
 @Component({
   selector: 'app-assign-files-show-seasons',
@@ -82,12 +85,12 @@ export class AssignFilesShowSeasonsComponent {
   //#endregion
 
   //#region Episodes
-  EpisodesData: Array<tbEpisodesModel> = [];
+  EpisodesData: Array<EpisodesWithFilesModel> = [];
   EpsiodesDataWithFiles: Array<EpsiodesDataWithFilesModel> = [];
 
   UpdateTvshowEpisodes() {
     console.log(this.SelectedSeasonId);
-    this.TvShows.GetTvShowEpisodes(this.SelectedSeasonId).subscribe((response: any) => {
+    this.TvShows.GetTvShowEpisodesWithFiles(this.SelectedSeasonId).subscribe((response: any) => {
       if (response.code == 1) {
         this.EpisodesData = response.document;
         console.log(this.EpisodesData);
@@ -99,12 +102,27 @@ export class AssignFilesShowSeasonsComponent {
 
   SetupEpisodesForFileAdding() {
     this.EpsiodesDataWithFiles = [];
-    this.EpisodesData.forEach((episode: any) => {
+    this.EpisodesData.forEach((episode: EpisodesWithFilesModel) => {
+      let newFiles:Array<FilesWithShowToInsertModel> = [];
+      episode.files.forEach((file: vFullShowFilesModel) => {
+        var newFile:FilesWithShowToInsertModel = {
+          id: file.fileId,
+          description: file.description,
+          type: file.type,
+          name: file.name,
+          thumbnailLink: file.thumbnailLink,
+          quality: file.quality,
+          audioLanguages: file.audioLanguages,
+          subtitleLanguages: file.subtitleLanguages,
+          tbShowsFileID: file.showFileId
+        }
+        newFiles.push(newFile);
+      })
       let epsiodesDataWithFiles: EpsiodesDataWithFilesModel = {
         id: episode.id,
         number: episode.number,
         name: episode.name,
-        files: []
+        files: newFiles
       };
       this.EpsiodesDataWithFiles.push(epsiodesDataWithFiles);
     });
@@ -148,7 +166,8 @@ export class AssignFilesShowSeasonsComponent {
         thumbnailLink: file.thumbnailLink,
         quality: '',
         audioLanguages: '',
-        subtitleLanguages: ''
+        subtitleLanguages: '',
+        tbShowsFileID: null,
       });
     })
   }
@@ -164,6 +183,7 @@ export class AssignFilesShowSeasonsComponent {
     AudioLanguages: "",
     SubtitleLanguages: "",
   }
+  EditOnlyNewFiles: boolean = true;
   EditFileForEpisodeModleVisible: boolean = false;
   CurrentlyEditingFileForEpisode_EpsiodeIndex: number | null = null;
   CurrentlyEditingFileForEpisode_FileIndex: number | null = null;
@@ -205,18 +225,69 @@ export class AssignFilesShowSeasonsComponent {
     else {
       this.EpsiodesDataWithFiles.forEach((EpisodesData: EpsiodesDataWithFilesModel) => {
         EpisodesData.files.forEach((files: FilesWithShowToInsertModel) => {
-          files.quality = this.EditFileForEpisodeData.Quality;
-          files.audioLanguages = this.EditFileForEpisodeData.AudioLanguages;
-          files.subtitleLanguages = this.EditFileForEpisodeData.SubtitleLanguages;
+          if(this.EditOnlyNewFiles){
+            if(!files.tbShowsFileID){
+              files.quality = this.EditFileForEpisodeData.Quality;
+              files.audioLanguages = this.EditFileForEpisodeData.AudioLanguages;
+              files.subtitleLanguages = this.EditFileForEpisodeData.SubtitleLanguages;
+            }
+          }
+          else{
+            files.quality = this.EditFileForEpisodeData.Quality;
+            files.audioLanguages = this.EditFileForEpisodeData.AudioLanguages;
+            files.subtitleLanguages = this.EditFileForEpisodeData.SubtitleLanguages;
+          }
         });
       });
 
       this.FilesWithShowToInsert.forEach((FWI: FilesWithShowToInsertModel) => {
-        FWI.quality = this.EditFileForEpisodeData.Quality;
-        FWI.audioLanguages = this.EditFileForEpisodeData.AudioLanguages;
-        FWI.subtitleLanguages = this.EditFileForEpisodeData.SubtitleLanguages;
+        if(this.EditOnlyNewFiles){
+          if(!FWI.tbShowsFileID){
+            FWI.quality = this.EditFileForEpisodeData.Quality;
+            FWI.audioLanguages = this.EditFileForEpisodeData.AudioLanguages;
+            FWI.subtitleLanguages = this.EditFileForEpisodeData.SubtitleLanguages;
+          }
+        }
+        else{
+          FWI.quality = this.EditFileForEpisodeData.Quality;
+          FWI.audioLanguages = this.EditFileForEpisodeData.AudioLanguages;
+          FWI.subtitleLanguages = this.EditFileForEpisodeData.SubtitleLanguages;
+        }
       });
     }
     this.EditFileForEpisodeModleVisible = false;
+  }
+
+  SaveFilesToEpisodes(){
+    var ShowFilestoInsertUpdate:Array<tbShowsFile> = [];
+    this.EpsiodesDataWithFiles.forEach((EDWF:EpsiodesDataWithFilesModel) => {
+      EDWF.files.forEach((file:FilesWithShowToInsertModel) => {
+        let showFile:tbShowsFile = {
+          id: file.tbShowsFileID || '',
+          fileId: file.id,
+          showId: null,
+          seasonId: null,
+          episodeId: EDWF.id,
+          quality: file.quality,
+          audioLanguages: file.audioLanguages,
+          subtitleLanguages: file.subtitleLanguages
+        };
+        ShowFilestoInsertUpdate.push(showFile);
+      });
+    });
+
+    console.log(ShowFilestoInsertUpdate);
+
+    ShowFilestoInsertUpdate.forEach((SWIU:tbShowsFile) => {
+      if(!SWIU.id){
+        SWIU.id = null;
+      }
+    });
+
+    this.TvShows.InsertUpdateEpisodesFiles(ShowFilestoInsertUpdate).subscribe((response:any) => {
+      if(response.code == 1){
+        console.log(response);
+      }
+    })
   }
 }

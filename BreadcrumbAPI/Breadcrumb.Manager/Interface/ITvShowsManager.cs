@@ -6,6 +6,7 @@ using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
 using System.Threading.Tasks;
+using Breadcrumb.Model.FilesModels;
 
 namespace Breadcrumb.Manager.Interface
 {
@@ -25,12 +26,14 @@ namespace Breadcrumb.Manager.Interface
         APIResponse DeleteTvShowSeasons(Guid SeasonId);
 
         APIResponse GetTvShowEpisodes(Guid SeasonId);
+        APIResponse GetTvShowEpisodesWithFiles(Guid SeasonId);
         APIResponse InsertTvShowEpisodes(tbEpisodesViewModel ViewModel);
         APIResponse InsertUpdateTvShowEpisodesMultiple(List<tbEpisodesViewModel> ViewModelList);
         APIResponse UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId);
         APIResponse DeleteTvShowEpisodes(Guid EpisodeId);
 
         Task<APIResponse> InsertUpdateFullTvShow(string IMDBId);
+        APIResponse InsertUpdateEpisodesFiles(List<tbShowsFileViewModel> ViewModel);
     }
 }
 

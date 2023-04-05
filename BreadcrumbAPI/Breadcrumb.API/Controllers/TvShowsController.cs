@@ -18,6 +18,7 @@ using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
 using System.Threading.Tasks;
+using Breadcrumb.Model.FilesModels;
 
 namespace Breadcrumb.API.Controllers
 {
@@ -217,6 +218,20 @@ namespace Breadcrumb.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("/api/TvShows/EpisodesWithFiles/Get/{SeasonId}")]
+        public ActionResult GetTvShowEpisodesWithFiles(Guid SeasonId)
+        {
+            try
+            {
+                return Ok(TvShowsManager.GetTvShowEpisodesWithFiles(SeasonId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
         [HttpPost]
         [Route("/api/TvShows/Episodes/Insert/")]
         public ActionResult InsertTvShowEpisodes(tbEpisodesViewModel ViewModel)
@@ -282,6 +297,20 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(await TvShowsManager.InsertUpdateFullTvShow(IMDBId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/TvShows/EpisodesFiles/InsertUpdate")]
+        public ActionResult InsertUpdateEpisodesFiles(List<tbShowsFileViewModel> ViewModel)
+        {
+            try
+            {
+                return Ok(TvShowsManager.InsertUpdateEpisodesFiles(ViewModel));
             }
             catch (Exception ex)
             {

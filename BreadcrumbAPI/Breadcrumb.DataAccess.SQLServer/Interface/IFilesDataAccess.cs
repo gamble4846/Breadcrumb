@@ -13,6 +13,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
         List<tbFileDataChunksModel> SPInsertMultipleFilesChunks(List<tbFileDataChunksViewModel> tbFileDataChunksViewList);
         List<vNotAssignedFilesModel> GetNotAssignedFiles();
         List<tbFilesDataModel> GetFiles();
+        List<vFullShowFilesModel> GetFilesByEpisodeIds(String EpisodeIds);
     }
 }
 

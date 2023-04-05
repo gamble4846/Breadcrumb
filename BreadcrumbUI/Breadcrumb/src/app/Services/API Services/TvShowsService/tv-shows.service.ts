@@ -4,6 +4,7 @@ import { tbEpisodesViewModel } from 'src/app/Models/tbEpisodesModels';
 import { tbSeasonsViewModel } from 'src/app/Models/tbSeasonsModels';
 import { vTvShowsViewModel } from 'src/app/Models/vTvShowsModels';
 import { ConfigService } from '../../Other Services/ConfigService/config.service';
+import { tbShowsFile } from 'src/app/Models/tbShowsFile';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +71,11 @@ export class TvShowsService {
     return this.http.get(apiLink);
   }
 
+  GetTvShowEpisodesWithFiles(SeasonId:string){
+    let apiLink = `https://localhost:44376/api/TvShows/EpisodesWithFiles/Get/${SeasonId}`;
+    return this.http.get(apiLink);
+  }
+
   InsertTvShowEpisodes(ViewModel:tbEpisodesViewModel){
     let apiLink = this.ApiConfigFile['MainAPI']+`api/TvShows/Episodes/Insert`;
     return this.http.post(apiLink,ViewModel);
@@ -98,5 +104,10 @@ export class TvShowsService {
   GetAllTvshows(){
     let apiLink = `https://localhost:44376/api/TvShows/GetAll`;
     return this.http.get(apiLink);
+  }
+
+  InsertUpdateEpisodesFiles(model:Array<tbShowsFile>){
+    let apiLink = `https://localhost:44376/api/TvShows/EpisodesFiles/InsertUpdate`;
+    return this.http.post(apiLink, model);
   }
 }

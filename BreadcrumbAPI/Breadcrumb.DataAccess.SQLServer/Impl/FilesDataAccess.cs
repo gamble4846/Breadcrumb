@@ -103,6 +103,22 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return ret;
         }
 
+        public List<vFullShowFilesModel> GetFilesByEpisodeIds(String EpisodeIds)
+        {
+            var ret = new List<vFullShowFilesModel>();
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SELECT  t.* FROM vFullShowFiles t where EpisodeId IN (" + EpisodeIds + ")";
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<vFullShowFilesModel>(reader);
+                    ret.Add(t);
+                }
+            }
+            return ret;
+        }
+
     }
 }
 

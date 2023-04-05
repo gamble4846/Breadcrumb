@@ -15,4 +15,5 @@ export interface FilesWithShowToInsertModel {
     quality: string;
     audioLanguages:string;
     subtitleLanguages:string;
+    tbShowsFileID: string | null;
 }

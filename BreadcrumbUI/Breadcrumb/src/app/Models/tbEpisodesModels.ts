@@ -20,7 +20,7 @@ export interface tbEpisodesViewModel {
 }
 
 export interface EpsiodesDataWithFilesModel{
-    id: string;
+    id: string | null;
     number: number;
     name: string;
     files: Array<FilesWithShowToInsertModel>;

@@ -15,6 +15,8 @@ using Breadcrumb.Model;
 using System.Threading.Tasks;
 using Breadcrumb.Model.TheMovieDBModels;
 using FastMember;
+using System.Linq;
+using Breadcrumb.Model.FilesModels;
 
 namespace Breadcrumb.Manager.Impl
 {
@@ -25,6 +27,7 @@ namespace Breadcrumb.Manager.Impl
         public CommonFunctions CommonFunctions { get; set; }
         MSSqlDatabase MsSqlDatabase { get; set; }
         Breadcrumb.DataAccess.SQLServer.Interface.ITvShowsDataAccess SqlTvShowsDataAccess { get; set; }
+        Breadcrumb.DataAccess.SQLServer.Interface.IFilesDataAccess SqlFilesDataAccess { get; set; }
         public TokenModel TokenData { get; set; }
         public string ConnectionString { get; set; }
         public string ServerType { get; set; }
@@ -318,6 +321,57 @@ namespace Breadcrumb.Manager.Impl
             }
         }
 
+        public APIResponse GetTvShowEpisodesWithFiles(Guid SeasonId)
+        {
+            var TokenData = CommonFunctions.GetTokenData();
+            switch (ServerType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    List<EpisodesWithFilesModel> EpisodesWithFilesData = new List<EpisodesWithFilesModel>();
+                    var EpisodesData = SqlTvShowsDataAccess.GetTvShowEpisodes(SeasonId);
+
+                    if(EpisodesData == null || EpisodesData.Count <= 0)
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Found");
+                    }
+
+                    var CurrentEpisodeIds = "'" + String.Join("','", EpisodesData.Select(x => x.Id).ToList()) + "'";
+
+                    var AllFilesData = SqlFilesDataAccess.GetFilesByEpisodeIds(CurrentEpisodeIds);
+
+                    foreach(var episode in EpisodesData)
+                    {
+                        EpisodesWithFilesModel episodeWithFile = new EpisodesWithFilesModel();
+                        episodeWithFile.Id = episode.Id;
+                        episodeWithFile.SeasonId = episode.SeasonId;
+                        episodeWithFile.Number = episode.Number;
+                        episodeWithFile.Name = episode.Name;
+                        episodeWithFile.RelaseDate = episode.RelaseDate;
+                        episodeWithFile.Description = episode.Description;
+                        episodeWithFile.ThumbnailLink = episode.ThumbnailLink;
+                        EpisodesWithFilesData.Add(episodeWithFile);
+                    }
+
+                    if(AllFilesData != null && EpisodesData.Count > 0)
+                    {
+                        foreach(var episode in EpisodesWithFilesData)
+                        {
+                            var currentFiles = AllFilesData.Where(x => x.EpisodeId== episode.Id).ToList();
+                            episode.Files = currentFiles;
+                        }
+                    }
+
+
+                    return new APIResponse(ResponseCode.SUCCESS, "Records Found", EpisodesWithFilesData);
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
+            }
+        }
+
         public APIResponse InsertTvShowEpisodes(tbEpisodesViewModel ViewModel)
         {
             var TokenData = CommonFunctions.GetTokenData();
@@ -484,6 +538,28 @@ namespace Breadcrumb.Manager.Impl
                     FinalResult.InsertedUpdatedTvShowEpisodes = InsertedUpdatedTvShowEpisodes;
 
                     return new APIResponse(ResponseCode.SUCCESS, "TvShow Updated", FinalResult);
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
+            }
+        }
+
+        public APIResponse InsertUpdateEpisodesFiles(List<tbShowsFileViewModel> ViewModel)
+        {
+            switch (ServerType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var AllOldFilesForEpisode = SqlFilesDataAccess.GetFilesByEpisodeIds("'" + String.Join("','", ViewModel.Select(x => x.EpisodeId).ToList() + "'"));
+                    var ToUpdateShowFiles = ViewModel.Where(x => !String.IsNullOrEmpty(x.Id.ToString())).ToList();
+                    var ToInsertShowFiles = ViewModel.Where(x => String.IsNullOrEmpty(x.Id.ToString())).ToList();
+                    var ToDeleteShowFiles = AllOldFilesForEpisode.Where(x =>
+                                            !ToUpdateShowFiles.Select(y => y.Id).ToList().Contains(x.ShowFileId) &&
+                                            !ToInsertShowFiles.Select(z => z.Id).ToList().Contains(x.ShowFileId)).ToList();
+
+                    return new APIResponse(ResponseCode.ERROR, "No Records Inserted");
                 default:
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
             }

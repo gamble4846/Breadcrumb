@@ -41,7 +41,7 @@
   </div>
   <div class="EpisodesAndFilesHeader">
     <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="OpenModalEditFileForEpisode(null,null)">Edit All Files</button>
-    <button nz-button nzType="primary" nzBlock style="margin-top: 10px;">Save</button>
+    <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="SaveFilesToEpisodes()">Save</button>
   </div>
   <div class="EpisodesAndFilesBody">
     <div class="EpisodesAndFilesContainer" cdkDropListGroup>
@@ -103,6 +103,10 @@
     <div>
       <div>SubtitleLanguages:</div>
       <input nz-input placeholder="Basic usage" [(ngModel)]="EditFileForEpisodeData.SubtitleLanguages" />
+    </div>
+    <div>
+      <div>Edit Only New Files:</div>
+      <nz-switch [(ngModel)]="EditOnlyNewFiles"></nz-switch>
     </div>
   </ng-container>
 </nz-modal>
