@@ -261,3 +261,8 @@
 .cardsContainer{
   max-width: var(--main-max-width);
 }
+
+.fileViewersContainer{
+  height: 80vh;
+  overflow: auto;
+}

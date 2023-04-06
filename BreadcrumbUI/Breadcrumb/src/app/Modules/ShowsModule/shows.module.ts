@@ -15,26 +15,30 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { MyCommonModule } from "../MyCommonModule/my-common.module";
 
 
 @NgModule({
-  declarations: [
-    OpenerComponent,
-    TvShowComponent,
-    MovieComponent
-  ],
-  imports: [
-    CommonModule,
-    ShowsRoutingModule,
-    OtherComponentsModule,
-    NzGridModule,
-    NzTabsModule,
-    NzRadioModule,
-    FormsModule,
-    NzPaginationModule,
-    NzSelectModule,
-    NzIconModule,
-    NzButtonModule
-  ]
+    declarations: [
+        OpenerComponent,
+        TvShowComponent,
+        MovieComponent
+    ],
+    imports: [
+        CommonModule,
+        ShowsRoutingModule,
+        OtherComponentsModule,
+        NzGridModule,
+        NzTabsModule,
+        NzRadioModule,
+        FormsModule,
+        NzPaginationModule,
+        NzSelectModule,
+        NzIconModule,
+        NzButtonModule,
+        NzModalModule,
+        MyCommonModule
+    ]
 })
 export class ShowsModule { }

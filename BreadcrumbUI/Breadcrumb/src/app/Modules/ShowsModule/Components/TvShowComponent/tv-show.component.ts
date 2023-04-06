@@ -129,4 +129,14 @@ export class TvShowComponent {
 
     return episode.thumbnailLink;
   }
+
+  FilesModalVisible:boolean = false;
+
+  ShowFilesModal(){
+    this.FilesModalVisible = true;
+  }
+
+  CancelFilesModal(){
+    this.FilesModalVisible = false;
+  }
 }
