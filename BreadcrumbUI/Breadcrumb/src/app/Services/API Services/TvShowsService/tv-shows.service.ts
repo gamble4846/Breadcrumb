@@ -72,7 +72,7 @@ export class TvShowsService {
   }
 
   GetTvShowEpisodesWithFiles(SeasonId:string){
-    let apiLink = `https://localhost:44376/api/TvShows/EpisodesWithFiles/Get/${SeasonId}`;
+    let apiLink = this.ApiConfigFile['MainAPI']+`api/TvShows/EpisodesWithFiles/Get/${SeasonId}`;
     return this.http.get(apiLink);
   }
 
@@ -102,12 +102,12 @@ export class TvShowsService {
   }
 
   GetAllTvshows(){
-    let apiLink = `https://localhost:44376/api/TvShows/GetAll`;
+    let apiLink = this.ApiConfigFile['MainAPI']+`api/TvShows/GetAll`;
     return this.http.get(apiLink);
   }
 
   InsertUpdateEpisodesFiles(model:Array<tbShowsFile>, SeasonId:string){
-    let apiLink = `https://localhost:44376/api/TvShows/EpisodesFiles/InsertUpdateDelete/${SeasonId}`;
+    let apiLink = this.ApiConfigFile['MainAPI']+`api/TvShows/EpisodesFiles/InsertUpdateDelete/${SeasonId}`;
     return this.http.post(apiLink, model);
   }
 }

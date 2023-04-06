@@ -19,12 +19,12 @@ export class FilesService {
   }
 
   GetNotAssignedFiles(){
-    let apiLink = `https://localhost:44376/api/Files/NotAssignedFiles`;
+    let apiLink = this.ApiConfigFile['MainAPI']+`api/Files/NotAssignedFiles`;
     return this.http.get(apiLink);
   }
 
   GetAllFiles(){
-    let apiLink = `https://localhost:44376/api/Files/All`;
+    let apiLink = this.ApiConfigFile['MainAPI']+`api/Files/All`;
     return this.http.get(apiLink);
   }
 }
