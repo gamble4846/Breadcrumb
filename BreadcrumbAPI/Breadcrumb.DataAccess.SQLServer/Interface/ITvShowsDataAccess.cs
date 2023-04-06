@@ -1,3 +1,4 @@
+using Breadcrumb.Model.FilesModels;
 using Breadcrumb.Model.tbEpisodesModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.vTvShowsModels;
@@ -26,6 +27,10 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
         List<tbEpisodesModel> InsertUpdateTvShowEpisodesMultiple(List<tbEpisodesViewModel> ViewModelList);
         tbEpisodesModel UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId);
         tbEpisodesModel DeleteTvShowEpisodes(Guid EpisodeId);
+        List<Guid> GetEpisodeIdsFromSeasonID(Guid SeasonId);
+
+        List<tbShowsFileModel> InsertUpdateShowFiles(List<tbShowsFileViewModel> ViewModelList);
+        bool DeleteMultipleShowFiles(string ShowFileIds);
     }
 }
 

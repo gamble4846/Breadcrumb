@@ -106,8 +106,8 @@ export class TvShowsService {
     return this.http.get(apiLink);
   }
 
-  InsertUpdateEpisodesFiles(model:Array<tbShowsFile>){
-    let apiLink = `https://localhost:44376/api/TvShows/EpisodesFiles/InsertUpdate`;
+  InsertUpdateEpisodesFiles(model:Array<tbShowsFile>, SeasonId:string){
+    let apiLink = `https://localhost:44376/api/TvShows/EpisodesFiles/InsertUpdateDelete/${SeasonId}`;
     return this.http.post(apiLink, model);
   }
 }

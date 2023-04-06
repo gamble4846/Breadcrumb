@@ -17,6 +17,7 @@ using Breadcrumb.Model.TheMovieDBModels;
 using FastMember;
 using System.Linq;
 using Breadcrumb.Model.FilesModels;
+using static System.Net.WebRequestMethods;
 
 namespace Breadcrumb.Manager.Impl
 {
@@ -543,7 +544,7 @@ namespace Breadcrumb.Manager.Impl
             }
         }
 
-        public APIResponse InsertUpdateEpisodesFiles(List<tbShowsFileViewModel> ViewModel)
+        public APIResponse InsertUpdateDeleteEpisodesFiles(List<tbShowsFileViewModel> ViewModel, Guid SeasonId)
         {
             switch (ServerType)
             {
@@ -552,14 +553,19 @@ namespace Breadcrumb.Manager.Impl
                     SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
                     SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
 
-                    var AllOldFilesForEpisode = SqlFilesDataAccess.GetFilesByEpisodeIds("'" + String.Join("','", ViewModel.Select(x => x.EpisodeId).ToList() + "'"));
-                    var ToUpdateShowFiles = ViewModel.Where(x => !String.IsNullOrEmpty(x.Id.ToString())).ToList();
-                    var ToInsertShowFiles = ViewModel.Where(x => String.IsNullOrEmpty(x.Id.ToString())).ToList();
-                    var ToDeleteShowFiles = AllOldFilesForEpisode.Where(x =>
-                                            !ToUpdateShowFiles.Select(y => y.Id).ToList().Contains(x.ShowFileId) &&
-                                            !ToInsertShowFiles.Select(z => z.Id).ToList().Contains(x.ShowFileId)).ToList();
+                    var AllEpisodesIds = SqlTvShowsDataAccess.GetEpisodeIdsFromSeasonID(SeasonId);
+                    var AllOldFilesForEpisode = SqlFilesDataAccess.GetFilesByEpisodeIds("'" + String.Join("','", AllEpisodesIds) + "'");
 
-                    return new APIResponse(ResponseCode.ERROR, "No Records Inserted");
+                    var ToDeleteShowFiles = AllOldFilesForEpisode.Where(x => !ViewModel.Select(y => y.Id).ToList().Contains(x.ShowFileId)).ToList();
+
+                    var InsertedUpdated = SqlTvShowsDataAccess.InsertUpdateShowFiles(ViewModel);
+
+                    if(ToDeleteShowFiles != null && ToDeleteShowFiles.Count > 0)
+                    {
+                        var DeleteSuccess = SqlTvShowsDataAccess.DeleteMultipleShowFiles("'" + String.Join("','", ToDeleteShowFiles.Select(x => x.ShowFileId).ToList()) + "'");
+                    }
+
+                    return new APIResponse(ResponseCode.SUCCESS, "Insert Update Delete Files Completed", InsertedUpdated);
                 default:
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
             }

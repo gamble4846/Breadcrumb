@@ -284,9 +284,9 @@ export class AssignFilesShowSeasonsComponent {
       }
     });
 
-    this.TvShows.InsertUpdateEpisodesFiles(ShowFilestoInsertUpdate).subscribe((response:any) => {
+    this.TvShows.InsertUpdateEpisodesFiles(ShowFilestoInsertUpdate,this.SelectedSeasonId).subscribe((response:any) => {
       if(response.code == 1){
-        console.log(response);
+        this.Core.showMessage("success",response.message);
       }
     })
   }

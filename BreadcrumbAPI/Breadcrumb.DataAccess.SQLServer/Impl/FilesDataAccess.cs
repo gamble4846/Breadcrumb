@@ -107,7 +107,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
         {
             var ret = new List<vFullShowFilesModel>();
             var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  t.* FROM vFullShowFiles t where EpisodeId IN (" + EpisodeIds + ")";
+            cmd.CommandText = @"SELECT  t.* FROM vFullShowFiles t where t.EpisodeId IN (" + EpisodeIds + ")";
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())

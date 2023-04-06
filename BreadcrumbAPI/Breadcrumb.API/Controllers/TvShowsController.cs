@@ -305,12 +305,12 @@ namespace Breadcrumb.API.Controllers
         }
 
         [HttpPost]
-        [Route("/api/TvShows/EpisodesFiles/InsertUpdate")]
-        public ActionResult InsertUpdateEpisodesFiles(List<tbShowsFileViewModel> ViewModel)
+        [Route("/api/TvShows/EpisodesFiles/InsertUpdateDelete/{SeasonId}")]
+        public ActionResult InsertUpdateDeleteEpisodesFiles(List<tbShowsFileViewModel> ViewModel, Guid SeasonId)
         {
             try
             {
-                return Ok(TvShowsManager.InsertUpdateEpisodesFiles(ViewModel));
+                return Ok(TvShowsManager.InsertUpdateDeleteEpisodesFiles(ViewModel, SeasonId));
             }
             catch (Exception ex)
             {

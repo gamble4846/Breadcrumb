@@ -18,31 +18,33 @@ import { LoaderInterceptorService } from './Services/Interceptors/LoaderIntercep
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { ErrorInterceptorService } from './Services/Interceptors/ErrorInterceptor/error-interceptor.service';
 import { OtherComponentsModule } from './Components/other-components.module';
+import { MyCommonModule } from "./Modules/MyCommonModule/my-common.module";
 
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    NavigationModule,
-    NzSpinModule,
-    NzMessageModule,
-    OtherComponentsModule
-  ],
-  providers: [
-    { provide: NZ_I18N, useValue: en_US },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptorService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
-    { provide: APP_INITIALIZER, multi: true, deps: [ConfigService], useFactory: (ConfigService: ConfigService) => { return () => { return ConfigService.loadEverything(); }; }, },
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent
+    ],
+    providers: [
+        { provide: NZ_I18N, useValue: en_US },
+        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptorService, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptorService, multi: true },
+        { provide: APP_INITIALIZER, multi: true, deps: [ConfigService], useFactory: (ConfigService: ConfigService) => { return () => { return ConfigService.loadEverything(); }; }, },
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        NavigationModule,
+        NzSpinModule,
+        NzMessageModule,
+        OtherComponentsModule,
+        MyCommonModule
+    ]
 })
 export class AppModule { }

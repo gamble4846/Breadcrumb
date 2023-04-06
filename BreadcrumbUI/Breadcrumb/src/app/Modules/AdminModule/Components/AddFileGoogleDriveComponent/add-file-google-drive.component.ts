@@ -13,7 +13,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 })
 export class AddFileGoogleDriveComponent {
 
-  InputFolderId:string = "19T8z9XGbaEqTxbwuUblbsJmGo3veWht-";
+  InputFolderId:string = "";
   FolderData:FolderAPI = {
     name: '',
     id: '',
@@ -32,9 +32,9 @@ export class AddFileGoogleDriveComponent {
   ) { }
 
   ngOnInit(): void {
-    this.FilesService.GetNotAssignedFiles().subscribe((response:any) => {
-      console.log(response);
-    })
+    // this.FilesService.GetNotAssignedFiles().subscribe((response:any) => {
+    //   console.log(response);
+    // })
   }
 
   GetFilesFromGoogleDrive(){

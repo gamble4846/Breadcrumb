@@ -33,7 +33,7 @@ namespace Breadcrumb.Manager.Interface
         APIResponse DeleteTvShowEpisodes(Guid EpisodeId);
 
         Task<APIResponse> InsertUpdateFullTvShow(string IMDBId);
-        APIResponse InsertUpdateEpisodesFiles(List<tbShowsFileViewModel> ViewModel);
+        APIResponse InsertUpdateDeleteEpisodesFiles(List<tbShowsFileViewModel> ViewModelStrings, Guid SeasonId);
     }
 }
 

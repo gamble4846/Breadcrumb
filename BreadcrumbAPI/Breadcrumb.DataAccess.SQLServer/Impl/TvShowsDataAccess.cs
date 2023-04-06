@@ -9,6 +9,7 @@ using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
 using Breadcrumb.Model.tbCoversModels;
+using Breadcrumb.Model.FilesModels;
 
 namespace Breadcrumb.DataAccess.SQLServer.Impl
 {
@@ -407,6 +408,62 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             }
 
             return null;
+        }
+
+
+
+        public List<tbShowsFileModel> InsertUpdateShowFiles(List<tbShowsFileViewModel> ViewModelList)
+        {
+            var ShowsFileInsertUpdateSP = UtilityCustom.ToDataTable<tbShowsFileViewModel>(ViewModelList);
+            var ret = new List<tbShowsFileModel>();
+
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SPInsertUpdateShowsFileMultiple";
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = ShowsFileInsertUpdateSP;
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbShowsFileModel>(reader);
+                    ret.Add(t);
+                }
+            }
+
+            return ret;
+        }
+
+        public bool DeleteMultipleShowFiles(string ShowFileIds)
+        {
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            SqlTransaction transaction = this.MSSqlDatabase.Connection.BeginTransaction("");
+            cmd.Transaction = transaction;
+            cmd.CommandText = @"DELETE FROM tbShowsFile Where Id IN (" + ShowFileIds + ")";
+            var recs = cmd.ExecuteNonQuery();
+            if (recs > 0)
+            {
+                transaction.Commit();
+                return true;
+            }
+            return false;
+        }
+
+        public List<Guid> GetEpisodeIdsFromSeasonID(Guid SeasonId)
+        {
+            var ret = new List<Guid>();
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"Select Id as EpisodeId from [tbEpisodes] Where [SeasonId] = @SeasonId";
+            cmd.Parameters.AddWithValue("@SeasonId", SeasonId);
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    ret.Add(reader.GetValue<Guid>("EpisodeId"));
+                }
+            }
+            return ret;
         }
     }
 }
