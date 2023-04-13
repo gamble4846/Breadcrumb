@@ -8,6 +8,9 @@ import { TvShowsService } from 'src/app/Services/API Services/TvShowsService/tv-
 import { ConfigService } from 'src/app/Services/Other Services/ConfigService/config.service';
 import { CoreService } from 'src/app/Services/Other Services/CoreService/core.service';
 import { RandomCovers } from '../../OpenerModels';
+import { FilesService } from 'src/app/Services/API Services/FilesService/files.service';
+import { FullShowFilesWithChunksModel } from 'src/app/Models/FullShowFilesWithChunksModel';
+import { FilesViewerModel } from 'src/app/Modules/MyCommonModule/Components/Models/FilesViewerModel';
 
 @Component({
   selector: 'app-tv-show',
@@ -50,6 +53,7 @@ export class TvShowComponent {
     private Config:ConfigService,
     private router: Router,
     private route: ActivatedRoute,
+    private _Files:FilesService,
   ) { }
 
   ngOnInit(): void {
@@ -131,8 +135,16 @@ export class TvShowComponent {
   }
 
   FilesModalVisible:boolean = false;
+  FilesViewerData:FilesViewerModel = {
+    FileToGetFrom: '',
+    PrimaryId: ''
+  };
 
-  ShowFilesModal(){
+  ShowFilesModal(EpisodeId:string | null){
+    this.FilesViewerData = {
+      FileToGetFrom: 'Episode',
+      PrimaryId: EpisodeId || ""
+    }
     this.FilesModalVisible = true;
   }
 

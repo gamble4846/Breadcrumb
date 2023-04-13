@@ -10,7 +10,7 @@ namespace Breadcrumb.Model.FilesModels
     {
         public Guid FileDataID { get; set; }
         public string Email { get; set; }
-        public string Size { get; set; }
+        public decimal Size { get; set; }
         public string Password { get; set; }
         public string Link { get; set; }
         public string OtherData { get; set; }

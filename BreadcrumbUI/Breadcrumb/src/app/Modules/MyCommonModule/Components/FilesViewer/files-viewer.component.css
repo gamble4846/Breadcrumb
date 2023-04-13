@@ -63,3 +63,17 @@
 .masterDetailContent {
   height: 100%;
 }
+
+.tablesContainer{
+  flex-grow: 2;
+}
+
+.FileInformationContainer{
+  border: 1px solid #340262;
+  width: 100%;
+}
+
+.FilesDataContainer{
+  padding: 20px;
+  color: white;
+}

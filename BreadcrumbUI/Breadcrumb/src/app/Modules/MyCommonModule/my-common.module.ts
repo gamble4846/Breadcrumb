@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { MyCommonRoutingModule } from './my-common-routing.module';
 import { FilesViewerComponent } from './Components/FilesViewer/files-viewer.component';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { FilesViewerComponent } from './Components/FilesViewer/files-viewer.comp
   ],
   imports: [
     CommonModule,
-    MyCommonRoutingModule
+    MyCommonRoutingModule,
+    NzCollapseModule
   ],
   exports: [
     FilesViewerComponent

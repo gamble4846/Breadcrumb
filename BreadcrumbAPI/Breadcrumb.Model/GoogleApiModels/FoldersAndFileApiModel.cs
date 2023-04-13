@@ -19,7 +19,7 @@ namespace Breadcrumb.Model.GoogleApiModels
         public string Name { get; set; }
         public string ThumbnailLink { get; set; }
         public string Type { get; set; }
-        public string Size { get; set; }
+        public decimal? Size { get; set; }
         public string Email { get; set; }
         public string Id { get; set; }
     }

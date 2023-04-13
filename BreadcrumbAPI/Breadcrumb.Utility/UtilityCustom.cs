@@ -71,6 +71,29 @@ namespace Breadcrumb.Utility
             return dataTable;
         }
 
+        public static dynamic GetFullQueryRow(SqlDataReader rd)
+        {
+            dynamic RowData = new System.Dynamic.ExpandoObject();
+
+            for (int i = 0; i < rd.FieldCount; i++)
+            {
+                var currentValue = rd.GetValue(i);
+                var currentColumn = rd.GetName(i);
+                var currentType = rd.GetFieldType(i);
+
+                if (String.IsNullOrEmpty(currentValue.ToString()))
+                {
+                    ((IDictionary<String, Object>)RowData).Add(currentColumn, null);
+                }
+                else
+                {
+                    ((IDictionary<String, Object>)RowData).Add(currentColumn, currentValue);
+                }
+            }
+
+            return RowData;
+        }
+
         public static async Task<dynamic> RestCall(string ApiLink)
         {
             dynamic data = await _httpClient.GetStringAsync(ApiLink);

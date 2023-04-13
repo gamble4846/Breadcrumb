@@ -27,4 +27,9 @@ export class FilesService {
     let apiLink = this.ApiConfigFile['MainAPI']+`api/Files/All`;
     return this.http.get(apiLink);
   }
+
+  FilesWithChunksFromEpisodeId(EpisodeId:string){
+    let apiLink = this.ApiConfigFile['MainAPI']+`api/FilesWithChunks/${EpisodeId}`;
+    return this.http.get(apiLink);
+  }
 }

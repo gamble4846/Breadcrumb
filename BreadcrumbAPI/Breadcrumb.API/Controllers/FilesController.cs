@@ -79,5 +79,19 @@ namespace Breadcrumb.API.Controllers
                 return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
             }
         }
+
+        [HttpGet]
+        [Route("/api/FilesWithChunks/{EpisodeId}")]
+        public ActionResult FilesWithChunksFromEpisodeId(Guid EpisodeId)
+        {
+            try
+            {
+                return Ok(FilesManager.FilesWithChunksFromEpisodeId(EpisodeId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
     }
 }

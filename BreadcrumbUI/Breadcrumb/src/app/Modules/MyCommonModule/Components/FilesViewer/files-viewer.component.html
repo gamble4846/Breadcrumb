@@ -2,107 +2,28 @@
   <section class="masterDetailContent">
     <div class="cardsContainerUpper">
       <div class="cardsContainer">
-        <div class="CardContainer selected">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer selected">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer selected">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
-        <div class="CardContainer">
-          <div class="CardInnerContainer">
-            <div>1080p</div>
-            <div>English</div>
-            <div>1080p</div>
-            <div>English</div>
-          </div>
-        </div>
+        <ng-container *ngIf="this.FilesViewerData.FileToGetFrom == 'Episode'">
+          <ng-container *ngFor="let file of AllFiles">
+            <div class="CardContainer" (click)="FileSelected(file.ALLFileModelID)" [ngClass]="{'selected': file.ALLFileModelID == SelectedFile.ALLFileModelID}">
+              <div class="CardInnerContainer">
+                <div>Quality - {{file.quality}}</div>
+                <div>Audio - {{file.audioLanguages}}</div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
       </div>
     </div>
     <div class="tablesContainer">
-      <section class="CurrentAllocations">
-
+      <section class="FilesDataContainer">
+        <div class="FileInformationContainer">
+          <nz-collapse nzGhost>
+            <nz-collapse-panel nzHeader="File Information" [nzActive]="isFileInfoOpen">
+              
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+        
       </section>
     </div>
   </section>

@@ -1,4 +1,7 @@
+import { tbFileDataChunksModel } from "src/app/Models/tbFileDataChunksModel";
+
 export interface AllFilesModel {
+    ALLFileModelID: string;
     showFileId: string | null;
     fileId: string | null;
     description: string | null;
@@ -11,4 +14,5 @@ export interface AllFilesModel {
     quality: string | null;
     audioLanguages: string | null;
     subtitleLanguages: string | null;
+    chunks: Array<tbFileDataChunksModel> | null;
 }

@@ -18,6 +18,9 @@ using FastMember;
 using System.Collections;
 using Breadcrumb.Model.FilesModels;
 using Breadcrumb.Model.GoogleApiModels;
+using System.Linq;
+using static System.Net.WebRequestMethods;
+using System.Drawing;
 
 namespace Breadcrumb.Manager.Impl
 {
@@ -79,17 +82,17 @@ namespace Breadcrumb.Manager.Impl
                     {
                         foreach(var fileChunk in FinalFiles[indexFF].FileChunks)
                         {
-                            var tbFileDataChunksViewModel = new tbFileDataChunksViewModel()
+                            var tbFileDataChunks = new tbFileDataChunksViewModel()
                             {
                                 FileDataID = tbFilesData[indexFF].Id,
                                 Email = fileChunk.Email,
-                                Size = fileChunk.Size,
                                 Password = null,
                                 Link = "https://docs.google.com/document/d/"+ fileChunk.Id + "/edit?usp=share_link",
                                 OtherData = null,
                             };
+                            try { tbFileDataChunks.Size = Decimal.Parse(fileChunk.Size.ToString()); } catch { tbFileDataChunks.Size = 0; }
 
-                            tbFileDataChunksViewList.Add(tbFileDataChunksViewModel);
+                            tbFileDataChunksViewList.Add(tbFileDataChunks);
                         }
                     }
 
@@ -145,6 +148,50 @@ namespace Breadcrumb.Manager.Impl
                     {
                         return new APIResponse(ResponseCode.ERROR, "No Records Found");
                     }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
+            }
+        }
+
+        public APIResponse FilesWithChunksFromEpisodeId(Guid EpisodeId)
+        {
+            switch (ServerType)
+            {
+                case "SQLServer":
+                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
+                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+
+                    var EpisodeFiles = SqlFilesDataAccess.GetFilesByEpisodeIds("'" + EpisodeId + "'");
+                    if (EpisodeFiles == null || EpisodeFiles.Count <= 0)
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Found");
+                    }
+
+                    var AllFileIds = EpisodeFiles.Select(x => x.FileId).ToList();
+                    var AllFileChunks = SqlFilesDataAccess.GetChunksFromFileIds("'" + String.Join("','", AllFileIds) + "'");
+
+                    List<FullShowFilesWithChunksModel> ShowFilesWithChunks = new List<FullShowFilesWithChunksModel>();
+
+                    foreach (var file in EpisodeFiles)
+                    {
+                        var ShowFileWithChunks = new FullShowFilesWithChunksModel();
+                        ShowFileWithChunks.ShowFileId = file.ShowFileId;
+                        ShowFileWithChunks.FileId = file.FileId;
+                        ShowFileWithChunks.Description = file.Description;
+                        ShowFileWithChunks.Type = file.Type;
+                        ShowFileWithChunks.Name = file.Name;
+                        ShowFileWithChunks.ThumbnailLink = file.ThumbnailLink;
+                        ShowFileWithChunks.ShowId = file.ShowId;
+                        ShowFileWithChunks.SeasonId = file.SeasonId;
+                        ShowFileWithChunks.EpisodeId = file.EpisodeId;
+                        ShowFileWithChunks.Quality = file.Quality;
+                        ShowFileWithChunks.AudioLanguages = file.AudioLanguages;
+                        ShowFileWithChunks.SubtitleLanguages = file.SubtitleLanguages;
+                        ShowFileWithChunks.Chunks = AllFileChunks.Where(x => x.FileDataID == file.FileId).ToList();
+                        ShowFilesWithChunks.Add(ShowFileWithChunks);
+                    }
+
+                    return new APIResponse(ResponseCode.SUCCESS, "Records Found", ShowFilesWithChunks);
                 default:
                     return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
             }

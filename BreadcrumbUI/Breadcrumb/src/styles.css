@@ -137,3 +137,7 @@
 .FilesViewerModal .ant-modal-close-x{
   color: white;
 }
+
+.FilesDataContainer .ant-collapse{
+  color: white !important;
+}

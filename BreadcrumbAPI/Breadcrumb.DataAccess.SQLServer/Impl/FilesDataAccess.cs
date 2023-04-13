@@ -119,6 +119,22 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             return ret;
         }
 
+        public List<tbFileDataChunksModel> GetChunksFromFileIds(String FileIds)
+        {
+            var ret = new List<tbFileDataChunksModel>();
+            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
+            cmd.CommandText = @"SELECT  t.* FROM tbFIleDataChunks t where t.FileDataID IN (" + FileIds + ")";
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var t = UtilityCustom.ConvertReaderToObject<tbFileDataChunksModel>(reader);
+                    ret.Add(t);
+                }
+            }
+            return ret;
+        }
+
     }
 }
 

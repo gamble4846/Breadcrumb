@@ -14,6 +14,7 @@ namespace Breadcrumb.DataAccess.SQLServer.Interface
         List<vNotAssignedFilesModel> GetNotAssignedFiles();
         List<tbFilesDataModel> GetFiles();
         List<vFullShowFilesModel> GetFilesByEpisodeIds(String EpisodeIds);
+        List<tbFileDataChunksModel> GetChunksFromFileIds(String FileIds);
     }
 }
 
