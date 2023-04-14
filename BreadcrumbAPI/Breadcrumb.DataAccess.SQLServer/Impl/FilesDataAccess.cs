@@ -11,130 +11,112 @@ using Breadcrumb.Model.tbEpisodesModels;
 using Breadcrumb.Model.tbCoversModels;
 using Breadcrumb.Model.FilesModels;
 using Breadcrumb.Model.vMoviesModels;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Reflection;
 
 namespace Breadcrumb.DataAccess.SQLServer.Impl
 {
     public class FilesDataAccess : IFilesDataAccess
     {
-        private MSSqlDatabase MSSqlDatabase { get; set; }
+        private String ConnectionString { get; set; }
         private CommonFunctions CommonFunctions { get; set; }
 
-        public FilesDataAccess(MSSqlDatabase msSqlDatabase, CommonFunctions commonFunctions)
+        public FilesDataAccess(String connectionString, CommonFunctions commonFunctions)
         {
-            MSSqlDatabase = msSqlDatabase;
             CommonFunctions = commonFunctions;
+            ConnectionString = connectionString;
         }
 
         public List<tbFilesDataModel> SPInsertMultipleFiles(List<tbFilesDataViewModel> tbFilesDataViewModel)
         {
             var FilesDataMultipleInsertSP = UtilityCustom.ToDataTable<tbFilesDataViewModel>(tbFilesDataViewModel);
-
             var ret = new List<tbFilesDataModel>();
-
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPInsertMultipleFiles";
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = FilesDataMultipleInsertSP;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbFilesDataModel>(reader);
-                    ret.Add(t);
-                }
-            }
+                string CommandText = @"SPInsertMultipleFiles";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = FilesDataMultipleInsertSP;
 
-            return ret;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbFilesDataModel>();
+                return ret;
+            }
         }
 
         public List<tbFileDataChunksModel> SPInsertMultipleFilesChunks(List<tbFileDataChunksViewModel> tbFileDataChunksViewList)
         {
             var FilesDataChunksMultipleInsertSP = UtilityCustom.ToDataTable<tbFileDataChunksViewModel>(tbFileDataChunksViewList);
-
             var ret = new List<tbFileDataChunksModel>();
-
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPInsertMultipleFilesChunks";
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = FilesDataChunksMultipleInsertSP;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbFileDataChunksModel>(reader);
-                    ret.Add(t);
-                }
-            }
+                string CommandText = @"SPInsertMultipleFilesChunks";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = FilesDataChunksMultipleInsertSP;
 
-            return ret;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbFileDataChunksModel>();
+                return ret;
+            }
         }
 
         public List<vNotAssignedFilesModel> GetNotAssignedFiles()
         {
             var ret = new List<vNotAssignedFilesModel>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  v.* FROM vNotAssignedFiles v";
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vNotAssignedFilesModel>(reader);
-                    ret.Add(t);
-                }
+                string CommandText = @"SELECT  v.* FROM vNotAssignedFiles v";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<vNotAssignedFilesModel>();
+                return ret;
             }
-            return ret;
         }
 
         public List<tbFilesDataModel> GetFiles()
         {
             var ret = new List<tbFilesDataModel>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  t.* FROM tbFilesData t";
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbFilesDataModel>(reader);
-                    ret.Add(t);
-                }
+                string CommandText = @"XISELECT  t.* FROM tbFilesData tIX";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbFilesDataModel>();
+                return ret;
             }
-            return ret;
         }
 
         public List<vFullShowFilesModel> GetFilesByEpisodeIds(String EpisodeIds)
         {
             var ret = new List<vFullShowFilesModel>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  t.* FROM vFullShowFiles t where t.EpisodeId IN (" + EpisodeIds + ")";
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vFullShowFilesModel>(reader);
-                    ret.Add(t);
-                }
+                string CommandText = @"SELECT  t.* FROM vFullShowFiles t where t.EpisodeId IN (" + EpisodeIds + ")";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<vFullShowFilesModel>();
+                return ret;
             }
-            return ret;
         }
 
         public List<tbFileDataChunksModel> GetChunksFromFileIds(String FileIds)
         {
-            var ret = new List<tbFileDataChunksModel>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  t.* FROM tbFIleDataChunks t where t.FileDataID IN (" + FileIds + ")";
-            using (var reader = cmd.ExecuteReader())
+            var ret = new List<tbFileDataChunksModel>(); 
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbFileDataChunksModel>(reader);
-                    ret.Add(t);
-                }
-            }
-            return ret;
-        }
+                string CommandText = @"SELECT  t.* FROM tbFIleDataChunks t where t.FileDataID IN (" + FileIds + ")";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
 
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbFileDataChunksModel>();
+                return ret;
+            }
+        }
     }
 }
 

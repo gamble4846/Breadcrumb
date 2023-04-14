@@ -24,7 +24,6 @@ namespace Breadcrumb.Manager.Impl
         public IConfiguration Configuration { get; }
         public IHttpContextAccessor HttpContextAccessor { get; set; }
         public CommonFunctions CommonFunctions { get; set; }
-        MSSqlDatabase MsSqlDatabase { get; set; }
         Breadcrumb.DataAccess.SQLServer.Interface.ICoversDataAccess SqlCoversDataAccess { get; set; }
         public TokenModel TokenData { get; set; }
         public string ConnectionString { get; set; }
@@ -45,8 +44,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlCoversDataAccess = new CoversDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlCoversDataAccess = new CoversDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlCoversDataAccess.GetCoverByBreadId(BreadId);
                     if (result != null && result.Count > 0)
@@ -67,8 +65,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlCoversDataAccess = new CoversDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlCoversDataAccess = new CoversDataAccess(ConnectionString, CommonFunctions);
 
                     var BreadIdsSTR = "'" + String.Join("','", BreadIds.ToArray()) + "'";
 

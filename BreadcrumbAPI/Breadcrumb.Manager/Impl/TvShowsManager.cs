@@ -26,7 +26,6 @@ namespace Breadcrumb.Manager.Impl
         public IConfiguration Configuration { get; }
         public IHttpContextAccessor HttpContextAccessor { get; set; }
         public CommonFunctions CommonFunctions { get; set; }
-        MSSqlDatabase MsSqlDatabase { get; set; }
         Breadcrumb.DataAccess.SQLServer.Interface.ITvShowsDataAccess SqlTvShowsDataAccess { get; set; }
         Breadcrumb.DataAccess.SQLServer.Interface.IFilesDataAccess SqlFilesDataAccess { get; set; }
         public TokenModel TokenData { get; set; }
@@ -50,8 +49,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.GetTvShows(page, itemsPerPage, orderBy, FilterQuery);
                     if (result != null)
@@ -73,8 +71,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.GetTvshowById(ShowId);
                     if (result != null)
@@ -95,8 +92,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.InsertTvShows(ViewModel);
                     if (result != null)
@@ -118,8 +114,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.UpdateTvShow(ViewModel, ShowId);
                     if (result != null)
@@ -141,8 +136,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.DeleteTvShow(ShowId);
                     if (result != null)
@@ -163,8 +157,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.GetAllTvshows();
                     if (result != null && result.Count > 0)
@@ -188,8 +181,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.GetTvShowSeasons(ShowId);
                     if (result != null)
@@ -211,8 +203,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.InsertTvShowSeason(ViewModel);
                     if (result != null)
@@ -234,8 +225,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.InsertUpdateTvShowSeasonMultiple(ViewModelList);
                     if (result != null)
@@ -257,8 +247,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.UpdateTvShowSeasons(ViewModel, SeasonId);
                     if (result != null)
@@ -280,8 +269,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.DeleteTvShowSeasons(SeasonId);
                     if (result != null)
@@ -305,8 +293,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.GetTvShowEpisodes(SeasonId);
                     if (result != null)
@@ -328,9 +315,8 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
-                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
+                    SqlFilesDataAccess = new FilesDataAccess(ConnectionString, CommonFunctions);
 
                     List<EpisodesWithFilesModel> EpisodesWithFilesData = new List<EpisodesWithFilesModel>();
                     var EpisodesData = SqlTvShowsDataAccess.GetTvShowEpisodes(SeasonId);
@@ -379,8 +365,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.InsertTvShowEpisodes(ViewModel);
                     if (result != null)
@@ -402,8 +387,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.InsertUpdateTvShowEpisodesMultiple(ViewModelList);
                     if (result != null)
@@ -425,8 +409,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.UpdateTvShowEpisodes(ViewModel, EpisodeId);
                     if (result != null)
@@ -448,8 +431,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var result = SqlTvShowsDataAccess.DeleteTvShowEpisodes(EpisodeId);
                     if (result != null)
@@ -475,8 +457,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
 
                     var InsertedUpdatedTvShow = new vTvShowsModel();
                     var InsertedUpdatedTvShowSeasons = new List<tbSeasonsModel>();
@@ -549,9 +530,8 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlTvShowsDataAccess = new TvShowsDataAccess(MsSqlDatabase, CommonFunctions);
-                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
+                    SqlFilesDataAccess = new FilesDataAccess(ConnectionString, CommonFunctions);
 
                     var AllEpisodesIds = SqlTvShowsDataAccess.GetEpisodeIdsFromSeasonID(SeasonId);
                     var AllOldFilesForEpisode = SqlFilesDataAccess.GetFilesByEpisodeIds("'" + String.Join("','", AllEpisodesIds) + "'");

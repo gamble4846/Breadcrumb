@@ -9,51 +9,50 @@ using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
 using Breadcrumb.Model.tbCoversModels;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Reflection;
 
 namespace Breadcrumb.DataAccess.SQLServer.Impl
 {
     public class CoversDataAccess : ICoversDataAccess
     {
-        private MSSqlDatabase MSSqlDatabase { get; set; }
+        private String ConnectionString { get; set; }
         private CommonFunctions CommonFunctions { get; set; }
 
-        public CoversDataAccess(MSSqlDatabase msSqlDatabase, CommonFunctions commonFunctions)
+        public CoversDataAccess(String connectionString, CommonFunctions commonFunctions)
         {
-            MSSqlDatabase = msSqlDatabase;
             CommonFunctions = commonFunctions;
+            ConnectionString = connectionString;
         }
 
         public List<tbCoversModel> GetCoverByBreadId(Guid BreadId)
         {
             var ret = new List<tbCoversModel>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  t.* FROM tbCovers t WHERE BreadId = @BreadId";
-            cmd.Parameters.AddWithValue("@BreadId", BreadId);
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbCoversModel>(reader);
-                    ret.Add(t);
-                }
+                string CommandText = @"SELECT  t.* FROM tbCovers t WHERE BreadId = @BreadId";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.Parameters.AddWithValue("@BreadId", BreadId);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbCoversModel>();
+                return ret;
             }
-            return ret;
         }
 
         public List<tbCoversModel> GetCoverByBreadIds(string BreadIds)
         {
             var ret = new List<tbCoversModel>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  t.* FROM tbCovers t WHERE BreadId IN (" + BreadIds + ")";
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbCoversModel>(reader);
-                    ret.Add(t);
-                }
+                string CommandText = @"SELECT  t.* FROM tbCovers t WHERE BreadId IN (" + BreadIds + ")";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbCoversModel>();
+                return ret;
             }
-            return ret;
         }
     }
 }

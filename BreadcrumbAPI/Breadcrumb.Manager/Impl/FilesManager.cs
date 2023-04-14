@@ -29,7 +29,6 @@ namespace Breadcrumb.Manager.Impl
         public IConfiguration Configuration { get; }
         public IHttpContextAccessor HttpContextAccessor { get; set; }
         public CommonFunctions CommonFunctions { get; set; }
-        MSSqlDatabase MsSqlDatabase { get; set; }
         Breadcrumb.DataAccess.SQLServer.Interface.IFilesDataAccess SqlFilesDataAccess { get; set; }
         public TokenModel TokenData { get; set; }
         public string ConnectionString { get; set; }
@@ -50,8 +49,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlFilesDataAccess = new FilesDataAccess(ConnectionString, CommonFunctions);
 
                     var tbFilesDataViewList = new List<tbFilesDataViewModel>();
 
@@ -114,8 +112,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlFilesDataAccess = new FilesDataAccess(ConnectionString, CommonFunctions);
 
                     var vNotAssignedFilesList = SqlFilesDataAccess.GetNotAssignedFiles();
                     if (vNotAssignedFilesList != null && vNotAssignedFilesList.Count > 0)
@@ -136,8 +133,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlFilesDataAccess = new FilesDataAccess(ConnectionString, CommonFunctions);
 
                     var vNotAssignedFilesList = SqlFilesDataAccess.GetFiles();
                     if (vNotAssignedFilesList != null && vNotAssignedFilesList.Count > 0)
@@ -158,8 +154,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlFilesDataAccess = new FilesDataAccess(MsSqlDatabase, CommonFunctions);
+                    SqlFilesDataAccess = new FilesDataAccess(ConnectionString, CommonFunctions);
 
                     var EpisodeFiles = SqlFilesDataAccess.GetFilesByEpisodeIds("'" + EpisodeId + "'");
                     if (EpisodeFiles == null || EpisodeFiles.Count <= 0)

@@ -10,173 +10,148 @@ using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
 using Breadcrumb.Model.tbCoversModels;
 using Breadcrumb.Model.FilesModels;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Reflection;
 
 namespace Breadcrumb.DataAccess.SQLServer.Impl
 {
     public class TvShowsDataAccess : ITvShowsDataAccess
     {
-        private MSSqlDatabase MSSqlDatabase { get; set; }
+        private String ConnectionString { get; set; }
         private CommonFunctions CommonFunctions { get; set; }
 
-        public TvShowsDataAccess(MSSqlDatabase msSqlDatabase, CommonFunctions commonFunctions)
+        public TvShowsDataAccess(String connectionString, CommonFunctions commonFunctions)
         {
-            MSSqlDatabase = msSqlDatabase;
             CommonFunctions = commonFunctions;
+            ConnectionString = connectionString;
         }
 
         public dynamic GetTvShows(int page, int itemsPerPage, string orderBy, string FilterQuery)
         {
             int totalRecords = 0;
             var ret = new List<vTvShowsModel>();
-
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPGetTvShows";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@totalRows", SqlDbType.Int).Value = totalRecords;
-            cmd.Parameters.Add("@page", SqlDbType.Int).Value = page;
-            cmd.Parameters.Add("@itemsPerPage", SqlDbType.Int).Value = itemsPerPage;
-            cmd.Parameters.Add("@orderByQuery", SqlDbType.VarChar).Value = orderBy;
-            cmd.Parameters.Add("@filterQuery", SqlDbType.VarChar).Value = FilterQuery;
-
-            cmd.Parameters["@totalRows"].Direction = ParameterDirection.Output;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
-                    ret.Add(t);
-                }
+                string CommandText = @"SPGetTvShows";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@totalRows", SqlDbType.Int).Value = totalRecords;
+                cmd.Parameters.Add("@page", SqlDbType.Int).Value = page;
+                cmd.Parameters.Add("@itemsPerPage", SqlDbType.Int).Value = itemsPerPage;
+                cmd.Parameters.Add("@orderByQuery", SqlDbType.VarChar).Value = orderBy;
+                cmd.Parameters.Add("@filterQuery", SqlDbType.VarChar).Value = FilterQuery;
+                cmd.Parameters["@totalRows"].Direction = ParameterDirection.Output;
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<vTvShowsModel>();
+
+                totalRecords = Convert.ToInt32(cmd.Parameters["@totalRows"].Value);
+
+                dynamic Result = new System.Dynamic.ExpandoObject();
+                Result.Data = ret;
+                Result.TotalRecords = totalRecords;
+                return Result;
             }
-
-            totalRecords = Convert.ToInt32(cmd.Parameters["@totalRows"].Value);
-
-            dynamic Result = new System.Dynamic.ExpandoObject();
-
-            Result.Data = ret;
-            Result.TotalRecords = totalRecords;
-
-            return Result;
         }
 
         public vTvShowsModel GetTvshowById(Guid ShowId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  t.* FROM vTvShows t WHERE ShowId = @ShowId";
-            cmd.Parameters.AddWithValue("@ShowId", ShowId);
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
-                    return t;
-                }
+                string CommandText = @"SELECT  t.* FROM vTvShows t WHERE ShowId = @ShowId";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.Parameters.AddWithValue("@ShowId", ShowId);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vTvShowsModel>();
+                return ret;
             }
-            return null;
         }
 
         public vTvShowsModel InsertTvShows(vTvShowsViewModel ViewModel)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPInsertTvShow";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@PrimaryName", SqlDbType.NVarChar).Value = ViewModel.PrimaryName;
-            cmd.Parameters.Add("@OtherNames", SqlDbType.NVarChar).Value = ViewModel.OtherNames;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
-            cmd.Parameters.Add("@IMDBID", SqlDbType.NVarChar).Value = ViewModel.IMDBID;
-            cmd.Parameters.Add("@ReleaseYear", SqlDbType.NVarChar).Value = ViewModel.ReleaseYear;
-            cmd.Parameters.Add("@Genres", SqlDbType.NVarChar).Value = ViewModel.Genres;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPInsertTvShow";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@PrimaryName", SqlDbType.NVarChar).Value = ViewModel.PrimaryName;
+                cmd.Parameters.Add("@OtherNames", SqlDbType.NVarChar).Value = ViewModel.OtherNames;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
+                cmd.Parameters.Add("@IMDBID", SqlDbType.NVarChar).Value = ViewModel.IMDBID;
+                cmd.Parameters.Add("@ReleaseYear", SqlDbType.NVarChar).Value = ViewModel.ReleaseYear;
+                cmd.Parameters.Add("@Genres", SqlDbType.NVarChar).Value = ViewModel.Genres;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vTvShowsModel>();
+                return ret;
+            }
         }
 
         public vTvShowsModel UpdateTvShow(vTvShowsViewModel ViewModel, Guid ShowId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPUpdateTvShow";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
-            cmd.Parameters.Add("@PrimaryName", SqlDbType.NVarChar).Value = ViewModel.PrimaryName;
-            cmd.Parameters.Add("@OtherNames", SqlDbType.NVarChar).Value = ViewModel.OtherNames;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
-            cmd.Parameters.Add("@IMDBID", SqlDbType.NVarChar).Value = ViewModel.IMDBID;
-            cmd.Parameters.Add("@ReleaseYear", SqlDbType.NVarChar).Value = ViewModel.ReleaseYear;
-            cmd.Parameters.Add("@Genres", SqlDbType.NVarChar).Value = ViewModel.Genres;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPUpdateTvShow";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
+                cmd.Parameters.Add("@PrimaryName", SqlDbType.NVarChar).Value = ViewModel.PrimaryName;
+                cmd.Parameters.Add("@OtherNames", SqlDbType.NVarChar).Value = ViewModel.OtherNames;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
+                cmd.Parameters.Add("@IMDBID", SqlDbType.NVarChar).Value = ViewModel.IMDBID;
+                cmd.Parameters.Add("@ReleaseYear", SqlDbType.NVarChar).Value = ViewModel.ReleaseYear;
+                cmd.Parameters.Add("@Genres", SqlDbType.NVarChar).Value = ViewModel.Genres;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vTvShowsModel>();
+                return ret;
+            }
         }
 
         public vTvShowsModel DeleteTvShow(Guid ShowId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPDeleteTvShow";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPDeleteTvShow";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vTvShowsModel>();
+                return ret;
+            }
         }
 
         public vTvShowsModel GetIfTvShowExistsByImdbID(string IMDBId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT * FROM vTvShows WHERE IMDBID = @IMDBId ";
-            cmd.Parameters.AddWithValue("@IMDBId", IMDBId);
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
-                    return t;
-                }
+                string CommandText = @"SELECT * FROM vTvShows WHERE IMDBID = @IMDBId";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.Parameters.AddWithValue("@IMDBId", IMDBId);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vTvShowsModel>();
+                return ret;
             }
-            return null;
         }
 
         public List<vTvShowsModel> GetAllTvshows()
         {
             var ret = new List<vTvShowsModel>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  t.* FROM vTvShows t order by t.PrimaryName";
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
-                    ret.Add(t);
-                }
+                string CommandText = @"SELECT  t.* FROM vTvShows t order by t.PrimaryName";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<vTvShowsModel>();
+                return ret;
             }
-            return ret;
         }
 
 
@@ -184,112 +159,86 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
         public List<tbSeasonsModel> GetTvShowSeasons(Guid ShowId)
         {
             var ret = new List<tbSeasonsModel>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPGetTvShowSeasons";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
-                    ret.Add(t);
-                }
-            }
+                string CommandText = @"SPGetTvShowSeasons";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
 
-            return ret;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbSeasonsModel>();
+                return ret;
+            }
         }
 
         public tbSeasonsModel InsertTvShowSeason(tbSeasonsViewModel ViewModel)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPInsertTvShowSeason";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ViewModel.ShowId;
-            cmd.Parameters.Add("@Number", SqlDbType.Int).Value = ViewModel.Number;
-            cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPInsertTvShowSeason";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ViewModel.ShowId;
+                cmd.Parameters.Add("@Number", SqlDbType.Int).Value = ViewModel.Number;
+                cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<tbSeasonsModel>();
+                return ret;
+            }
         }
 
         public List<tbSeasonsModel> InsertUpdateTvShowSeasonMultiple(List<tbSeasonsViewModel> ViewModelList)
         {
             var SeasonsMultipleInsertUpdateSP = UtilityCustom.ToDataTable<tbSeasonsViewModel>(ViewModelList);
             var ret = new List<tbSeasonsModel>();
-
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPInsertUpdateTvShowSeasonsMultiple";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = SeasonsMultipleInsertUpdateSP;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
-                    ret.Add(t);
-                }
-            }
+                string CommandText = @"SPInsertUpdateTvShowSeasonsMultiple";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = SeasonsMultipleInsertUpdateSP;
 
-            return ret;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbSeasonsModel>();
+                return ret;
+            }
         }
 
         public tbSeasonsModel UpdateTvShowSeasons(tbSeasonsViewModel ViewModel, Guid SeasonId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPUpdateTvShowSeason";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = SeasonId;
-            cmd.Parameters.Add("@Number", SqlDbType.NVarChar).Value = ViewModel.Number;
-            cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
-            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ViewModel.ShowId;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPUpdateTvShowSeason";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = SeasonId;
+                cmd.Parameters.Add("@Number", SqlDbType.NVarChar).Value = ViewModel.Number;
+                cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
+                cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ViewModel.ShowId;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<tbSeasonsModel>();
+                return ret;
+            }
         }
 
         public tbSeasonsModel DeleteTvShowSeasons(Guid SeasonId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPDeleteTvShowSeason";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = SeasonId;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbSeasonsModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPDeleteTvShowSeason";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = SeasonId;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<tbSeasonsModel>();
+                return ret;
+            }
         }
 
 
@@ -297,117 +246,90 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
         public List<tbEpisodesModel> GetTvShowEpisodes(Guid SeasonId)
         {
             var ret = new List<tbEpisodesModel>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPGetTvShowEpisodes";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = SeasonId;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
-                    ret.Add(t);
-                }
-            }
+                string CommandText = @"SPGetTvShowEpisodes";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = SeasonId;
 
-            return ret;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbEpisodesModel>();
+                return ret;
+            }
         }
 
         public tbEpisodesModel InsertTvShowEpisodes(tbEpisodesViewModel ViewModel)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPInsertTvShowEpisode";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = ViewModel.SeasonId;
-            cmd.Parameters.Add("@Number", SqlDbType.Int).Value = ViewModel.Number;
-            cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
-            cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date).Value = ViewModel.RelaseDate;
-            cmd.Parameters.Add("@ThumbnailLink", SqlDbType.NVarChar).Value = ViewModel.ThumbnailLink;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
-
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPInsertTvShowEpisode";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = ViewModel.SeasonId;
+                cmd.Parameters.Add("@Number", SqlDbType.Int).Value = ViewModel.Number;
+                cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
+                cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date).Value = ViewModel.RelaseDate;
+                cmd.Parameters.Add("@ThumbnailLink", SqlDbType.NVarChar).Value = ViewModel.ThumbnailLink;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<tbEpisodesModel>();
+                return ret;
+            }
         }
 
         public List<tbEpisodesModel> InsertUpdateTvShowEpisodesMultiple(List<tbEpisodesViewModel> ViewModelList)
         {
             var EpisodesMultipleInsertUpdateSP = UtilityCustom.ToDataTable<tbEpisodesViewModel>(ViewModelList);
             var ret = new List<tbEpisodesModel>();
-
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPInsertUpdateTvShowEpisodesMultiple";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = EpisodesMultipleInsertUpdateSP;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
-                    ret.Add(t);
-                }
-            }
+                string CommandText = @"SPInsertUpdateTvShowEpisodesMultiple";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = EpisodesMultipleInsertUpdateSP;
 
-            return ret;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbEpisodesModel>();
+                return ret;
+            }
         }
 
         public tbEpisodesModel UpdateTvShowEpisodes(tbEpisodesViewModel ViewModel, Guid EpisodeId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPUpdateTvShowEpisode";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@EpisodeId", SqlDbType.UniqueIdentifier).Value = EpisodeId;
-            cmd.Parameters.Add("@Number", SqlDbType.NVarChar).Value = ViewModel.Number;
-            cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
-            cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date).Value = ViewModel.RelaseDate;
-            cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = ViewModel.SeasonId;
-            cmd.Parameters.Add("@ThumbnailLink", SqlDbType.NVarChar).Value = ViewModel.ThumbnailLink;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPUpdateTvShowEpisode";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@EpisodeId", SqlDbType.UniqueIdentifier).Value = EpisodeId;
+                cmd.Parameters.Add("@Number", SqlDbType.NVarChar).Value = ViewModel.Number;
+                cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = ViewModel.Name;
+                cmd.Parameters.Add("@ReleaseDate", SqlDbType.Date).Value = ViewModel.RelaseDate;
+                cmd.Parameters.Add("@SeasonId", SqlDbType.UniqueIdentifier).Value = ViewModel.SeasonId;
+                cmd.Parameters.Add("@ThumbnailLink", SqlDbType.NVarChar).Value = ViewModel.ThumbnailLink;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<tbEpisodesModel>();
+                return ret;
+            }
         }
 
         public tbEpisodesModel DeleteTvShowEpisodes(Guid EpisodeId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPDeleteTvShowEpisode";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@EpisodeId", SqlDbType.UniqueIdentifier).Value = EpisodeId;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbEpisodesModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPDeleteTvShowEpisode";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@EpisodeId", SqlDbType.UniqueIdentifier).Value = EpisodeId;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<tbEpisodesModel>();
+                return ret;
+            }
         }
 
 
@@ -415,55 +337,101 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
         public List<tbShowsFileModel> InsertUpdateShowFiles(List<tbShowsFileViewModel> ViewModelList)
         {
             var ShowsFileInsertUpdateSP = UtilityCustom.ToDataTable<tbShowsFileViewModel>(ViewModelList);
-            var ret = new List<tbShowsFileModel>();
-
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPInsertUpdateShowsFileMultiple";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = ShowsFileInsertUpdateSP;
-
-            using (var reader = cmd.ExecuteReader())
+            var ret = new List<tbShowsFileModel>(); 
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<tbShowsFileModel>(reader);
-                    ret.Add(t);
-                }
-            }
+                string CommandText = @"SPInsertUpdateShowsFileMultiple";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = ShowsFileInsertUpdateSP;
 
-            return ret;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<tbShowsFileModel>();
+                return ret;
+            }
         }
 
         public bool DeleteMultipleShowFiles(string ShowFileIds)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            SqlTransaction transaction = this.MSSqlDatabase.Connection.BeginTransaction("");
-            cmd.Transaction = transaction;
-            cmd.CommandText = @"DELETE FROM tbShowsFile Where Id IN (" + ShowFileIds + ")";
-            var recs = cmd.ExecuteNonQuery();
-            if (recs > 0)
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                transaction.Commit();
-                return true;
+                string CommandText = @"DELETE FROM tbShowsFile Where Id IN (" + ShowFileIds + ")";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                SqlTransaction transaction = cmd.Connection.BeginTransaction("");
+                cmd.Transaction = transaction;
+
+                try
+                {
+                    connection.Open();
+                    var recs = cmd.ExecuteNonQuery();
+                    if (recs > 0)
+                    {
+                        transaction.Commit();
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                        return true;
+                    }
+                }
+                catch (Exception)
+                {
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    throw;
+                }
+                finally
+                {
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                }
+
+                return false;
             }
-            return false;
         }
 
         public List<Guid> GetEpisodeIdsFromSeasonID(Guid SeasonId)
         {
             var ret = new List<Guid>();
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"Select Id as EpisodeId from [tbEpisodes] Where [SeasonId] = @SeasonId";
-            cmd.Parameters.AddWithValue("@SeasonId", SeasonId);
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
+                string CommandText = @"Select Id as EpisodeId from [tbEpisodes] Where [SeasonId] = @SeasonId";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.Parameters.AddWithValue("@SeasonId", SeasonId);
+
+                try
                 {
-                    ret.Add(reader.GetValue<Guid>("EpisodeId"));
+                    connection.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            ret.Add(reader.GetValue<Guid>("EpisodeId"));
+                        }
+                    }
                 }
+                catch (Exception)
+                {
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    throw;
+                }
+                finally
+                {
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                }
+
+                return ret;
             }
-            return ret;
         }
     }
 }

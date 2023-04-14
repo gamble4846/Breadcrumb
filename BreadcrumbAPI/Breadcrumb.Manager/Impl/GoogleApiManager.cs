@@ -26,7 +26,6 @@ namespace Breadcrumb.Manager.Impl
         public IConfiguration Configuration { get; }
         public IHttpContextAccessor HttpContextAccessor { get; set; }
         public CommonFunctions CommonFunctions { get; set; }
-        MSSqlDatabase MsSqlDatabase { get; set; }
         public TokenModel TokenData { get; set; }
         public string ConnectionString { get; set; }
         public string ServerType { get; set; }

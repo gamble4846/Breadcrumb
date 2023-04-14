@@ -24,7 +24,6 @@ namespace Breadcrumb.Manager.Impl
         public IConfiguration Configuration { get; }
         public IHttpContextAccessor HttpContextAccessor { get; set; }
         public CommonFunctions CommonFunctions { get; set; }
-        MSSqlDatabase MsSqlDatabase { get; set; }
         Breadcrumb.DataAccess.SQLServer.Interface.ITvShowsDataAccess SqlTvShowsDataAccess { get; set; }
         public TokenModel TokenData { get; set; }
         public string TheMovieDBAPIKey { get; set; }

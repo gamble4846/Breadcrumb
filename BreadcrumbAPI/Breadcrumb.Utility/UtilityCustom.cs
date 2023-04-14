@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
 
 namespace Breadcrumb.Utility
 {
@@ -112,6 +113,99 @@ namespace Breadcrumb.Utility
 
             dynamic ToReturn = JsonConvert.DeserializeObject<dynamic>(CleanedJSON);
             return ToReturn;
+        }
+
+        public static DataTable GetDataTableFromCommand(SqlCommand cmd)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                cmd.Connection.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    dt.Load(reader);
+                }
+            }
+            catch (Exception)
+            {
+                if (cmd.Connection.State == ConnectionState.Open)
+                {
+                    cmd.Connection.Close();
+                }
+                throw;
+            }
+            finally
+            {
+                if (cmd.Connection.State == ConnectionState.Open)
+                {
+                    cmd.Connection.Close();
+                }
+            }
+
+            return dt;
+        }
+
+        public static T ToObject<T>(this DataRow dataRow) where T : new()
+        {
+            T item = new T();
+
+            foreach (DataColumn column in dataRow.Table.Columns)
+            {
+                PropertyInfo property = GetProperty(typeof(T), column.ColumnName);
+
+                if (property != null && dataRow[column] != DBNull.Value && dataRow[column].ToString() != "NULL")
+                {
+                    property.SetValue(item, ChangeType(dataRow[column], property.PropertyType), null);
+                }
+            }
+
+            return item;
+        }
+
+        private static PropertyInfo GetProperty(Type type, string attributeName)
+        {
+            PropertyInfo property = type.GetProperty(attributeName);
+
+            if (property != null)
+            {
+                return property;
+            }
+
+            return type.GetProperties()
+                 .Where(p => p.IsDefined(typeof(DisplayAttribute), false) && p.GetCustomAttributes(typeof(DisplayAttribute), false).Cast<DisplayAttribute>().Single().Name == attributeName)
+                 .FirstOrDefault();
+        }
+
+        public static object ChangeType(object value, Type type)
+        {
+            if (type.IsGenericType && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
+            {
+                if (value == null)
+                {
+                    return null;
+                }
+
+                return Convert.ChangeType(value, Nullable.GetUnderlyingType(type));
+            }
+
+            return Convert.ChangeType(value, type);
+        }
+
+        public static T DataTableToObject<T>(this DataTable dt) where T : new()
+        {
+            var dataRows = dt.AsEnumerable().ToList();
+            return dataRows[0].ToObject<T>();
+        }
+
+        public static List<T> DataTableToObjectList<T>(this DataTable dt) where T : new()
+        {
+            var dataRows = dt.AsEnumerable().ToList();
+            var ListObject = new List<T>();
+            foreach (var dataRow in dataRows)
+            {
+                ListObject.Add(dataRow.ToObject<T>());
+            }
+            return ListObject;
         }
     }
 }

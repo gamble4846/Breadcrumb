@@ -24,7 +24,6 @@ namespace Breadcrumb.Manager.Impl
         public IConfiguration Configuration { get; }
         public IHttpContextAccessor HttpContextAccessor { get; set; }
         public CommonFunctions CommonFunctions { get; set; }
-        MSSqlDatabase MsSqlDatabase { get; set; }
         Breadcrumb.DataAccess.SQLServer.Interface.IMoviesDataAccess SqlMoviesDataAccess { get; set; }
         public TokenModel TokenData { get; set; }
         public string ConnectionString { get; set; }
@@ -47,8 +46,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlMoviesDataAccess = new MoviesDataAccesscs(MsSqlDatabase, CommonFunctions);
+                    SqlMoviesDataAccess = new MoviesDataAccesscs(ConnectionString, CommonFunctions);
 
                     var result = SqlMoviesDataAccess.GetMovies(page, itemsPerPage, orderBy, FilterQuery);
                     if (result != null)
@@ -70,8 +68,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlMoviesDataAccess = new MoviesDataAccesscs(MsSqlDatabase, CommonFunctions);
+                    SqlMoviesDataAccess = new MoviesDataAccesscs(ConnectionString, CommonFunctions);
 
                     var result = SqlMoviesDataAccess.GetMovieById(ShowId);
                     if (result != null)
@@ -92,8 +89,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlMoviesDataAccess = new MoviesDataAccesscs(MsSqlDatabase, CommonFunctions);
+                    SqlMoviesDataAccess = new MoviesDataAccesscs(ConnectionString, CommonFunctions);
 
                     var result = SqlMoviesDataAccess.InsertMovie(ViewModel);
                     if (result != null)
@@ -115,8 +111,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlMoviesDataAccess = new MoviesDataAccesscs(MsSqlDatabase, CommonFunctions);
+                    SqlMoviesDataAccess = new MoviesDataAccesscs(ConnectionString, CommonFunctions);
 
                     var result = SqlMoviesDataAccess.UpdateMovie(ViewModel, ShowId);
                     if (result != null)
@@ -140,8 +135,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlMoviesDataAccess = new MoviesDataAccesscs(MsSqlDatabase, CommonFunctions);
+                    SqlMoviesDataAccess = new MoviesDataAccesscs(ConnectionString, CommonFunctions);
 
                     var InsertedUpdatedMovie = new vMoviesModel();
 
@@ -163,8 +157,7 @@ namespace Breadcrumb.Manager.Impl
             switch (ServerType)
             {
                 case "SQLServer":
-                    MsSqlDatabase = new MSSqlDatabase(ConnectionString);
-                    SqlMoviesDataAccess = new MoviesDataAccesscs(MsSqlDatabase, CommonFunctions);
+                    SqlMoviesDataAccess = new MoviesDataAccesscs(ConnectionString, CommonFunctions);
 
                     var result = SqlMoviesDataAccess.DeleteMovie(ShowId);
                     if (result != null)

@@ -11,157 +11,132 @@ using Breadcrumb.Model.tbEpisodesModels;
 using Breadcrumb.Model.tbCoversModels;
 using Breadcrumb.Model.vMoviesModels;
 using Microsoft.Identity.Client;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.Reflection;
 
 namespace Breadcrumb.DataAccess.SQLServer.Impl
 {
     public class MoviesDataAccesscs : IMoviesDataAccess
     {
-        private MSSqlDatabase MSSqlDatabase { get; set; }
+        private String ConnectionString { get; set; }
         private CommonFunctions CommonFunctions { get; set; }
 
-        public MoviesDataAccesscs(MSSqlDatabase msSqlDatabase, CommonFunctions commonFunctions)
+        public MoviesDataAccesscs(String connectionString, CommonFunctions commonFunctions)
         {
-            MSSqlDatabase = msSqlDatabase;
             CommonFunctions = commonFunctions;
+            ConnectionString = connectionString;
         }
 
         public dynamic GetMovies(int page, int itemsPerPage, string orderBy, string FilterQuery)
         {
             int totalRecords = 0;
             var ret = new List<vTvShowsModel>();
-
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPGetMovies";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@totalRows", SqlDbType.Int).Value = totalRecords;
-            cmd.Parameters.Add("@page", SqlDbType.Int).Value = page;
-            cmd.Parameters.Add("@itemsPerPage", SqlDbType.Int).Value = itemsPerPage;
-            cmd.Parameters.Add("@orderByQuery", SqlDbType.VarChar).Value = orderBy;
-            cmd.Parameters.Add("@filterQuery", SqlDbType.VarChar).Value = FilterQuery;
-
-            cmd.Parameters["@totalRows"].Direction = ParameterDirection.Output;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vTvShowsModel>(reader);
-                    ret.Add(t);
-                }
+                string CommandText = @"SPGetMovies";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@totalRows", SqlDbType.Int).Value = totalRecords;
+                cmd.Parameters.Add("@page", SqlDbType.Int).Value = page;
+                cmd.Parameters.Add("@itemsPerPage", SqlDbType.Int).Value = itemsPerPage;
+                cmd.Parameters.Add("@orderByQuery", SqlDbType.VarChar).Value = orderBy;
+                cmd.Parameters.Add("@filterQuery", SqlDbType.VarChar).Value = FilterQuery;
+                cmd.Parameters["@totalRows"].Direction = ParameterDirection.Output;
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                ret = dt.DataTableToObjectList<vTvShowsModel>();
+                totalRecords = Convert.ToInt32(cmd.Parameters["@totalRows"].Value);
+                dynamic Result = new System.Dynamic.ExpandoObject();
+
+                Result.Data = ret;
+                Result.TotalRecords = totalRecords;
+                return Result;
             }
-
-            totalRecords = Convert.ToInt32(cmd.Parameters["@totalRows"].Value);
-
-            dynamic Result = new System.Dynamic.ExpandoObject();
-
-            Result.Data = ret;
-            Result.TotalRecords = totalRecords;
-
-            return Result;
         }
 
         public vMoviesModel GetMovieById(Guid ShowId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT  t.* FROM vMovies t WHERE ShowId = @ShowId";
-            cmd.Parameters.AddWithValue("@ShowId", ShowId);
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vMoviesModel>(reader);
-                    return t;
-                }
+                string CommandText = @"SELECT  t.* FROM vMovies t WHERE ShowId = @ShowId";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.Parameters.AddWithValue("@ShowId", ShowId);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vMoviesModel>();
+                return ret;
             }
-            return null;
         }
 
         public vMoviesModel InsertMovie(vMoviesViewModel ViewModel)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPInsertMovie";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@PrimaryName", SqlDbType.NVarChar).Value = ViewModel.PrimaryName;
-            cmd.Parameters.Add("@OtherNames", SqlDbType.NVarChar).Value = ViewModel.OtherNames;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
-            cmd.Parameters.Add("@IMDBID", SqlDbType.NVarChar).Value = ViewModel.IMDBID;
-            cmd.Parameters.Add("@ReleaseYear", SqlDbType.NVarChar).Value = ViewModel.ReleaseYear;
-            cmd.Parameters.Add("@Genres", SqlDbType.NVarChar).Value = ViewModel.Genres;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vMoviesModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPInsertMovie";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@PrimaryName", SqlDbType.NVarChar).Value = ViewModel.PrimaryName;
+                cmd.Parameters.Add("@OtherNames", SqlDbType.NVarChar).Value = ViewModel.OtherNames;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
+                cmd.Parameters.Add("@IMDBID", SqlDbType.NVarChar).Value = ViewModel.IMDBID;
+                cmd.Parameters.Add("@ReleaseYear", SqlDbType.NVarChar).Value = ViewModel.ReleaseYear;
+                cmd.Parameters.Add("@Genres", SqlDbType.NVarChar).Value = ViewModel.Genres;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vMoviesModel>();
+                return ret;
+            }
         }
 
         public vMoviesModel UpdateMovie(vMoviesViewModel ViewModel, Guid ShowId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPUpdateMovie";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
-            cmd.Parameters.Add("@PrimaryName", SqlDbType.NVarChar).Value = ViewModel.PrimaryName;
-            cmd.Parameters.Add("@OtherNames", SqlDbType.NVarChar).Value = ViewModel.OtherNames;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
-            cmd.Parameters.Add("@IMDBID", SqlDbType.NVarChar).Value = ViewModel.IMDBID;
-            cmd.Parameters.Add("@ReleaseYear", SqlDbType.NVarChar).Value = ViewModel.ReleaseYear;
-            cmd.Parameters.Add("@Genres", SqlDbType.NVarChar).Value = ViewModel.Genres;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vMoviesModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPUpdateMovie";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
+                cmd.Parameters.Add("@PrimaryName", SqlDbType.NVarChar).Value = ViewModel.PrimaryName;
+                cmd.Parameters.Add("@OtherNames", SqlDbType.NVarChar).Value = ViewModel.OtherNames;
+                cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = ViewModel.Description;
+                cmd.Parameters.Add("@IMDBID", SqlDbType.NVarChar).Value = ViewModel.IMDBID;
+                cmd.Parameters.Add("@ReleaseYear", SqlDbType.NVarChar).Value = ViewModel.ReleaseYear;
+                cmd.Parameters.Add("@Genres", SqlDbType.NVarChar).Value = ViewModel.Genres;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vMoviesModel>();
+                return ret;
+            }
         }
 
         public vMoviesModel GetIfMovieExistsByImdbID(string IMDBId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SELECT * FROM vMovies WHERE IMDBID = @IMDBId ";
-            cmd.Parameters.AddWithValue("@IMDBId", IMDBId);
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vMoviesModel>(reader);
-                    return t;
-                }
+                string CommandText = @"SELECT * FROM vMovies WHERE IMDBID = @IMDBId";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.Parameters.AddWithValue("@IMDBId", IMDBId);
+
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vMoviesModel>();
+                return ret;
             }
-            return null;
         }
 
         public vMoviesModel DeleteMovie(Guid ShowId)
         {
-            var cmd = this.MSSqlDatabase.Connection.CreateCommand() as SqlCommand;
-            cmd.CommandText = @"SPDeleteMovie";
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
-
-            using (var reader = cmd.ExecuteReader())
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                while (reader.Read())
-                {
-                    var t = UtilityCustom.ConvertReaderToObject<vMoviesModel>(reader);
-                    return t;
-                }
-            }
+                string CommandText = @"SPDeleteMovie";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@ShowId", SqlDbType.UniqueIdentifier).Value = ShowId;
 
-            return null;
+                var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                var ret = dt.DataTableToObject<vMoviesModel>();
+                return ret;
+            }
         }
     }
 }
