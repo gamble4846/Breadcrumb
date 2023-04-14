@@ -6,6 +6,7 @@ import { tbCoversModel } from 'src/app/Models/CoversModels';
 import { RandomCovers } from 'src/app/Modules/ShowsModule/OpenerModels';
 import { CoversService } from '../../API Services/CoversService/covers.service';
 import { TokenService } from '../../API Services/TokenService/token.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class CoreService {
   constructor(
     private message: NzMessageService,
     private Covers:CoversService,
-    private Token:TokenService
+    private Token:TokenService,
+    public sanitizer:DomSanitizer,
   ) { }
 
   getToken(){
@@ -179,5 +181,16 @@ export class CoreService {
       })
     });
     return Response;
+  }
+
+  getSafeURL(url:string){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
+
+  getGoogleDrivePreviewLink(url:string){
+    var linkArr = url.split("/");
+    var fileId = linkArr[5];
+    var previewLink = `https://drive.google.com/file/d/${fileId}/preview`;
+    return previewLink;
   }
 }

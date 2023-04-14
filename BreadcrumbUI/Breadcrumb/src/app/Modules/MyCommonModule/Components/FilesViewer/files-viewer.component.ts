@@ -7,6 +7,7 @@ import { FilesViewerModel } from '../Models/FilesViewerModel';
 import { FilesService } from 'src/app/Services/API Services/FilesService/files.service';
 import { FullShowFilesWithChunksModel } from 'src/app/Models/FullShowFilesWithChunksModel';
 import { AllFilesModel } from '../Models/AllFilesModel';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'files-viewer',
@@ -24,11 +25,12 @@ export class FilesViewerComponent {
   isFileInfoOpen:boolean = false;
   
   constructor(
-    private Core: CoreService,
+    public Core: CoreService,
     private TvShow: TvShowsService,
     private Moive: MoviesService,
     private Covers: CoversService,
     private _Files: FilesService,
+    public Sanitization:DomSanitizer,
   ) { }
 
   ngOnInit(): void {

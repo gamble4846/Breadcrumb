@@ -16,14 +16,27 @@
     </div>
     <div class="tablesContainer">
       <section class="FilesDataContainer">
-        <div class="FileInformationContainer">
-          <nz-collapse nzGhost>
-            <nz-collapse-panel nzHeader="File Information" [nzActive]="isFileInfoOpen">
-              
-            </nz-collapse-panel>
-          </nz-collapse>
-        </div>
-        
+        <ng-container *ngIf="SelectedFile.chunks?.length == 1">
+          <div class="FileInformationContainer">
+            <nz-collapse nzGhost>
+              <nz-collapse-panel nzHeader="File Information" [nzActive]="isFileInfoOpen">
+                
+              </nz-collapse-panel>
+            </nz-collapse>
+          </div>
+          <div class="iframeContainer">
+            <ng-container *ngIf="SelectedFile && SelectedFile.chunks && SelectedFile.chunks[0].link">
+              <iframe [cachedSrc]="Core.getGoogleDrivePreviewLink(SelectedFile.chunks[0].link)" width="100%" height="100%"></iframe>
+            </ng-container>
+          </div>
+          <div class="FileButtonsContainer">
+            <nz-collapse nzGhost>
+              <nz-collapse-panel nzHeader="File Button" [nzActive]="isFileInfoOpen">
+                
+              </nz-collapse-panel>
+            </nz-collapse>
+          </div>
+        </ng-container>
       </section>
     </div>
   </section>
