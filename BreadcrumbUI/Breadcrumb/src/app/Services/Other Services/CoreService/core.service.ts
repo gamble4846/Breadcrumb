@@ -193,4 +193,8 @@ export class CoreService {
     var previewLink = `https://drive.google.com/file/d/${fileId}/preview`;
     return previewLink;
   }
+
+  ObjectToString(objData:any){
+    return JSON.stringify(objData);
+  }
 }

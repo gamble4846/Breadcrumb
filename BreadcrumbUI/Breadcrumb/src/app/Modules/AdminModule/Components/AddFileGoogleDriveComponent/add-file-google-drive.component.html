@@ -6,6 +6,7 @@
   </div>
 
   <div class="filesLinksHeader">
+    <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="EditAllFileChunks()">Edit All File Chunks</button>
     <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="SaveFiles()">Save Files</button>
   </div>
   <div class="filesLinksBody">
@@ -102,31 +103,53 @@
   <ng-container *nzModalContent>
     <div>
       <div>Name:</div>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.name" />
+      <input nz-input placeholder="Enter Name" [(ngModel)]="EditAddFileChunkModelData.name" />
     </div>
     <div>
       <div>Thumbnail Link:</div>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.thumbnailLink" />
+      <input nz-input placeholder="Enter Thumbnail Link" [(ngModel)]="EditAddFileChunkModelData.thumbnailLink" />
     </div>
     <div>
       <div>Type:</div>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.type" />
+      <input nz-input placeholder="Enter Type" [(ngModel)]="EditAddFileChunkModelData.type" />
     </div>
     <div>
       <div>Size:</div>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.size" />
+      <input nz-input placeholder="Enter Size" [(ngModel)]="EditAddFileChunkModelData.size" />
     </div>
     <div>
       <div>Email:</div>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.email" />
+      <input nz-input placeholder="Enter Email" [(ngModel)]="EditAddFileChunkModelData.email" />
     </div>
     <div>
       <div>Id:</div>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="EditAddFileChunkModelData.id" />
+      <input nz-input placeholder="Enter Id" [(ngModel)]="EditAddFileChunkModelData.id" />
+    </div>
+    <div>
+      <div>Password:</div>
+      <input nz-input placeholder="Enter Password" [(ngModel)]="EditAddFileChunkModelData.password" />
+    </div>
+    <div>
+      <div>OtherData:</div>
+      <textarea rows="4" placeholder="Enter OtherData" nz-input [(ngModel)]="EditAddFileChunkModelData.otherData"></textarea>
     </div>
 
     <!-- <div style="padding: 10px 0px;" *ngIf="FinalFileEditIndex != null">
       <button nz-button nzType="primary" nzDanger (click)="DeleteFile(FinalFileEditIndex)">Delete</button>
     </div> -->
+  </ng-container>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="ALL_EditAddFileChunkModleVisible" [nzTitle]="ALL_EditAddFileChunkModalTitle" (nzOnCancel)="handleALL_EditAddFileChunkModleCancel()"
+  (nzOnOk)="handleALL_EditAddFileChunkModleOk()">
+  <ng-container *nzModalContent>
+    <div>
+      <div>Password:</div>
+      <input nz-input placeholder="Enter Password" [(ngModel)]="ALL_EditAddFileChunkModelData.password" />
+    </div>
+    <div>
+      <div>OtherData:</div>
+      <textarea rows="4" placeholder="Enter OtherData" nz-input [(ngModel)]="ALL_EditAddFileChunkModelData.otherData"></textarea>
+    </div>
   </ng-container>
 </nz-modal>

@@ -13,7 +13,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag
 })
 export class AddFileGoogleDriveComponent {
 
-  InputFolderId:string = "";
+  InputFolderId:string = "19T8z9XGbaEqTxbwuUblbsJmGo3veWht-";
   FolderData:FolderAPI = {
     name: '',
     id: '',
@@ -132,7 +132,9 @@ export class AddFileGoogleDriveComponent {
     type: '',
     size: '',
     email: '',
-    id: ''
+    id: '',
+    password: '',
+    otherData: ''
   };
 
   EditAddFileChunkIndex_File:number = 0;
@@ -168,7 +170,9 @@ export class AddFileGoogleDriveComponent {
         type: '',
         size: '',
         email: '',
-        id: ''
+        id: '',
+        password: '',
+        otherData: ''
       };
       this.EditAddFileChunkModleVisible = true;
       this.EditAddFileChunkModalTitle = "Add File Chunk";
@@ -193,5 +197,40 @@ export class AddFileGoogleDriveComponent {
         this.FileModalTitle = "";
       }
     })
+  }
+
+  ALL_EditAddFileChunkModleVisible:boolean = false;
+  ALL_EditAddFileChunkModalTitle:string = "Edit All File Chunks"
+  ALL_EditAddFileChunkModelData = {
+    password: '',
+    otherData: ''
+  }
+
+  EditAllFileChunks(){
+    this.ALL_EditAddFileChunkModleVisible = true;
+  }
+
+  handleALL_EditAddFileChunkModleCancel(){
+    this.ALL_EditAddFileChunkModleVisible = false;
+    this.ALL_EditAddFileChunkModelData = {
+      password: '',
+      otherData: ''
+    }
+  }
+
+  handleALL_EditAddFileChunkModleOk(){
+    this.FinalFiles.forEach((file:FinalFile) => {
+      file.FileChunks.forEach((chunk:FilesApi) => {
+        chunk.password = this.ALL_EditAddFileChunkModelData.password;
+        chunk.otherData = this.ALL_EditAddFileChunkModelData.otherData;
+      });
+    });
+
+    this.ALL_EditAddFileChunkModelData = {
+      password: '',
+      otherData: ''
+    };
+
+    this.ALL_EditAddFileChunkModleVisible = false;
   }
 }

@@ -22,6 +22,8 @@ namespace Breadcrumb.Model.GoogleApiModels
         public decimal? Size { get; set; }
         public string Email { get; set; }
         public string Id { get; set; }
+        public string Password { get; set; }
+        public string OtherData { get; set; }
     }
 
     public class FinalFile

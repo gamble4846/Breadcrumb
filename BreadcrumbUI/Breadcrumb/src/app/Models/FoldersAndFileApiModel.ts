@@ -12,6 +12,8 @@ export interface FilesApi {
     size: string;
     email: string;
     id: string;
+    password: string;
+    otherData: string;
 }
 
 export interface FinalFile{

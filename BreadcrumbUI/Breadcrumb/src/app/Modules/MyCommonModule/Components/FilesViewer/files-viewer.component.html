@@ -20,7 +20,9 @@
           <div class="FileInformationContainer">
             <nz-collapse nzGhost>
               <nz-collapse-panel nzHeader="File Information" [nzActive]="isFileInfoOpen">
-                
+                <ng-container *ngIf="SelectedFile && SelectedFile.chunks && SelectedFile.chunks[0].link">
+                  {{Core.ObjectToString(SelectedFile.chunks[0])}}
+                </ng-container>
               </nz-collapse-panel>
             </nz-collapse>
           </div>
