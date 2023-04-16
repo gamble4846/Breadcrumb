@@ -197,4 +197,8 @@ export class CoreService {
   ObjectToString(objData:any){
     return JSON.stringify(objData);
   }
+
+  OpenLink(link:string, target:string = '_self'){
+    window.open(link, target);
+  }
 }

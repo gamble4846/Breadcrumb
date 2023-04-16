@@ -1,0 +1,31 @@
+.InsertUpdateFullTvShowContainer {
+  max-width: var(--main-max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.inputContainer .labelContainer {
+  color: white;
+  font-weight: bold;
+}
+
+.inputContainer .inputContainer nz-select {
+  width: 100%;
+}
+
+.ImdbIdInput{
+    max-width: 300px;
+}
+
+.saveButtonContainer{
+    max-width: 300px;
+}
+
+.JsonOutputContianer{
+    width: 100%;
+    background-color: black;
+    margin: 10px 0px;
+    border: 1px solid white;
+    padding: 10px;
+}

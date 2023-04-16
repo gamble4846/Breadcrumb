@@ -4,7 +4,8 @@
       <div class="cardsContainer">
         <ng-container *ngIf="this.FilesViewerData.FileToGetFrom == 'Episode'">
           <ng-container *ngFor="let file of AllFiles">
-            <div class="CardContainer" (click)="FileSelected(file.ALLFileModelID)" [ngClass]="{'selected': file.ALLFileModelID == SelectedFile.ALLFileModelID}">
+            <div class="CardContainer" (click)="FileSelected(file.ALLFileModelID)"
+              [ngClass]="{'selected': file.ALLFileModelID == SelectedFile.ALLFileModelID}">
               <div class="CardInnerContainer">
                 <div>Quality - {{file.quality}}</div>
                 <div>Audio - {{file.audioLanguages}}</div>
@@ -15,31 +16,49 @@
       </div>
     </div>
     <div class="tablesContainer">
-      <section class="FilesDataContainer">
-        <ng-container *ngIf="SelectedFile.chunks?.length == 1">
+      <ng-container  *ngIf="SelectedFile">
+        <section class="FilesDataContainer">
+          <div class="chunksListContainer">
+            <ul>
+              <li *ngFor="let chunk of SelectedFile.chunks; let chunkIndex = index"><span [ngClass]="{'chunkSelected': chunkIndex == SelectedChunkIndex}" (click)="ChunkChanged(chunkIndex)">Chunk {{chunkIndex + 1}}</span></li>
+            </ul>
+          </div>
           <div class="FileInformationContainer">
             <nz-collapse nzGhost>
               <nz-collapse-panel nzHeader="File Information" [nzActive]="isFileInfoOpen">
-                <ng-container *ngIf="SelectedFile && SelectedFile.chunks && SelectedFile.chunks[0].link">
-                  {{Core.ObjectToString(SelectedFile.chunks[0])}}
+                <ng-container *ngIf="SelectedChunk && SelectedChunk && SelectedChunk.link">
+                  <div nz-row>
+                    <div nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="8" nzXl="8">Email - {{SelectedChunk.email}}</div>
+                    <div nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="8" nzXl="8">Size - {{SelectedChunk.size}}</div>
+                    <div nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="8" nzXl="8">Password - {{SelectedChunk.password}}</div>
+                  </div>
                 </ng-container>
               </nz-collapse-panel>
             </nz-collapse>
           </div>
           <div class="iframeContainer">
-            <ng-container *ngIf="SelectedFile && SelectedFile.chunks && SelectedFile.chunks[0].link">
-              <iframe [cachedSrc]="Core.getGoogleDrivePreviewLink(SelectedFile.chunks[0].link)" width="100%" height="100%"></iframe>
+            <ng-container *ngIf="SelectedChunk && SelectedChunk.link && SelectedChunk.link.includes('drive.google.com')">
+              <iframe [cachedSrc]="Core.getGoogleDrivePreviewLink(SelectedChunk.link)" width="100%" height="100%" allowfullscreen="true"></iframe>
+            </ng-container>
+            <ng-container *ngIf="SelectedChunk && SelectedChunk.link && SelectedChunk.link.includes('www.dropbox.com')">
+              <div class="dropboxLinkContainer">
+                <div class="dropboxLinkInnerContainer">
+                  <p style="color: black;">{{SelectedFile.name}}</p>
+                  <img src="https://i.imgur.com/8xKFvLn.png" width="100px" height="100px">
+                  <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="(Core.OpenLink(SelectedChunk.link,'_blank'))">Open Link</button>
+                </div>
+              </div>
             </ng-container>
           </div>
           <div class="FileButtonsContainer">
             <nz-collapse nzGhost>
-              <nz-collapse-panel nzHeader="File Button" [nzActive]="isFileInfoOpen">
-                
+              <nz-collapse-panel nzHeader="File Buttons" [nzActive]="isFileInfoOpen">
+
               </nz-collapse-panel>
             </nz-collapse>
           </div>
-        </ng-container>
-      </section>
+        </section>
+      </ng-container>
     </div>
   </section>
 </div>

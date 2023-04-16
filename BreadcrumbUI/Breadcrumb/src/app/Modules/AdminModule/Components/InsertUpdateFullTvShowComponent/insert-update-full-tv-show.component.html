@@ -1,0 +1,17 @@
+<div class="InsertUpdateFullTvShowContainer">
+  <section class="inputContainer">
+    <div class="labelContainer">
+      ImdbId
+    </div>
+    <div class="inputContainer ImdbIdInput">
+        <input nz-input placeholder="Enter Imdb Id" [(ngModel)]="ImdbIdInputValue" />
+    </div>
+  </section>
+  <div class="saveButtonContainer">
+    <button nz-button nzType="primary" nzBlock style="margin-top: 10px;" (click)="SaveFullTvShow()">Save</button>
+  </div>
+
+  <div class="JsonOutputContianer">
+    <ngx-json-viewer [json]="responseObj"></ngx-json-viewer>
+  </div>
+</div>

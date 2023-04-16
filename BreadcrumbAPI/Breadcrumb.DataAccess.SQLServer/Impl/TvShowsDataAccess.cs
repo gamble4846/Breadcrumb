@@ -357,12 +357,12 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
             {
                 string CommandText = @"DELETE FROM tbShowsFile Where Id IN (" + ShowFileIds + ")";
                 SqlCommand cmd = new SqlCommand(CommandText, connection);
-                SqlTransaction transaction = cmd.Connection.BeginTransaction("");
-                cmd.Transaction = transaction;
 
                 try
                 {
                     connection.Open();
+                    SqlTransaction transaction = connection.BeginTransaction("");
+                    cmd.Transaction = transaction;
                     var recs = cmd.ExecuteNonQuery();
                     if (recs > 0)
                     {

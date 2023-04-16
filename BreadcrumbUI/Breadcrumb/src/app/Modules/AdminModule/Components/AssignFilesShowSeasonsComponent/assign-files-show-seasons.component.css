@@ -29,12 +29,16 @@
 
 .EpisodesAndFilesContainer .EpisodesContainer{
   width: 50%;
-  overflow-x: auto;
+  overflow: auto;
+  height: 70vh;
+  padding: 10px;
 }
 
 .EpisodesAndFilesContainer .FilesContainer{
   width: 50%;
-  overflow-y: auto;
+  overflow: auto;
+  height: 70vh;
+  padding: 10px;
 }
 
 .FileChunksContainer{

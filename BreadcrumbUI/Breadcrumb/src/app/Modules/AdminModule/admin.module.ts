@@ -19,6 +19,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { OtherComponentsModule } from "../../Components/other-components.module";
 import { AssignFilesShowSeasonsComponent } from './Components/AssignFilesShowSeasonsComponent/assign-files-show-seasons.component';
+import { InsertUpdateFullTvShowComponent } from './Components/InsertUpdateFullTvShowComponent/insert-update-full-tv-show.component';
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { SingleChunkFilesJExcelComponent } from './Components/SingleChunkFilesJExcelComponent/single-chunk-files-jexcel.component';
+import { HotTableModule } from '@handsontable/angular';
 
 
 @NgModule({
@@ -26,7 +30,9 @@ import { AssignFilesShowSeasonsComponent } from './Components/AssignFilesShowSea
         SettingsComponent,
         AdminComponent,
         AddFileGoogleDriveComponent,
-        AssignFilesShowSeasonsComponent
+        AssignFilesShowSeasonsComponent,
+        InsertUpdateFullTvShowComponent,
+        SingleChunkFilesJExcelComponent
     ],
     imports: [
         CommonModule,
@@ -43,7 +49,9 @@ import { AssignFilesShowSeasonsComponent } from './Components/AssignFilesShowSea
         NzCardModule,
         DragDropModule,
         NzModalModule,
-        OtherComponentsModule
+        OtherComponentsModule,
+        NgxJsonViewerModule,
+        HotTableModule
     ]
 })
 export class AdminModule { }

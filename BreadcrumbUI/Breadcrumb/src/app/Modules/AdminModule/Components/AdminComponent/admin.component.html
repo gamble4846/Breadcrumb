@@ -1,6 +1,6 @@
 <div class="AdminContainer">
   <div nz-row [nzGutter]="16" class="ToolsContainer">
-    <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6">
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6" style="padding: 10px 0px;">
       <a [routerLink]="['AddFileGoogleDrive']">
         <nz-card nzHoverable style="width:100%" [nzCover]="AddFilesGoogleDriveTemplate">
           <nz-card-meta nzTitle="Add Files - Google Drive" nzDescription="Add Files to your database from google drive"></nz-card-meta>
@@ -10,13 +10,33 @@
         </ng-template>
       </a>
     </div>
-    <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6">
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6" style="padding: 10px 0px;">
       <a [routerLink]="['AssignFilesShowSeasons']">
         <nz-card nzHoverable style="width:100%" [nzCover]="AssignFilesShowSeasonsTemplate">
           <nz-card-meta nzTitle="Assign Files - Show Seasons" nzDescription="Assign Files from your database to episodes"></nz-card-meta>
         </nz-card>
         <ng-template #AssignFilesShowSeasonsTemplate>
           <img alt="example" src="https://i.imgur.com/WGIXSN5.png" />
+        </ng-template>
+      </a>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6" style="padding: 10px 0px;">
+      <a [routerLink]="['InsertUpdateFullTvShow']">
+        <nz-card nzHoverable style="width:100%" [nzCover]="InsertUpdateFullTvShowTemplate">
+          <nz-card-meta nzTitle="Insert Update Full TvShow" nzDescription="Insert Update Full TvShow Using IMDB ID"></nz-card-meta>
+        </nz-card>
+        <ng-template #InsertUpdateFullTvShowTemplate>
+          <img alt="example" src="https://i.imgur.com/hBVT7mL.png" />
+        </ng-template>
+      </a>
+    </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6" style="padding: 10px 0px;">
+      <a [routerLink]="['SingleChunkFilesJExcel']">
+        <nz-card nzHoverable style="width:100%" [nzCover]="SingleChunkFilesJExcelTemplate">
+          <nz-card-meta nzTitle="Single Chunk Files JExcel" nzDescription="Insert Update Single Chunk Files using JExcel"></nz-card-meta>
+        </nz-card>
+        <ng-template #SingleChunkFilesJExcelTemplate>
+          <img alt="example" src="https://i.imgur.com/WFZvzBV.png" />
         </ng-template>
       </a>
     </div>

@@ -170,6 +170,9 @@ export class AssignFilesShowSeasonsComponent {
         tbShowsFileID: null,
       });
     })
+
+    this.FilesWithShowToInsert.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+    console.log(this.FilesData);
   }
 
   DeleteFileFromEpisode(FileIndex: number, EpisodeIndex: number) {
@@ -289,5 +292,20 @@ export class AssignFilesShowSeasonsComponent {
         this.Core.showMessage("success",response.message);
       }
     })
+  }
+
+  MoveAllFiles(){
+    console.log(this.EpsiodesDataWithFiles);
+    console.log(this.FilesWithShowToInsert);
+
+    var maxLength = Math.min(this.EpsiodesDataWithFiles.length, this.FilesWithShowToInsert.length);
+
+    console.log(maxLength);
+
+    for (let index = 0; index < maxLength; index++) {
+      this.EpsiodesDataWithFiles[index].files.push(this.FilesWithShowToInsert[index]);
+    }
+
+    this.FilesWithShowToInsert.splice(0, maxLength);
   }
 }

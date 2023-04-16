@@ -194,7 +194,14 @@ namespace Breadcrumb.Utility
         public static T DataTableToObject<T>(this DataTable dt) where T : new()
         {
             var dataRows = dt.AsEnumerable().ToList();
-            return dataRows[0].ToObject<T>();
+            if(dataRows.Count > 0)
+            {
+                return dataRows[0].ToObject<T>();
+            }
+            else
+            {
+                return default;
+            }
         }
 
         public static List<T> DataTableToObjectList<T>(this DataTable dt) where T : new()

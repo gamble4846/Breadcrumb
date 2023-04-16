@@ -8,6 +8,8 @@ import { FilesService } from 'src/app/Services/API Services/FilesService/files.s
 import { FullShowFilesWithChunksModel } from 'src/app/Models/FullShowFilesWithChunksModel';
 import { AllFilesModel } from '../Models/AllFilesModel';
 import { DomSanitizer } from '@angular/platform-browser';
+import { NzTabPosition } from 'ng-zorro-antd/tabs';
+import { tbFileDataChunksModel } from 'src/app/Models/tbFileDataChunksModel';
 
 @Component({
   selector: 'files-viewer',
@@ -98,5 +100,16 @@ export class FilesViewerComponent {
 
   FileSelected(ALLFileModelID:string){
     this.SelectedFile = this.AllFiles.find((x:AllFilesModel) => x.ALLFileModelID == ALLFileModelID) || this.SelectedFile;
+    this.ChunkChanged(0);
   }
+
+  SelectedChunk:tbFileDataChunksModel | undefined;
+  SelectedChunkIndex:number = -1;
+  ChunkChanged(index:number){
+    if(this.SelectedFile && this.SelectedFile.chunks && this.SelectedFile.chunks[index]){
+      this.SelectedChunk = this.SelectedFile.chunks[index];
+      this.SelectedChunkIndex = index;
+    }
+  }
+
 }

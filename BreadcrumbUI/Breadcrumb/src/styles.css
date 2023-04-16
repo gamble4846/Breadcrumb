@@ -1,3 +1,5 @@
+@import '~handsontable/dist/handsontable.full.css';
+
 :root {
   --color-white: #202020;
   --color-light: #f1f5f8;
@@ -138,6 +140,10 @@
   color: white;
 }
 
-.FilesDataContainer .ant-collapse-header{
+.FilesDataContainer .ant-collapse-header,.FilesDataContainer .ant-collapse-content{
+  color: white !important;
+}
+
+.segment-key{
   color: white !important;
 }
