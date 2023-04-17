@@ -18,6 +18,15 @@
   max-width: 300px;
 }
 
-.CoverTableCopntainer{
-    padding: 20px 0px;
+.CoverTableCopntainer {
+  padding: 20px 0px;
+}
+
+.dropdownImageContainer{
+  background-color: white;
+  padding: 5px;
+  border: 1px solid grey;
+  border-radius: 3px;
+  max-width: 200px;
+  display: flex;
 }

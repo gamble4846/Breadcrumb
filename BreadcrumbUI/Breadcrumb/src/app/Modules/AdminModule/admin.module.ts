@@ -25,6 +25,7 @@ import { SingleChunkFilesJExcelComponent } from './Components/SingleChunkFilesJE
 import { JExcelJSModule } from 'src/app/HelperModules/JExcelJSModule/jexcel-js.module';
 import { CRUDCoversComponent } from './Components/CRUDCoversComponet/crudcovers.component';
 import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import { NzTableModule } from 'ng-zorro-antd/table';
         OtherComponentsModule,
         NgxJsonViewerModule,
         JExcelJSModule,
-        NzTableModule
+        NzTableModule,
+        NzDropDownModule
     ]
 })
 export class AdminModule { }

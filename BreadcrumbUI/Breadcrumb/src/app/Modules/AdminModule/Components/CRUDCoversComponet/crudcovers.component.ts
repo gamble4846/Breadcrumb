@@ -142,4 +142,10 @@ export class CRUDCoversComponent {
       }
     })
   }
+
+  DropDownImage:string = "";
+
+  UpdateDropDownImage(newLink:string){
+    this.DropDownImage = newLink;
+  }
 }

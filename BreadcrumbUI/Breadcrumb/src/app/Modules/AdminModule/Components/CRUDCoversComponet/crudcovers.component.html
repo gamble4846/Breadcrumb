@@ -38,7 +38,7 @@
       <tbody>
         <tr *ngFor="let data of coverTable.data; let indexCover = index">
           <td>{{ data.id }}</td>
-          <td>{{ data.link }}</td>
+          <td nz-dropdown nzTrigger="click" [nzDropdownMenu]="ImageDropDown" (click)="UpdateDropDownImage(data.link)" style="cursor: pointer;">{{ data.link }}</td>
           <td>{{ data.dimensions }}</td>
           <td>{{ data.isNSFW }}</td>
           <td>
@@ -57,6 +57,12 @@
     </div>
   </div>
 </div>
+
+<nz-dropdown-menu #ImageDropDown="nzDropdownMenu">
+  <div class="dropdownImageContainer">
+    <img [src]="DropDownImage" width="100%">
+  </div>
+</nz-dropdown-menu>
 
 <nz-modal [(nzVisible)]="InsetUpdateCoverModelIsVisible" [nzTitle]="InsetUpdateCoverModelTitle"
   (nzOnCancel)="handleInsetUpdateCoverModelCancel()" (nzOnOk)="handleInsetUpdateCoverModelOk()">
