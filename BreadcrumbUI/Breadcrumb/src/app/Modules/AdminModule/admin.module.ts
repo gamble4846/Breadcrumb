@@ -23,6 +23,7 @@ import { InsertUpdateFullTvShowComponent } from './Components/InsertUpdateFullTv
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { SingleChunkFilesJExcelComponent } from './Components/SingleChunkFilesJExcelComponent/single-chunk-files-jexcel.component';
 import { JExcelJSModule } from 'src/app/HelperModules/JExcelJSModule/jexcel-js.module';
+import { CRUDCoversComponent } from './Components/CRUDCoversComponet/crudcovers.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { JExcelJSModule } from 'src/app/HelperModules/JExcelJSModule/jexcel-js.m
         AddFileGoogleDriveComponent,
         AssignFilesShowSeasonsComponent,
         InsertUpdateFullTvShowComponent,
-        SingleChunkFilesJExcelComponent
+        SingleChunkFilesJExcelComponent,
+        CRUDCoversComponent
     ],
     imports: [
         CommonModule,
