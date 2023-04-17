@@ -6,6 +6,7 @@ using Breadcrumb.Model.vTvShowsModels;
 using Breadcrumb.Model.tbSeasonsModel;
 using Breadcrumb.Model.tbEpisodesModels;
 using System.Threading.Tasks;
+using Breadcrumb.Model.tbCoversModels;
 
 namespace Breadcrumb.Manager.Interface
 {
@@ -13,6 +14,7 @@ namespace Breadcrumb.Manager.Interface
     {
         APIResponse GetCoverByBreadId(Guid BreadId);
         APIResponse GetCoverByBreadIds(List<Guid> BreadIds);
+        APIResponse InsertUpdateDeleteCoversForSingleBread(List<tbCoversModel> coversData);
     }
 }
 

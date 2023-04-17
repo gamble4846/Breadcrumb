@@ -40,5 +40,15 @@
         </ng-template>
       </a>
     </div>
+    <div nz-col nzXs="24" nzSm="12" nzMd="6" nzLg="6" nzXl="6" style="padding: 10px 0px;">
+      <a [routerLink]="['CRUDCovers']">
+        <nz-card nzHoverable style="width:100%" [nzCover]="CRUDCoversTemplate">
+          <nz-card-meta nzTitle="CRUD Covers" nzDescription="Insert Update Delete Covers for Breads"></nz-card-meta>
+        </nz-card>
+        <ng-template #CRUDCoversTemplate>
+          <img alt="example" src="https://i.imgur.com/WFZvzBV.png" />
+        </ng-template>
+      </a>
+    </div>
   </div>
 </div>

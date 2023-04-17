@@ -1,3 +1,96 @@
 <div class="crudcoversContainer">
+  <section class="inputContainer">
+    <div class="labelContainer">
+      Bread Type
+    </div>
+    <div class="inputContainer MaxWidth300">
+      <nz-select [(ngModel)]="SelectedBreadType" (ngModelChange)="BreadTypeChanged()">
+        <nz-option *ngFor="let type of BreadTypes" [nzValue]="type" [nzLabel]="type"></nz-option>
+      </nz-select>
+    </div>
+  </section>
 
+  <section class="inputContainer">
+    <div class="labelContainer">
+      Select Bread
+    </div>
+    <div class="inputContainer MaxWidth300">
+      <nz-select [(ngModel)]="SelectedBreadId" (ngModelChange)="BreadChanged()">
+        <nz-option *ngFor="let bread of CoverBreads" [nzValue]="bread.breadId" [nzLabel]="bread.displayBread">
+        </nz-option>
+      </nz-select>
+    </div>
+  </section>
+
+  <div class="CoverTableCopntainer">
+    <button nz-button nzType="primary" style="margin-bottom: 10px;" (click)="ShowInsetUpdateCoverModel()">Add <span
+        nz-icon nzType="plus" nzTheme="outline"></span></button>
+    <nz-table #coverTable nzSize="small" [nzData]="CoversData" [nzFrontPagination]="false">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Link</th>
+          <th>Dimensions</th>
+          <th>isNSFW</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of coverTable.data; let indexCover = index">
+          <td>{{ data.id }}</td>
+          <td>{{ data.link }}</td>
+          <td>{{ data.dimensions }}</td>
+          <td>{{ data.isNSFW }}</td>
+          <td>
+            <button nz-button nzType="primary" nzDanger (click)="DeleteCoverConfirm(indexCover)"><span nz-icon nzType="delete"
+                nzTheme="outline"></span></button>
+            <button nz-button nzType="primary" style="margin-left: 5px;"
+              (click)="ShowInsetUpdateCoverModel(indexCover)"><span nz-icon nzType="edit"
+                nzTheme="outline"></span></button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+    <div style="text-align: right;">
+        <button nz-button nzType="primary" (click)="SaveCovers()">Save <span
+            nz-icon nzType="save" nzTheme="outline"></span></button>
+    </div>
+  </div>
 </div>
+
+<nz-modal [(nzVisible)]="InsetUpdateCoverModelIsVisible" [nzTitle]="InsetUpdateCoverModelTitle"
+  (nzOnCancel)="handleInsetUpdateCoverModelCancel()" (nzOnOk)="handleInsetUpdateCoverModelOk()">
+  <ng-container *nzModalContent>
+    <div class="FormContainer">
+      <section class="inputContainer">
+        <div class="labelContainer" style="color: black;">
+          Link
+        </div>
+        <div class="inputContainer">
+          <input nz-input placeholder="Enter Link" [(ngModel)]="CurrentlyEditingCoverModel.link" />
+        </div>
+      </section>
+
+      <section class="inputContainer">
+        <div class="labelContainer" style="color: black;">
+          Dimensions
+        </div>
+        <div class="inputContainer">
+          <nz-select [(ngModel)]="CurrentlyEditingCoverModel.dimensions">
+            <nz-option *ngFor="let dimen of DimensionsTypes" [nzValue]="dimen" [nzLabel]="dimen">
+            </nz-option>
+          </nz-select>
+        </div>
+      </section>
+
+      <section class="inputContainer">
+        <div class="labelContainer" style="color: black;">
+          IsNSFW
+        </div>
+        <div class="inputContainer">
+            <nz-switch [(ngModel)]="CurrentlyEditingCoverModel.isNSFW"></nz-switch>
+        </div>
+      </section>
+    </div>
+  </ng-container>
+</nz-modal>

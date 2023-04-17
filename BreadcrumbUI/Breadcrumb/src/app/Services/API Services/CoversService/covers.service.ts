@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ConfigService } from '../../Other Services/ConfigService/config.service';
+import { tbCoversModel } from 'src/app/Models/CoversModels';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,11 @@ export class CoversService {
   GetCoverByBreadIds(BreadId: Array<string>){
     let apiLink = this.ApiConfigFile['MainAPI'] + `api/Cover/Get`;
     return this.http.post(apiLink,BreadId);
+  }
+
+  InsertUpdateDeleteCoversForSingleBread(CoverData: Array<tbCoversModel>){
+    let apiLink = this.ApiConfigFile['MainAPI'] + `api/InsertUpdateDeleteCovers/SingleBread/Post`;
+    // let apiLink = `https://localhost:44376/api/InsertUpdateDeleteCovers/SingleBread/Post`;
+    return this.http.post(apiLink,CoverData);
   }
 }

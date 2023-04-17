@@ -54,6 +54,58 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
                 return ret;
             }
         }
+
+        public bool InsertUpdateDeleteCoversForSingleBread(List<string> CoversToInsertQueries, List<string> CoversToUpdateQueries, string CoversToDeleteQuery)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string CommandText = @"";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction("");
+                cmd.Transaction = transaction;
+
+                try
+                {
+                    foreach (var commandString in CoversToInsertQueries)
+                    {
+                        cmd.CommandText = commandString;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    foreach (var commandString in CoversToUpdateQueries)
+                    {
+                        cmd.CommandText = commandString;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    if (!String.IsNullOrEmpty(CoversToDeleteQuery))
+                    {
+                        cmd.CommandText = CoversToDeleteQuery;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+                return false;
+            }
+        }
     }
 }
 

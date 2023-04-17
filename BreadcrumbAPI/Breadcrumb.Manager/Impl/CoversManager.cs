@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using Breadcrumb.Model.TheMovieDBModels;
 using FastMember;
 using System.Collections;
+using Breadcrumb.Model.tbCoversModels;
+using System.Linq;
 
 namespace Breadcrumb.Manager.Impl
 {
@@ -71,6 +73,64 @@ namespace Breadcrumb.Manager.Impl
 
                     var result = SqlCoversDataAccess.GetCoverByBreadIds(BreadIdsSTR);
                     if (result != null && result.Count > 0)
+                    {
+                        return new APIResponse(ResponseCode.SUCCESS, "Records Found", result);
+                    }
+                    else
+                    {
+                        return new APIResponse(ResponseCode.ERROR, "No Records Found");
+                    }
+                default:
+                    return new APIResponse(ResponseCode.ERROR, "Invalid Database Type", ServerType);
+            }
+        }
+
+        public APIResponse InsertUpdateDeleteCoversForSingleBread(List<tbCoversModel> coversData)
+        {
+            switch (ServerType)
+            {
+                case "SQLServer":
+                    SqlCoversDataAccess = new CoversDataAccess(ConnectionString, CommonFunctions);
+                    var oldCovers = SqlCoversDataAccess.GetCoverByBreadId(coversData[0].BreadId ?? new Guid());
+                    
+
+                    var CoversToUpdate = coversData.Where(x => x.Id != null).ToList();
+                    var newCoversIds = CoversToUpdate.Select(x => x.Id).ToList();
+                    var CoversToInsert = coversData.Where(x => x.Id == null).ToList();
+                    var CoversToDelete = new List<tbCoversModel>();
+                    foreach(var cover in oldCovers)
+                    {
+                        if (!(newCoversIds.Contains(cover.Id)))
+                        {
+                            CoversToDelete.Add(cover);
+                        }
+                    }
+                    var toDeletedIds = CoversToDelete.Select(x => x.Id).ToList();
+
+                    var CoversToInsertQueries = new List<string>();
+                    var CoversToUpdateQueries = new List<string>();
+                    var CoversToDeleteQuery = "";
+
+                    if (toDeletedIds.Count > 0)
+                    {
+                        CoversToDeleteQuery = "DELETE [tbCovers] WHERE [Id] IN ('" + string.Join("','", toDeletedIds) + "')";
+                    }
+
+                    foreach(var cover in CoversToInsert)
+                    {
+                        var currentQuery = "INSERT INTO [tbCovers] ([BreadId] ,[Link] ,[Dimensions] ,[isNSFW]) VALUES ('"+cover.BreadId+"' ,'"+cover.Link+"' ,'"+cover.Dimensions+"' ,'"+cover.isNSFW+"')";
+                        CoversToInsertQueries.Add(currentQuery);
+                    }
+
+                    foreach (var cover in CoversToUpdate)
+                    {
+                        var currentQuery = "UPDATE [tbCovers] SET [BreadId] = '"+cover.BreadId+"' ,[Link] = '"+cover.Link+"' ,[Dimensions] = '"+cover.Dimensions+"' ,[isNSFW] = '"+cover.isNSFW+"' WHERE [Id] = '"+cover.Id+"'";
+                        CoversToUpdateQueries.Add(currentQuery);
+                    }
+
+                    var result = SqlCoversDataAccess.InsertUpdateDeleteCoversForSingleBread(CoversToInsertQueries, CoversToUpdateQueries, CoversToDeleteQuery);
+
+                    if (result)
                     {
                         return new APIResponse(ResponseCode.SUCCESS, "Records Found", result);
                     }

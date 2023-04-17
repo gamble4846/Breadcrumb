@@ -24,6 +24,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { SingleChunkFilesJExcelComponent } from './Components/SingleChunkFilesJExcelComponent/single-chunk-files-jexcel.component';
 import { JExcelJSModule } from 'src/app/HelperModules/JExcelJSModule/jexcel-js.module';
 import { CRUDCoversComponent } from './Components/CRUDCoversComponet/crudcovers.component';
+import { NzTableModule } from 'ng-zorro-antd/table';
 
 
 @NgModule({
@@ -53,7 +54,8 @@ import { CRUDCoversComponent } from './Components/CRUDCoversComponet/crudcovers.
         NzModalModule,
         OtherComponentsModule,
         NgxJsonViewerModule,
-        JExcelJSModule
+        JExcelJSModule,
+        NzTableModule
     ]
 })
 export class AdminModule { }

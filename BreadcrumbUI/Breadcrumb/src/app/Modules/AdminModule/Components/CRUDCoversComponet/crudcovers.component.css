@@ -1,6 +1,23 @@
-.crudcoversContainer{
-    max-width: var(--main-max-width);
-    width: 100%;
-    margin: 0 auto;
-    padding: 2rem;
+.crudcoversContainer {
+  max-width: var(--main-max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.inputContainer .labelContainer {
+  color: white;
+  font-weight: bold;
+}
+
+.inputContainer .inputContainer nz-select {
+  width: 100%;
+}
+
+.MaxWidth300 {
+  max-width: 300px;
+}
+
+.CoverTableCopntainer{
+    padding: 20px 0px;
 }

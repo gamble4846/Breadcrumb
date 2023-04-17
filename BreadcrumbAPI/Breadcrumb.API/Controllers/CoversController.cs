@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using Breadcrumb.Model.tbCoversModels;
 
 namespace Breadcrumb.API.Controllers
 {
@@ -57,6 +58,20 @@ namespace Breadcrumb.API.Controllers
             try
             {
                 return Ok(CoversManager.GetCoverByBreadIds(BreadIds));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new APIResponse(ResponseCode.ERROR, "Exception", ex.Message));
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/InsertUpdateDeleteCovers/SingleBread/Post")]
+        public ActionResult InsertUpdateDeleteCoversForSingleBread(List<tbCoversModel> coversData)
+        {
+            try
+            {
+                return Ok(CoversManager.InsertUpdateDeleteCoversForSingleBread(coversData));
             }
             catch (Exception ex)
             {

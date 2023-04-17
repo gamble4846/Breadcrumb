@@ -6,6 +6,7 @@ import { AssignFilesShowSeasonsComponent } from './Components/AssignFilesShowSea
 import { SettingsComponent } from './Components/SettingsComponent/settings.component';
 import { InsertUpdateFullTvShowComponent } from './Components/InsertUpdateFullTvShowComponent/insert-update-full-tv-show.component';
 import { SingleChunkFilesJExcelComponent } from './Components/SingleChunkFilesJExcelComponent/single-chunk-files-jexcel.component';
+import { CRUDCoversComponent } from './Components/CRUDCoversComponet/crudcovers.component';
 
 const routes: Routes = [
   { path: '', component:AdminComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'AddFileGoogleDrive', component:AddFileGoogleDriveComponent },
   { path: 'AssignFilesShowSeasons', component:AssignFilesShowSeasonsComponent },
   { path: 'InsertUpdateFullTvShow', component:InsertUpdateFullTvShowComponent },
-  { path: 'SingleChunkFilesJExcel', component:SingleChunkFilesJExcelComponent }
+  { path: 'SingleChunkFilesJExcel', component:SingleChunkFilesJExcelComponent },
+  { path: 'CRUDCovers', component:CRUDCoversComponent }
 ];
 
 @NgModule({
