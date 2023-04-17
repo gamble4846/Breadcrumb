@@ -1,0 +1,19 @@
+.jExcelJSContainer{
+    max-width: 100%;
+    overflow: auto;
+    height: max-content;
+}
+
+.ButtonsContainer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.SpreadsheetContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #cccccc;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}

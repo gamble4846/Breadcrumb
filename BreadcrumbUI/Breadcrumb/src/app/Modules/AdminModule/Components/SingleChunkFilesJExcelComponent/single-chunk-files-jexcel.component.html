@@ -1,10 +1,6 @@
 <div class="SingleChunkFilesJExcelContainer">
-    <hot-table
-        [colHeaders]="colHeaders"
-        [colWidths]="colWidths"
-        [rowHeaders]="true"
-        [data]="tableData"
-        licenseKey="non-commercial-and-evaluation">
-    </hot-table>
-    <button (click)="saveTable()">Save</button>
+    <h2 class="pageHeader">Single Chunk File Insert Spreadsheet</h2>
+    <div class="jexcelContainer">
+        <jexcel-js [Columns]="Columns" [Data]="Data" [ShowAddRows]="true" (OnSave)="OnSave($event)"></jexcel-js>
+    </div>
 </div>

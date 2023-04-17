@@ -85,9 +85,17 @@ namespace Breadcrumb.Manager.Impl
                                 FileDataID = tbFilesData[indexFF].Id,
                                 Email = fileChunk.Email,
                                 Password = fileChunk.Password,
-                                Link = "https://drive.google.com/file/d/"+ fileChunk.Id + "/view?usp=share_link",
                                 OtherData = fileChunk.OtherData,
                             };
+
+                            if (fileChunk.Id.Contains("/"))
+                            {
+                                tbFileDataChunks.Link = fileChunk.Id;
+                            }
+                            else
+                            {
+                                tbFileDataChunks.Link = "https://drive.google.com/file/d/" + fileChunk.Id + "/view?usp=share_link";
+                            }
                             try { tbFileDataChunks.Size = Decimal.Parse(fileChunk.Size.ToString()); } catch { tbFileDataChunks.Size = 0; }
 
                             tbFileDataChunksViewList.Add(tbFileDataChunks);

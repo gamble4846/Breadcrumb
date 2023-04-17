@@ -1,0 +1,26 @@
+<div class="jExcelJSContainer">
+  <div class="SpreadsheetContainer">
+    <div #spreadsheet></div>
+  </div>
+  <div class="ButtonsContainer">
+    <div class="AddRowsContainer">
+      <ng-container *ngIf="ShowAddRows">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton" style="max-width: 200px;">
+          <nz-input-number [(ngModel)]="AddRowsCount" [nzMin]="0" [nzStep]="1" style="width: 100%;"></nz-input-number>
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch (click)="AddNewRows()"><span nz-icon nzType="plus"
+              nzTheme="outline"></span></button>
+        </ng-template>
+      </ng-container>
+    </div>
+    <div class="SaveContainer">
+      <ng-container *ngIf="ShowSave">
+        <button nz-button nzType="primary" (click)="SaveJExcel()">
+          <span nz-icon nzType="save"></span>
+          Save
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</div>

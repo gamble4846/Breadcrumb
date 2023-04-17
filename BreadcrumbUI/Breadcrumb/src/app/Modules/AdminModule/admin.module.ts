@@ -22,7 +22,7 @@ import { AssignFilesShowSeasonsComponent } from './Components/AssignFilesShowSea
 import { InsertUpdateFullTvShowComponent } from './Components/InsertUpdateFullTvShowComponent/insert-update-full-tv-show.component';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { SingleChunkFilesJExcelComponent } from './Components/SingleChunkFilesJExcelComponent/single-chunk-files-jexcel.component';
-import { HotTableModule } from '@handsontable/angular';
+import { JExcelJSModule } from 'src/app/HelperModules/JExcelJSModule/jexcel-js.module';
 
 
 @NgModule({
@@ -51,7 +51,7 @@ import { HotTableModule } from '@handsontable/angular';
         NzModalModule,
         OtherComponentsModule,
         NgxJsonViewerModule,
-        HotTableModule
+        JExcelJSModule
     ]
 })
 export class AdminModule { }

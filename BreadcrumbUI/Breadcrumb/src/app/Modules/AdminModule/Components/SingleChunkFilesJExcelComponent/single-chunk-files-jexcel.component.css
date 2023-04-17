@@ -4,3 +4,13 @@
     margin: 0 auto;
     padding: 2rem;
 }
+
+.jexcelContainer{
+    width: 100%;
+    overflow-x: auto;
+    height: max-content;
+}
+
+.pageHeader{
+    color: white;
+}
