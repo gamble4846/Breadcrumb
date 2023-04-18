@@ -64,6 +64,7 @@ export class CRUDCoversComponent {
   }
 
   BreadChanged(){
+    this.CoversData = [];
     this._Covers.GetCoverByBreadId(this.SelectedBreadId).subscribe((response:any) => {
       if(response.code == 1){
         this.CoversData = response.document;

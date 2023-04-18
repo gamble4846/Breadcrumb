@@ -139,6 +139,15 @@ export class TvShowComponent {
     FileToGetFrom: '',
     PrimaryId: ''
   };
+  SelectedEpisode:tbEpisodesModel = {
+    id: null,
+    seasonId: null,
+    number: 0,
+    name: '',
+    relaseDate: new Date(),
+    description: '',
+    thumbnailLink: ''
+  };
 
   ShowFilesModal(EpisodeId:string | null){
     this.FilesViewerData = {
@@ -146,6 +155,7 @@ export class TvShowComponent {
       PrimaryId: EpisodeId || ""
     }
     this.FilesModalVisible = true;
+    this.SelectedEpisode = this.TvShowEpisodesData.find((x:tbEpisodesModel) => x.id == EpisodeId ) || this.SelectedEpisode;
   }
 
   CancelFilesModal(){

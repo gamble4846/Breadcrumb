@@ -43,7 +43,7 @@
 
 
 <nz-modal nzClassName="FilesViewerModal" [(nzVisible)]="FilesModalVisible" nzCentered [nzTitle]="FilesModalTitle" [nzFooter]="FilesModalFooter" [nzContent]="FilesModalContent" [nzWidth]="'95vw'" (nzOnCancel)="CancelFilesModal()">
-  <ng-template #FilesModalTitle style="background-color: red;">Files</ng-template>
+  <ng-template #FilesModalTitle>Files - {{SelectedEpisode.name}}</ng-template>
 
   <ng-template #FilesModalContent>
     <div class="fileViewersContainer">
