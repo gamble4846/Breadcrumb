@@ -9,13 +9,13 @@ import { SingleChunkFilesJExcelComponent } from './Components/SingleChunkFilesJE
 import { CRUDCoversComponent } from './Components/CRUDCoversComponet/crudcovers.component';
 
 const routes: Routes = [
-  { path: '', component:AdminComponent },
-  { path: 'Settings', component:SettingsComponent },
-  { path: 'AddFileGoogleDrive', component:AddFileGoogleDriveComponent },
-  { path: 'AssignFilesShowSeasons', component:AssignFilesShowSeasonsComponent },
-  { path: 'InsertUpdateFullTvShow', component:InsertUpdateFullTvShowComponent },
-  { path: 'SingleChunkFilesJExcel', component:SingleChunkFilesJExcelComponent },
-  { path: 'CRUDCovers', component:CRUDCoversComponent }
+  { path: '', title: 'Admin - Breadcrumb', component:AdminComponent },
+  { path: 'Settings', title: 'Settings - Breadcrumb', component:SettingsComponent },
+  { path: 'AddFileGoogleDrive', title: 'AddFileGoogleDrive - Breadcrumb', component:AddFileGoogleDriveComponent },
+  { path: 'AssignFilesShowSeasons', title: 'AssignFilesShowSeasons - Breadcrumb', component:AssignFilesShowSeasonsComponent },
+  { path: 'InsertUpdateFullTvShow', title: 'InsertUpdateFullTvShow - Breadcrumb', component:InsertUpdateFullTvShowComponent },
+  { path: 'SingleChunkFilesJExcel', title: 'SingleChunkFilesJExcel - Breadcrumb', component:SingleChunkFilesJExcelComponent },
+  { path: 'CRUDCovers', title: 'CRUDCovers - Breadcrumb', component:CRUDCoversComponent }
 ];
 
 @NgModule({

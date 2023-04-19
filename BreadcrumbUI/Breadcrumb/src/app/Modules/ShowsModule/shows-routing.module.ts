@@ -5,9 +5,9 @@ import { OpenerComponent } from './Components/OpenerComponent/opener.component';
 import { TvShowComponent } from './Components/TvShowComponent/tv-show.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: "full", component:OpenerComponent },
-  { path: 'TvShow/:ShowId', component:TvShowComponent },
-  { path: 'Movie/:ShowId', component:MovieComponent },
+  { path: '', pathMatch: "full", component:OpenerComponent, title: "Shows - Breadcrumb" },
+  { path: 'TvShow/:ShowId', component:TvShowComponent, title: "TvShow - Breadcrumb" },
+  { path: 'Movie/:ShowId', component:MovieComponent, title: "Movie - Breadcrumb" },
 ];
 
 @NgModule({
