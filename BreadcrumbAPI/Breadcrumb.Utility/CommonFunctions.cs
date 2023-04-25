@@ -18,6 +18,8 @@ using Breadcrumb.Model.GoogleApiModels;
 using static System.Net.WebRequestMethods;
 using System.Xml.Linq;
 using System.Threading.Tasks;
+using Breadcrumb.Model.tbCoversModels;
+using Breadcrumb.Model.TheMovieDBModels;
 
 namespace Breadcrumb.Utility
 {
@@ -44,7 +46,7 @@ namespace Breadcrumb.Utility
             {
                 string token = GetTokenFromHeader();
 
-                if(String.IsNullOrEmpty(token))
+                if (String.IsNullOrEmpty(token))
                 {
                     return null;
                 }
@@ -63,7 +65,7 @@ namespace Breadcrumb.Utility
                     ValidateAudience = false
                 };
                 var claims = handler.ValidateToken(token, validations, out var tokenSecure);
-                var otherClaims = claims.Identities.ToList()[0].Claims.ToList(); 
+                var otherClaims = claims.Identities.ToList()[0].Claims.ToList();
 
                 TokenModel TokenData = new TokenModel();
                 TokenData = JsonConvert.DeserializeObject<TokenModel>(otherClaims.Find(x => x.Type == "TokenData").Value);
@@ -144,6 +146,26 @@ namespace Breadcrumb.Utility
             }
 
             return CurrentFolder;
+        }
+
+        public List<tbCoversModel> TMDBCoverstoMyCovers(List<FullImageTMDBModel> images)
+        {
+            List<tbCoversModel> toReturn = new List<tbCoversModel>();
+            foreach (var image in images)
+            {
+                tbCoversModel cover = new tbCoversModel()
+                {
+                    Id = null,
+                    BreadId = null,
+                    Link = image.FilePath,
+                    Dimensions = image.Width + "X" + image.Height,
+                    isNSFW = false,
+                };
+
+                toReturn.Add(cover);
+            }
+
+            return toReturn;
         }
     }
 }

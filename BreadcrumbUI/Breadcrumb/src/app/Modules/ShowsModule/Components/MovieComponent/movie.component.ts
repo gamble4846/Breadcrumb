@@ -62,10 +62,10 @@ export class MovieComponent {
   GetMoviesCovers(){
     let ids = [];
     ids.push(this.MovieData.breadId || "");
-    this.Core.getRandomCoversByBreadIdsAndOthers(ids,"1920X1080").subscribe((response:any) => {
+    this.Core.getRandomCoversByBreadIdsAndOthers(ids,"16:9").subscribe((response:any) => {
       this.RandomCoversURLS = response;
       try{
-        this.CoverLink = this.RandomCoversURLS[0].link;
+        this.CoverLink = this.Core.GetFinalLink(this.RandomCoversURLS[0].link);
       }
       catch(ex){}
       if(!this.CoverLink){

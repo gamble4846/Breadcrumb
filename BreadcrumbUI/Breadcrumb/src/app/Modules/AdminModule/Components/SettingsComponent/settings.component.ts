@@ -14,7 +14,8 @@ export class SettingsComponent {
     servers: [],
     theMovieDBAPIKey: '',
     showNSFWCovers: false,
-    googleAPIs: []
+    googleAPIs: [],
+    showOnlyCustomCovers: false
   };
 
   tokenValue:string = "";

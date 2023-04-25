@@ -11,6 +11,7 @@ namespace Breadcrumb.Model
         public List<Server> Servers { get; set; }
         public string TheMovieDBAPIKey { get; set; }
         public bool ShowNSFWCovers { get; set; }
+        public bool ShowOnlyCustomCovers { get; set; }
         public List<GoogleAPI> GoogleAPIs { get; set;}
     }
 

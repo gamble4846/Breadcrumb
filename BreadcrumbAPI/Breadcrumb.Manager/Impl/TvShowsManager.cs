@@ -18,6 +18,7 @@ using FastMember;
 using System.Linq;
 using Breadcrumb.Model.FilesModels;
 using static System.Net.WebRequestMethods;
+using Breadcrumb.Model.tbCoversModels;
 
 namespace Breadcrumb.Manager.Impl
 {
@@ -28,12 +29,14 @@ namespace Breadcrumb.Manager.Impl
         public CommonFunctions CommonFunctions { get; set; }
         Breadcrumb.DataAccess.SQLServer.Interface.ITvShowsDataAccess SqlTvShowsDataAccess { get; set; }
         Breadcrumb.DataAccess.SQLServer.Interface.IFilesDataAccess SqlFilesDataAccess { get; set; }
+        Breadcrumb.DataAccess.SQLServer.Interface.ICoversDataAccess SqlCoversDataAccess { get; set; }
         public TokenModel TokenData { get; set; }
         public string ConnectionString { get; set; }
         public string ServerType { get; set; }
         public ITheMovieDBManager TheMovieDBManager { get; set; }
+        public ICoversManager CoversManager { get; set; }
 
-        public TvShowsManager(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ITheMovieDBManager theMovieDBManager)
+        public TvShowsManager(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ITheMovieDBManager theMovieDBManager, ICoversManager coversManager)
         {
             Configuration = configuration;
             HttpContextAccessor = httpContextAccessor;
@@ -42,6 +45,7 @@ namespace Breadcrumb.Manager.Impl
             ConnectionString = TokenData.Servers.Find(x => x.IsSelected).ConnectionString;
             ServerType = TokenData.Servers.Find(x => x.IsSelected).DatabaseType;
             TheMovieDBManager = theMovieDBManager;
+            CoversManager = coversManager;
         }
 
         public APIResponse GetTvShows(int page, int itemsPerPage, string orderBy, string FilterQuery)
@@ -453,11 +457,17 @@ namespace Breadcrumb.Manager.Impl
         {
             var tvShowFullData = await TheMovieDBManager.GetTvshowByIMDBId(IMDBId);
             var FullTVShowTMDBData = (FullTVShowTMDBModel)tvShowFullData.Document;
+
+            var tvShowFullImageData = await TheMovieDBManager.GetImagesByIMDBId(IMDBId, "tv");
+            var FullImagesTMDBModel = (List<FullImageTMDBModel>)tvShowFullImageData.Document;
+            var AllCovers = CommonFunctions.TMDBCoverstoMyCovers(FullImagesTMDBModel);
+
             var TokenData = CommonFunctions.GetTokenData();
             switch (ServerType)
             {
                 case "SQLServer":
                     SqlTvShowsDataAccess = new TvShowsDataAccess(ConnectionString, CommonFunctions);
+                    SqlCoversDataAccess = new CoversDataAccess(ConnectionString, CommonFunctions);
 
                     var InsertedUpdatedTvShow = new vTvShowsModel();
                     var InsertedUpdatedTvShowSeasons = new List<tbSeasonsModel>();
@@ -513,11 +523,17 @@ namespace Breadcrumb.Manager.Impl
                     }
 
                     InsertedUpdatedTvShowEpisodes = SqlTvShowsDataAccess.InsertUpdateTvShowEpisodesMultiple(VTvShowEpisodesData);
+                    List<tbCoversModel> InsertedUpdatedCovers = new List<tbCoversModel>();
+                    if (InsertedUpdatedTvShow.BreadId != null)
+                    {
+                        InsertedUpdatedCovers = SqlCoversDataAccess.InsertUpdateCoversFull(AllCovers, InsertedUpdatedTvShow.BreadId ?? new Guid());
+                    }
 
                     dynamic FinalResult = new System.Dynamic.ExpandoObject();
                     FinalResult.InsertedUpdatedTvShow = InsertedUpdatedTvShow;
                     FinalResult.InsertedUpdatedTvShowSeasons = InsertedUpdatedTvShowSeasons;
                     FinalResult.InsertedUpdatedTvShowEpisodes = InsertedUpdatedTvShowEpisodes;
+                    FinalResult.InsertedUpdatedCovers = InsertedUpdatedCovers;
 
                     return new APIResponse(ResponseCode.SUCCESS, "TvShow Updated", FinalResult);
                 default:

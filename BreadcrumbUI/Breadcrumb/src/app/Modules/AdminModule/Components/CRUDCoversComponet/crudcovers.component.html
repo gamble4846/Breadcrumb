@@ -15,7 +15,7 @@
       Select Bread
     </div>
     <div class="inputContainer MaxWidth300">
-      <nz-select [(ngModel)]="SelectedBreadId" (ngModelChange)="BreadChanged()">
+      <nz-select nzShowSearch  [(ngModel)]="SelectedBreadId" (ngModelChange)="BreadChanged()">
         <nz-option *ngFor="let bread of CoverBreads" [nzValue]="bread.breadId" [nzLabel]="bread.displayBread">
         </nz-option>
       </nz-select>
@@ -25,7 +25,7 @@
   <div class="CoverTableCopntainer">
     <button nz-button nzType="primary" style="margin-bottom: 10px;" (click)="ShowInsetUpdateCoverModel()">Add <span
         nz-icon nzType="plus" nzTheme="outline"></span></button>
-    <nz-table #coverTable nzSize="small" [nzData]="CoversData" [nzFrontPagination]="false">
+    <nz-table #coverTable nzSize="small" [nzData]="CoversData" [nzFrontPagination]="false" nzTableLayout="fixed">
       <thead>
         <tr>
           <th>ID</th>
@@ -37,11 +37,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let data of coverTable.data; let indexCover = index">
-          <td>{{ data.id }}</td>
-          <td nz-dropdown nzTrigger="click" [nzDropdownMenu]="ImageDropDown" (click)="UpdateDropDownImage(data.link)" style="cursor: pointer;">{{ data.link }}</td>
-          <td>{{ data.dimensions }}</td>
-          <td>{{ data.isNSFW }}</td>
-          <td>
+          <td nzEllipsis>{{ data.id }}</td>
+          <td nzEllipsis nz-dropdown nzTrigger="click" [nzDropdownMenu]="ImageDropDown" (click)="UpdateDropDownImage(data.link)" style="cursor: pointer;">{{ data.link }}</td>
+          <td nzEllipsis>{{ data.dimensions }}</td>
+          <td nzEllipsis>{{ data.isNSFW }}</td>
+          <td nzEllipsis>
             <button nz-button nzType="primary" nzDanger (click)="DeleteCoverConfirm(indexCover)"><span nz-icon nzType="delete"
                 nzTheme="outline"></span></button>
             <button nz-button nzType="primary" style="margin-left: 5px;"

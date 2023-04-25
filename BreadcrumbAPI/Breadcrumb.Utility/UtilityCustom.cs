@@ -120,7 +120,10 @@ namespace Breadcrumb.Utility
             DataTable dt = new DataTable();
             try
             {
-                cmd.Connection.Open();
+                if (cmd.Connection.State == ConnectionState.Closed)
+                {
+                    cmd.Connection.Open();
+                }
                 using (var reader = cmd.ExecuteReader())
                 {
                     dt.Load(reader);

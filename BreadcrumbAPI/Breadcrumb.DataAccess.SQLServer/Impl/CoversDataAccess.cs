@@ -12,6 +12,8 @@ using Breadcrumb.Model.tbCoversModels;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Reflection;
+using Breadcrumb.Model.FilesModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Breadcrumb.DataAccess.SQLServer.Impl
 {
@@ -87,6 +89,10 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
                     }
 
                     transaction.Commit();
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
                     return true;
                 }
                 catch (Exception)
@@ -102,8 +108,59 @@ namespace Breadcrumb.DataAccess.SQLServer.Impl
                 {
                     connection.Close();
                 }
+            }
+        }
 
-                return false;
+        public List<tbCoversModel> InsertUpdateCoversFull(List<tbCoversModel> newCovers, Guid BreadId)
+        {
+            foreach(var cover in newCovers)
+            {
+                cover.BreadId = BreadId;
+            }
+
+            var CoversMultipleInsertSP = UtilityCustom.ToDataTable<tbCoversModel>(newCovers);
+            var ret = new List<tbCoversModel>();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string CommandText = @"";
+                SqlCommand cmd = new SqlCommand(CommandText, connection);
+
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction("");
+                cmd.Transaction = transaction;
+
+                try
+                {
+                    cmd.CommandText = "DELETE FROM tbCovers WHERE BreadId = @BreadId And Link Like '%[||REPLACEWITHTMDBIMAGEHOST||]%'";
+                    cmd.Parameters.AddWithValue("@BreadId", BreadId);
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = @"SPInsertCoversMultiple";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.Add("@Values", SqlDbType.Structured).Value = CoversMultipleInsertSP;
+                    transaction.Commit();
+
+                    var dt = UtilityCustom.GetDataTableFromCommand(cmd);
+                    ret = dt.DataTableToObjectList<tbCoversModel>();
+
+                    
+                    return ret;
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    if (connection.State == ConnectionState.Open)
+                    {
+                        connection.Close();
+                    }
+                    throw;
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
         }
     }

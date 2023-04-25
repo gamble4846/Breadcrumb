@@ -47,7 +47,7 @@ export class TvShowComponent {
   TvShowEpisodesData:Array<tbEpisodesModel> = [];
   
   constructor(
-    private Core:CoreService,
+    public Core:CoreService,
     private TvShow:TvShowsService,
     private Covers:CoversService,
     private Config:ConfigService,
@@ -79,7 +79,7 @@ export class TvShowComponent {
   GetTvShowsCovers(){
     let ids = [];
     ids.push(this.TvShowData.breadId || "");
-    this.Core.getRandomCoversByBreadIdsAndOthers(ids,"1920X1080").subscribe((response:any) => {
+    this.Core.getRandomCoversByBreadIdsAndOthers(ids,"16:9").subscribe((response:any) => {
       this.RandomCoversURLS = response;
       try{
         this.CoverLink = this.RandomCoversURLS[0].link;
@@ -115,23 +115,6 @@ export class TvShowComponent {
         console.log(this.TvShowEpisodesData);
       }
     })
-  }
-
-  GetThumbnailForEpisode(episode:tbEpisodesModel){
-    let finalThumbnailLink:string = "";
-
-    if(!episode.thumbnailLink){
-      finalThumbnailLink = "https://i.imgur.com/5lq108M.png";
-      return finalThumbnailLink;
-    }
-
-    finalThumbnailLink = episode.thumbnailLink;
-    if(finalThumbnailLink.includes("[||REPLACEWITHTMDBIMAGEHOST||]")){
-      finalThumbnailLink = finalThumbnailLink.replaceAll("[||REPLACEWITHTMDBIMAGEHOST||]", this.Config.GetOthersConfigFile()["TMDBImageHost"]);
-      return finalThumbnailLink;
-    }
-
-    return episode.thumbnailLink;
   }
 
   FilesModalVisible:boolean = false;

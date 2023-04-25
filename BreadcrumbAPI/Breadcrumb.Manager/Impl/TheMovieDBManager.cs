@@ -129,6 +129,60 @@ namespace Breadcrumb.Manager.Impl
 
             return new APIResponse(ResponseCode.SUCCESS, "Records Found", fullMovie);
         }
+
+
+        public async Task<APIResponse> GetImagesByIMDBId(string IMDBId, string ShowType)
+        {
+            string TMDBId = "";
+            if (ShowType == "tv")
+            {
+                var tvShowFromIMDB = await UtilityCustom.RestCall("https://api.themoviedb.org/3/find/" + IMDBId + "?api_key=" + TheMovieDBAPIKey + "&external_source=imdb_id");
+                TMDBId = tvShowFromIMDB.tv_results[0].id;
+            }
+            else
+            {
+                var moivieFromIMDB = await UtilityCustom.RestCall("https://api.themoviedb.org/3/find/" + IMDBId + "?api_key=" + TheMovieDBAPIKey + "&external_source=imdb_id");
+                TMDBId = moivieFromIMDB.movie_results[0].id;
+            }
+
+            List<FullImageTMDBModel> FullImages = new List<FullImageTMDBModel>();
+            string apiLink = "https://api.themoviedb.org/3/" + ShowType + "/" + TMDBId + "/images?api_key=" + TheMovieDBAPIKey;
+            var imagesFromTMDB = await UtilityCustom.RestCall(apiLink);
+
+            foreach (var imageData in imagesFromTMDB.backdrops)
+            {
+                FullImageTMDBModel image = new FullImageTMDBModel()
+                {
+                    AspectRatio = imageData.aspect_ratio,
+                    Height = imageData.height,
+                    ISO6391 = imageData.iso_639_1,
+                    FilePath = "[||REPLACEWITHTMDBIMAGEHOST||]" + imageData.file_path,
+                    VoteAverage = imageData.vote_average,
+                    VoteCount = imageData.vote_count,
+                    Width = imageData.width
+                };
+
+                FullImages.Add(image);
+            }
+
+            foreach (var imageData in imagesFromTMDB.posters)
+            {
+                FullImageTMDBModel image = new FullImageTMDBModel()
+                {
+                    AspectRatio = imageData.aspect_ratio,
+                    Height = imageData.height,
+                    ISO6391 = imageData.iso_639_1,
+                    FilePath = "[||REPLACEWITHTMDBIMAGEHOST||]" + imageData.file_path,
+                    VoteAverage = imageData.vote_average,
+                    VoteCount = imageData.vote_count,
+                    Width = imageData.width
+                };
+
+                FullImages.Add(image);
+            }
+
+            return new APIResponse(ResponseCode.SUCCESS, "Records Found", FullImages);
+        }
     }
 }
 

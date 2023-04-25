@@ -17,7 +17,7 @@ export class OpenerComponent {
   radioValue: string = "TvShows";
 
   constructor(
-    private Core: CoreService,
+    public Core: CoreService,
     private TvShow: TvShowsService,
     private Moive: MoviesService,
     private Covers: CoversService,
@@ -68,13 +68,13 @@ export class OpenerComponent {
     switch (this.radioValue) {
       case "TvShows":
         var ids = this.TvShowsData.map(({ breadId }) => breadId || "");
-        this.Core.getRandomCoversByBreadIdsAndOthers(ids, "1000X1500").subscribe((response: any) => {
+        this.Core.getRandomCoversByBreadIdsAndOthers(ids, "2:3").subscribe((response: any) => {
           this.RandomCoversURLS = response;
         });
         break;
       case "Movies":
         var ids = this.MoviesData.map(({ breadId }) => breadId || "");
-        this.Core.getRandomCoversByBreadIdsAndOthers(ids, "1000X1500").subscribe((response: any) => {
+        this.Core.getRandomCoversByBreadIdsAndOthers(ids, "2:3").subscribe((response: any) => {
           this.RandomCoversURLS = response;
         });
         break;

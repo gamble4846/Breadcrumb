@@ -8,6 +8,7 @@ export interface TokenModel {
     servers: Server[];
     theMovieDBAPIKey: string;
     showNSFWCovers: boolean;
+    showOnlyCustomCovers: boolean;
     googleAPIs: Array<GoogleAPI>;
 }
 

@@ -13,6 +13,7 @@ namespace Breadcrumb.Manager.Interface
     {
         Task<APIResponse> GetTvshowByIMDBId(string IMDBId);
         Task<APIResponse> GetMovieByIMDBId(string IMDBId);
+        Task<APIResponse> GetImagesByIMDBId(string IMDBId, string ShowType);
     }
 }
 
